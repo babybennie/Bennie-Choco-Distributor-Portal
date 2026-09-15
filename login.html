@@ -1,0 +1,1592 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<title>Bennie Choco — เข้าสู่ระบบตัวแทน</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --blue:#A0C4FF;
+  --mint:#CAFFBF;
+  --yellow:#FDFFB6;
+  --dark:#3D405B;
+  --cream:#FFFDF7;
+  --white:#ffffff;
+  --danger:#ef6b73;
+  --shadow:0 18px 45px rgba(61,64,91,.12);
+  --radius:28px;
+}
+
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:"Prompt",sans-serif;
+  color:var(--dark);
+  background:
+    radial-gradient(circle at 10% 10%,rgba(160,196,255,.55),transparent 30%),
+    radial-gradient(circle at 90% 25%,rgba(202,255,191,.65),transparent 28%),
+    radial-gradient(circle at 50% 100%,rgba(253,255,182,.65),transparent 35%),
+    var(--cream);
+  overflow-x:hidden;
+}
+
+/* =========================
+   CLOUDS
+========================= */
+
+.cloud{
+  position:fixed;
+  z-index:0;
+  pointer-events:none;
+  opacity:.65;
+  filter:blur(.2px);
+}
+
+.cloud::before,
+.cloud::after{
+  content:"";
+  position:absolute;
+  background:rgba(255,255,255,.9);
+  border-radius:999px;
+}
+
+.cloud-1{
+  width:130px;
+  height:45px;
+  top:90px;
+  left:-20px;
+}
+
+.cloud-1::before{
+  width:60px;
+  height:60px;
+  left:20px;
+  bottom:5px;
+}
+
+.cloud-1::after{
+  width:75px;
+  height:75px;
+  left:58px;
+  bottom:0;
+}
+
+.cloud-2{
+  width:150px;
+  height:50px;
+  top:260px;
+  right:-35px;
+}
+
+.cloud-2::before{
+  width:70px;
+  height:70px;
+  left:20px;
+  bottom:3px;
+}
+
+.cloud-2::after{
+  width:80px;
+  height:80px;
+  right:20px;
+  bottom:0;
+}
+
+.cloud-3{
+  width:120px;
+  height:42px;
+  bottom:120px;
+  left:-30px;
+  opacity:.4;
+}
+
+.cloud-3::before{
+  width:55px;
+  height:55px;
+  left:15px;
+  bottom:0;
+}
+
+.cloud-3::after{
+  width:65px;
+  height:65px;
+  left:55px;
+  bottom:0;
+}
+
+/* =========================
+   FLOATING DECOR
+========================= */
+
+.float-deco{
+  position:fixed;
+  z-index:1;
+  width:58px;
+  height:58px;
+  object-fit:contain;
+  pointer-events:none;
+  opacity:.9;
+  animation:float 5s ease-in-out infinite;
+}
+
+.float-1{
+  top:145px;
+  left:5%;
+}
+
+.float-2{
+  top:410px;
+  right:4%;
+  width:52px;
+  animation-delay:1s;
+}
+
+.float-3{
+  bottom:170px;
+  left:7%;
+  width:48px;
+  animation-delay:2s;
+}
+
+@keyframes float{
+  0%,100%{
+    transform:translateY(0) rotate(-3deg);
+  }
+  50%{
+    transform:translateY(-10px) rotate(3deg);
+  }
+}
+
+/* =========================
+   PAGE
+========================= */
+
+.page{
+  position:relative;
+  z-index:2;
+  min-height:100vh;
+  padding:
+    max(20px,env(safe-area-inset-top))
+    16px
+    max(30px,env(safe-area-inset-bottom));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.login-wrap{
+  width:100%;
+  max-width:480px;
+}
+
+/* =========================
+   BRAND
+========================= */
+
+.brand{
+  text-align:center;
+  margin-bottom:18px;
+}
+
+.brand-logo{
+  width:76px;
+  height:76px;
+  margin:0 auto 10px;
+  border-radius:24px;
+  background:rgba(255,255,255,.78);
+  box-shadow:0 12px 28px rgba(61,64,91,.1);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:38px;
+}
+
+.brand h1{
+  margin:0;
+  font-size:25px;
+  font-weight:700;
+  letter-spacing:-.4px;
+}
+
+.brand p{
+  margin:5px 0 0;
+  font-size:14px;
+  color:#70738a;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.login-card{
+  position:relative;
+  background:rgba(255,255,255,.88);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.95);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:25px 20px 22px;
+}
+
+.card-title{
+  text-align:center;
+  margin-bottom:22px;
+}
+
+.card-title h2{
+  margin:0;
+  font-size:21px;
+  font-weight:600;
+}
+
+.card-title p{
+  margin:5px 0 0;
+  color:#777a90;
+  font-size:13px;
+}
+
+/* =========================
+   FORM
+========================= */
+
+.form-group{
+  margin-bottom:15px;
+}
+
+.form-label{
+  display:block;
+  margin-bottom:7px;
+  font-size:14px;
+  font-weight:500;
+}
+
+.input-wrap{
+  position:relative;
+}
+
+.form-input{
+  width:100%;
+  height:52px;
+  border:1.5px solid #e7e8ee;
+  background:#fff;
+  border-radius:17px;
+  padding:0 48px 0 16px;
+  font-family:inherit;
+  font-size:15px;
+  color:var(--dark);
+  outline:none;
+  transition:.2s ease;
+}
+
+.form-input::placeholder{
+  color:#aaaebe;
+}
+
+.form-input:focus{
+  border-color:var(--blue);
+  box-shadow:0 0 0 4px rgba(160,196,255,.18);
+}
+
+.toggle-password{
+  position:absolute;
+  right:7px;
+  top:50%;
+  transform:translateY(-50%);
+  width:40px;
+  height:40px;
+  border:0;
+  background:transparent;
+  border-radius:12px;
+  cursor:pointer;
+  font-size:18px;
+}
+
+.toggle-password:active{
+  background:#f3f5f9;
+}
+
+/* =========================
+   REMEMBER
+========================= */
+
+.remember-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin:2px 2px 18px;
+}
+
+.remember{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:13px;
+  color:#66697e;
+  cursor:pointer;
+}
+
+.remember input{
+  width:17px;
+  height:17px;
+  accent-color:#8eb8fa;
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.login-button{
+  width:100%;
+  min-height:54px;
+  border:0;
+  border-radius:18px;
+  background:linear-gradient(135deg,#9ec3ff,#b5d0ff);
+  color:#34415e;
+  font-family:inherit;
+  font-size:16px;
+  font-weight:600;
+  cursor:pointer;
+  box-shadow:0 10px 24px rgba(160,196,255,.3);
+  transition:.2s ease;
+}
+
+.login-button:hover{
+  transform:translateY(-1px);
+}
+
+.login-button:active{
+  transform:scale(.985);
+}
+
+.login-button:disabled{
+  opacity:.65;
+  cursor:not-allowed;
+  transform:none;
+}
+
+/* =========================
+   STATUS
+========================= */
+
+.status-box{
+  display:none;
+  margin-bottom:16px;
+  padding:13px 14px;
+  border-radius:16px;
+  font-size:13px;
+  line-height:1.65;
+}
+
+.status-box.show{
+  display:block;
+}
+
+.status-box.error{
+  background:#fff0f1;
+  color:#b64c57;
+  border:1px solid #ffd4d8;
+}
+
+.status-box.info{
+  background:#eef6ff;
+  color:#526f98;
+  border:1px solid #d6e8ff;
+}
+
+/* =========================
+   BOTTOM LINKS
+========================= */
+
+.bottom-links{
+  margin-top:18px;
+  text-align:center;
+  font-size:13px;
+  color:#777a90;
+  line-height:1.9;
+}
+
+.bottom-links a{
+  color:#638bc9;
+  text-decoration:none;
+  font-weight:500;
+}
+
+.bottom-links a:hover{
+  text-decoration:underline;
+}
+
+/* =========================
+   STATUS MODAL
+========================= */
+
+.modal-overlay{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(61,64,91,.34);
+  backdrop-filter:blur(7px);
+  -webkit-backdrop-filter:blur(7px);
+}
+
+.modal-overlay.show{
+  display:flex;
+}
+
+.modal{
+  width:100%;
+  max-width:430px;
+  max-height:calc(100vh - 40px);
+  overflow:auto;
+  background:#fff;
+  border-radius:28px;
+  padding:26px 20px 20px;
+  box-shadow:0 25px 70px rgba(61,64,91,.22);
+  animation:modalIn .22s ease;
+}
+
+@keyframes modalIn{
+  from{
+    opacity:0;
+    transform:translateY(12px) scale(.98);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+.modal-icon{
+  width:65px;
+  height:65px;
+  margin:0 auto 12px;
+  border-radius:22px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:31px;
+  background:linear-gradient(135deg,#dff0ff,#efffe9);
+}
+
+.modal h3{
+  margin:0;
+  text-align:center;
+  font-size:21px;
+}
+
+.modal-subtitle{
+  margin:6px 0 18px;
+  text-align:center;
+  color:#777a90;
+  font-size:13px;
+  line-height:1.6;
+}
+
+.modal-info{
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+  margin-bottom:18px;
+}
+
+.info-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  padding:11px 13px;
+  background:#f8faff;
+  border-radius:14px;
+  font-size:13px;
+}
+
+.info-label{
+  color:#85889a;
+}
+
+.info-value{
+  font-weight:600;
+  text-align:right;
+}
+
+.modal-note{
+  padding:13px;
+  border-radius:15px;
+  background:#fffdf0;
+  border:1px solid #f6efb7;
+  font-size:12px;
+  line-height:1.65;
+  color:#76704b;
+  margin-bottom:17px;
+}
+
+.modal-button{
+  width:100%;
+  min-height:50px;
+  border:0;
+  border-radius:16px;
+  background:#a8c9ff;
+  color:#34415e;
+  font-family:inherit;
+  font-size:15px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.modal-button.secondary{
+  margin-top:8px;
+  background:#f3f5f9;
+  color:#62667b;
+}
+
+/* =========================
+   MUSIC
+========================= */
+
+.music-button{
+  position:fixed;
+  z-index:80;
+  right:14px;
+  bottom:max(14px,env(safe-area-inset-bottom));
+  width:48px;
+  height:48px;
+  border:0;
+  border-radius:50%;
+  background:rgba(255,255,255,.9);
+  box-shadow:0 8px 22px rgba(61,64,91,.15);
+  font-size:20px;
+  cursor:pointer;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width:380px){
+  .page{
+    padding-left:12px;
+    padding-right:12px;
+  }
+
+  .login-card{
+    padding:22px 16px 19px;
+  }
+
+  .brand h1{
+    font-size:23px;
+  }
+
+  .form-input{
+    font-size:14px;
+  }
+}
+
+@media (min-width:700px){
+  .page{
+    padding:40px 20px;
+  }
+
+  .login-card{
+    padding:30px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Clouds -->
+<div class="cloud cloud-1"></div>
+<div class="cloud cloud-2"></div>
+<div class="cloud cloud-3"></div>
+
+<!-- Floating decorations -->
+<img
+  class="float-deco float-1"
+  src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
+  alt=""
+>
+
+<img
+  class="float-deco float-2"
+  src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
+  alt=""
+>
+
+<img
+  class="float-deco float-3"
+  src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
+  alt=""
+>
+
+<main class="page">
+
+  <div class="login-wrap">
+
+    <!-- Brand -->
+    <div class="brand">
+      <div class="brand-logo">☁️</div>
+
+      <h1>Bennie Choco</h1>
+
+      <p>Distributor Portal ♡</p>
+    </div>
+
+    <!-- Login Card -->
+    <section class="login-card">
+
+      <div class="card-title">
+        <h2>เข้าสู่ระบบตัวแทน</h2>
+
+        <p>
+          สำหรับตัวแทนที่ได้รับอนุมัติแล้ว
+        </p>
+      </div>
+
+      <div id="statusBox" class="status-box"></div>
+
+      <form id="loginForm">
+
+        <!-- Email -->
+        <div class="form-group">
+
+          <label class="form-label" for="email">
+            อีเมล
+          </label>
+
+          <div class="input-wrap">
+
+            <input
+              id="email"
+              class="form-input"
+              type="email"
+              autocomplete="email"
+              placeholder="กรอกอีเมลที่ใช้สมัคร"
+              required
+            >
+
+          </div>
+
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+
+          <label class="form-label" for="password">
+            รหัสผ่าน
+          </label>
+
+          <div class="input-wrap">
+
+            <input
+              id="password"
+              class="form-input"
+              type="password"
+              autocomplete="current-password"
+              placeholder="กรอกรหัสผ่าน"
+              required
+            >
+
+            <button
+              type="button"
+              class="toggle-password"
+              id="togglePassword"
+              aria-label="แสดงรหัสผ่าน"
+            >
+              ♡
+            </button>
+
+          </div>
+
+        </div>
+
+        <!-- Remember -->
+        <div class="remember-row">
+
+          <label class="remember">
+            <input
+              type="checkbox"
+              id="rememberMe"
+            >
+
+            <span>จำอีเมลนี้ไว้</span>
+          </label>
+
+        </div>
+
+        <button
+          id="loginButton"
+          class="login-button"
+          type="submit"
+        >
+          ♡ เข้าสู่ระบบ
+        </button>
+
+      </form>
+
+      <div class="bottom-links">
+
+        ยังไม่มีบัญชี?
+        <a href="register.html">
+          สมัครบัญชีตัวแทน
+        </a>
+
+        <br>
+
+        หากสมัครแล้วแต่ยังไม่ได้รับการอนุมัติ
+        <br>
+        กรุณารอแอดมินตรวจสอบก่อนเข้าสู่ระบบ
+
+      </div>
+
+    </section>
+
+  </div>
+
+</main>
+
+<!-- Music -->
+<button
+  class="music-button"
+  id="musicButton"
+  type="button"
+  aria-label="เปิดหรือปิดเพลง"
+>
+  ♫
+</button>
+
+<audio
+  id="bgMusic"
+  loop
+  preload="none"
+>
+  <!-- ใส่ URL เพลงของเว็บตรงนี้ภายหลัง -->
+</audio>
+
+<!-- Status Modal -->
+<div
+  class="modal-overlay"
+  id="statusModal"
+  role="dialog"
+  aria-modal="true"
+>
+
+  <div class="modal">
+
+    <div class="modal-icon" id="modalIcon">
+      ☁️
+    </div>
+
+    <h3 id="modalTitle">
+      กำลังตรวจสอบ
+    </h3>
+
+    <p
+      class="modal-subtitle"
+      id="modalSubtitle"
+    ></p>
+
+    <div
+      class="modal-info"
+      id="modalInfo"
+    ></div>
+
+    <div
+      class="modal-note"
+      id="modalNote"
+    ></div>
+
+    <button
+      class="modal-button"
+      id="modalMainButton"
+      type="button"
+    >
+      ตกลง
+    </button>
+
+    <button
+      class="modal-button secondary"
+      id="modalSecondaryButton"
+      type="button"
+    >
+      ปิด
+    </button>
+
+  </div>
+
+</div>
+
+<script>
+/* =========================================================
+   SUPABASE
+========================================================= */
+
+const SUPABASE_URL =
+  "https://arhvdvaugcjzkdbxesma.supabase.co";
+
+const SUPABASE_ANON_KEY =
+  "sb_publishable_Ctpm1h1NQKTdOPpY9yQ2qw_7kQg_57Z";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const loginForm =
+  document.getElementById("loginForm");
+
+const emailInput =
+  document.getElementById("email");
+
+const passwordInput =
+  document.getElementById("password");
+
+const rememberMe =
+  document.getElementById("rememberMe");
+
+const loginButton =
+  document.getElementById("loginButton");
+
+const statusBox =
+  document.getElementById("statusBox");
+
+const togglePassword =
+  document.getElementById("togglePassword");
+
+const statusModal =
+  document.getElementById("statusModal");
+
+const modalIcon =
+  document.getElementById("modalIcon");
+
+const modalTitle =
+  document.getElementById("modalTitle");
+
+const modalSubtitle =
+  document.getElementById("modalSubtitle");
+
+const modalInfo =
+  document.getElementById("modalInfo");
+
+const modalNote =
+  document.getElementById("modalNote");
+
+const modalMainButton =
+  document.getElementById("modalMainButton");
+
+const modalSecondaryButton =
+  document.getElementById("modalSecondaryButton");
+
+
+/* =========================================================
+   REMEMBER EMAIL
+========================================================= */
+
+const savedEmail =
+  localStorage.getItem("bennieDistributorEmail");
+
+if(savedEmail){
+
+  emailInput.value = savedEmail;
+
+  rememberMe.checked = true;
+
+}
+
+
+/* =========================================================
+   PASSWORD TOGGLE
+========================================================= */
+
+togglePassword.addEventListener(
+  "click",
+  () => {
+
+    const isPassword =
+      passwordInput.type === "password";
+
+    passwordInput.type =
+      isPassword ? "text" : "password";
+
+    togglePassword.textContent =
+      isPassword ? "◉" : "♡";
+
+    togglePassword.setAttribute(
+      "aria-label",
+      isPassword
+        ? "ซ่อนรหัสผ่าน"
+        : "แสดงรหัสผ่าน"
+    );
+
+  }
+);
+
+
+/* =========================================================
+   STATUS MESSAGE
+========================================================= */
+
+function showStatus(message, type="info"){
+
+  statusBox.textContent = message;
+
+  statusBox.className =
+    "status-box show " + type;
+
+}
+
+function hideStatus(){
+
+  statusBox.className =
+    "status-box";
+
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+function closeModal(){
+
+  statusModal.classList.remove("show");
+
+}
+
+modalSecondaryButton.addEventListener(
+  "click",
+  closeModal
+);
+
+statusModal.addEventListener(
+  "click",
+  event => {
+
+    if(event.target === statusModal){
+
+      closeModal();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   OPEN STATUS MODAL
+========================================================= */
+
+function showAccountStatus(profile){
+
+  const status =
+    String(profile.status || "")
+      .toLowerCase();
+
+  modalInfo.innerHTML = `
+    <div class="info-row">
+      <span class="info-label">ชื่อเล่น</span>
+      <span class="info-value">
+        ${escapeHtml(profile.nickname || "-")}
+      </span>
+    </div>
+
+    <div class="info-row">
+      <span class="info-label">รหัสตัวแทน</span>
+      <span class="info-value">
+        ${escapeHtml(profile.distributor_code || "-")}
+      </span>
+    </div>
+
+    <div class="info-row">
+      <span class="info-label">เลขคำขอ</span>
+      <span class="info-value">
+        ${escapeHtml(profile.request_no || "-")}
+      </span>
+    </div>
+  `;
+
+  modalSecondaryButton.style.display = "block";
+
+
+  /* =========================
+     ACTIVE
+  ========================= */
+
+  if(status === "active"){
+
+    modalIcon.textContent = "🎉";
+
+    modalTitle.textContent =
+      "ยินดีต้อนรับกลับมา ♡";
+
+    modalSubtitle.textContent =
+      "บัญชีตัวแทนของคุณได้รับการอนุมัติแล้ว";
+
+    modalNote.innerHTML =
+      "คุณสามารถเข้าสู่พื้นที่สำหรับตัวแทนได้แล้ว<br>" +
+      "กดปุ่มด้านล่างเพื่อไปยัง Dashboard";
+
+    modalMainButton.textContent =
+      "☁ ไปยัง Dashboard";
+
+    modalMainButton.onclick =
+      () => {
+
+        window.location.href =
+          "dashboard.html";
+
+      };
+
+  }
+
+
+  /* =========================
+     PENDING
+  ========================= */
+
+  else if(status === "pending"){
+
+    modalIcon.textContent = "⏳";
+
+    modalTitle.textContent =
+      "กำลังรอการอนุมัติ";
+
+    modalSubtitle.textContent =
+      "คำขอของคุณได้รับแล้ว แต่แอดมินยังตรวจสอบไม่เสร็จ";
+
+    modalNote.innerHTML =
+      "กรุณารอแอดมินตรวจสอบข้อมูลก่อนนะคะ ♡<br>" +
+      "ระหว่างนี้ยังไม่สามารถเข้าสู่พื้นที่ตัวแทนได้";
+
+    modalMainButton.textContent =
+      "เข้าใจแล้ว";
+
+    modalMainButton.onclick =
+      closeModal;
+
+  }
+
+
+  /* =========================
+     REJECTED
+  ========================= */
+
+  else if(status === "rejected"){
+
+    modalIcon.textContent = "☁️";
+
+    modalTitle.textContent =
+      "คำขอยังไม่ได้รับการอนุมัติ";
+
+    modalSubtitle.textContent =
+      "กรุณาติดต่อแอดมินเพื่อสอบถามรายละเอียด";
+
+    modalNote.innerHTML =
+      "หากคิดว่าข้อมูลอาจไม่ตรงกับข้อมูลตัวแทน " +
+      "กรุณาติดต่อแอดมินก่อนสมัครใหม่";
+
+    modalMainButton.textContent =
+      "ปิด";
+
+    modalMainButton.onclick =
+      closeModal;
+
+  }
+
+
+  /* =========================
+     SUSPENDED
+  ========================= */
+
+  else if(status === "suspended"){
+
+    modalIcon.textContent = "⚠️";
+
+    modalTitle.textContent =
+      "บัญชีถูกระงับ";
+
+    modalSubtitle.textContent =
+      "บัญชีตัวแทนนี้ไม่สามารถเข้าสู่ระบบได้ในขณะนี้";
+
+    modalNote.innerHTML =
+      "กรุณาติดต่อแอดมินเพื่อสอบถามสาเหตุ " +
+      "และแนวทางการแก้ไข";
+
+    modalMainButton.textContent =
+      "ปิด";
+
+    modalMainButton.onclick =
+      closeModal;
+
+  }
+
+
+  /* =========================
+     UNKNOWN
+  ========================= */
+
+  else{
+
+    modalIcon.textContent = "☁️";
+
+    modalTitle.textContent =
+      "ไม่สามารถตรวจสอบสถานะได้";
+
+    modalSubtitle.textContent =
+      "กรุณาลองใหม่อีกครั้ง";
+
+    modalNote.innerHTML =
+      "หากยังพบปัญหา กรุณาติดต่อแอดมิน";
+
+    modalMainButton.textContent =
+      "ปิด";
+
+    modalMainButton.onclick =
+      closeModal;
+
+  }
+
+  statusModal.classList.add("show");
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHtml(value){
+
+  return String(value)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+/* =========================================================
+   CHECK PROFILE
+========================================================= */
+
+async function getMyProfile(userId){
+
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .from("profiles")
+    .select(`
+      id,
+      email,
+      nickname,
+      distributor_code,
+      status,
+      request_no,
+      approved_at
+    `)
+    .eq("id", userId)
+    .maybeSingle();
+
+  if(error){
+
+    throw error;
+
+  }
+
+  return data;
+
+}
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+loginForm.addEventListener(
+  "submit",
+  async event => {
+
+    event.preventDefault();
+
+    hideStatus();
+
+    const email =
+      emailInput.value.trim();
+
+    const password =
+      passwordInput.value;
+
+
+    if(!email || !password){
+
+      showStatus(
+        "กรุณากรอกอีเมลและรหัสผ่านให้ครบถ้วน",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    loginButton.disabled = true;
+
+    loginButton.textContent =
+      "กำลังตรวจสอบ...";
+
+
+    try{
+
+      /*
+       * Sign in ด้วย Email + Password
+       */
+
+      const {
+        data,
+        error
+      } = await supabaseClient.auth
+        .signInWithPassword({
+          email,
+          password
+        });
+
+
+      if(error){
+
+        throw error;
+
+      }
+
+
+      if(!data.user){
+
+        throw new Error(
+          "ไม่พบข้อมูลผู้ใช้งาน"
+        );
+
+      }
+
+
+      /*
+       * จำอีเมล ถ้าผู้ใช้เลือกไว้
+       */
+
+      if(rememberMe.checked){
+
+        localStorage.setItem(
+          "bennieDistributorEmail",
+          email
+        );
+
+      }else{
+
+        localStorage.removeItem(
+          "bennieDistributorEmail"
+        );
+
+      }
+
+
+      /*
+       * ดึง profile
+       */
+
+      const profile =
+        await getMyProfile(data.user.id);
+
+
+      if(!profile){
+
+        await supabaseClient.auth.signOut();
+
+        throw new Error(
+          "ไม่พบข้อมูลตัวแทนของบัญชีนี้"
+        );
+
+      }
+
+
+      /*
+       * แสดงสถานะบัญชี
+       */
+
+      const accountStatus =
+        String(profile.status || "")
+          .toLowerCase();
+
+
+      /*
+       * ACTIVE
+       */
+
+      if(accountStatus === "active"){
+
+        showAccountStatus(profile);
+
+        return;
+
+      }
+
+
+      /*
+       * ทุกสถานะที่ยังไม่ active
+       * จะไม่ให้เข้า dashboard
+       */
+
+      await supabaseClient.auth.signOut();
+
+      showAccountStatus(profile);
+
+
+    }catch(error){
+
+      console.error(
+        "LOGIN ERROR:",
+        error
+      );
+
+      let message =
+        "เข้าสู่ระบบไม่สำเร็จ กรุณาลองใหม่อีกครั้ง";
+
+
+      const raw =
+        String(error?.message || "")
+          .toLowerCase();
+
+
+      if(
+        raw.includes("invalid login credentials")
+      ){
+
+        message =
+          "อีเมลหรือรหัสผ่านไม่ถูกต้อง";
+
+      }
+      else if(
+        raw.includes("email not confirmed")
+      ){
+
+        message =
+          "อีเมลนี้ยังไม่ได้ยืนยัน กรุณาตรวจสอบอีเมลก่อนเข้าสู่ระบบ";
+
+      }
+      else if(
+        raw.includes("too many requests")
+      ){
+
+        message =
+          "ลองเข้าสู่ระบบบ่อยเกินไป กรุณารอสักครู่แล้วลองใหม่";
+
+      }
+      else if(
+        raw.includes("failed to fetch")
+      ){
+
+        message =
+          "ไม่สามารถเชื่อมต่อระบบได้ กรุณาตรวจสอบอินเทอร์เน็ตแล้วลองใหม่";
+
+      }
+
+
+      showStatus(
+        message,
+        "error"
+      );
+
+    }finally{
+
+      loginButton.disabled = false;
+
+      loginButton.textContent =
+        "♡ เข้าสู่ระบบ";
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   AUTO CHECK EXISTING SESSION
+========================================================= */
+
+async function checkExistingSession(){
+
+  try{
+
+    const {
+      data
+    } = await supabaseClient.auth
+      .getSession();
+
+    const session =
+      data?.session;
+
+    if(!session?.user){
+
+      return;
+
+    }
+
+
+    const profile =
+      await getMyProfile(
+        session.user.id
+      );
+
+
+    if(!profile){
+
+      await supabaseClient.auth.signOut();
+
+      return;
+
+    }
+
+
+    const accountStatus =
+      String(profile.status || "")
+        .toLowerCase();
+
+
+    if(accountStatus === "active"){
+
+      /*
+       * ถ้าเข้าหน้า login ทั้งที่
+       * มี session และ active อยู่แล้ว
+       * ให้กลับ Dashboard
+       */
+
+      window.location.href =
+        "dashboard.html";
+
+      return;
+
+    }
+
+
+    /*
+     * ถ้ายัง pending / rejected / suspended
+     * ออกจาก session เพื่อไม่ให้ค้าง
+     */
+
+    await supabaseClient.auth.signOut();
+
+  }catch(error){
+
+    console.warn(
+      "SESSION CHECK:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   MUSIC
+========================================================= */
+
+const musicButton =
+  document.getElementById("musicButton");
+
+const bgMusic =
+  document.getElementById("bgMusic");
+
+let musicPlaying = false;
+
+musicButton.addEventListener(
+  "click",
+  async () => {
+
+    /*
+     * ตอนนี้ยังไม่มี URL เพลง
+     * จึงยังไม่พยายามเล่นไฟล์
+     */
+
+    if(!bgMusic.src){
+
+      showStatus(
+        "ระบบเพลงพร้อมใช้งานแล้ว แต่ยังไม่ได้ใส่ไฟล์เพลง",
+        "info"
+      );
+
+      return;
+
+    }
+
+    try{
+
+      if(musicPlaying){
+
+        bgMusic.pause();
+
+        musicPlaying = false;
+
+        musicButton.textContent = "♫";
+
+      }else{
+
+        await bgMusic.play();
+
+        musicPlaying = true;
+
+        musicButton.textContent = "🔊";
+
+      }
+
+    }catch(error){
+
+      console.warn(
+        "MUSIC ERROR:",
+        error
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   START
+========================================================= */
+
+checkExistingSession();
+
+</script>
+
+</body>
+</html>
