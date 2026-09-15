@@ -1,0 +1,3284 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bennie Choco — จัดการเว็บไซต์</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Noto+Sans+Thai:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --blue:#A0C4FF;
+  --mint:#CAFFBF;
+  --yellow:#FDFFB6;
+  --cream:#FFFDF7;
+  --white:#fff;
+  --text:#3D405B;
+  --muted:#7B7F99;
+  --line:rgba(61,64,91,.10);
+  --shadow:0 14px 35px rgba(61,64,91,.10);
+  --danger:#d95c68;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  min-height:100vh;
+  font-family:"Nunito","Noto Sans Thai",sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 10% 8%,rgba(160,196,255,.42),transparent 28%),
+    radial-gradient(circle at 90% 18%,rgba(202,255,191,.40),transparent 25%),
+    linear-gradient(180deg,#F8FCFF 0%,#FFFDF7 100%);
+  overflow-x:hidden;
+}
+
+button,
+input,
+textarea,
+select{
+  font-family:inherit;
+}
+
+button,
+a{
+  -webkit-tap-highlight-color:transparent;
+}
+
+/* =========================
+   DECORATION
+========================= */
+
+.cloud{
+  position:fixed;
+  z-index:-2;
+  pointer-events:none;
+  opacity:.72;
+}
+
+.cloud::before,
+.cloud::after{
+  content:"";
+  position:absolute;
+  background:rgba(255,255,255,.82);
+  border-radius:999px;
+}
+
+.c1{
+  width:180px;
+  height:60px;
+  top:105px;
+  left:-50px;
+}
+
+.c1::before{
+  width:85px;
+  height:85px;
+  left:25px;
+  bottom:15px;
+}
+
+.c1::after{
+  width:105px;
+  height:105px;
+  right:20px;
+  bottom:7px;
+}
+
+.c2{
+  width:220px;
+  height:65px;
+  top:330px;
+  right:-65px;
+}
+
+.c2::before{
+  width:95px;
+  height:95px;
+  left:30px;
+  bottom:10px;
+}
+
+.c2::after{
+  width:120px;
+  height:120px;
+  right:25px;
+  bottom:3px;
+}
+
+.c3{
+  width:190px;
+  height:55px;
+  bottom:60px;
+  left:-60px;
+}
+
+.c3::before{
+  width:80px;
+  height:80px;
+  left:30px;
+  bottom:10px;
+}
+
+.c3::after{
+  width:100px;
+  height:100px;
+  right:20px;
+  bottom:3px;
+}
+
+.float{
+  position:fixed;
+  z-index:-1;
+  width:65px;
+  pointer-events:none;
+  opacity:.78;
+  animation:float 5s ease-in-out infinite;
+}
+
+.float.one{
+  top:145px;
+  right:4%;
+}
+
+.float.two{
+  top:58%;
+  left:3%;
+  width:55px;
+  animation-delay:1.4s;
+}
+
+@keyframes float{
+  0%,100%{
+    transform:translateY(0) rotate(-2deg);
+  }
+  50%{
+    transform:translateY(-12px) rotate(2deg);
+  }
+}
+
+/* =========================
+   LOADING
+========================= */
+
+.loading{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,253,247,.96);
+  backdrop-filter:blur(12px);
+  transition:.3s;
+}
+
+.loading.hide{
+  opacity:0;
+  pointer-events:none;
+}
+
+.loading-box{
+  text-align:center;
+}
+
+.loading-icon{
+  font-size:42px;
+  animation:bounce 1s infinite;
+}
+
+.loading-text{
+  margin-top:10px;
+  font-weight:900;
+}
+
+@keyframes bounce{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-8px)}
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:rgba(255,255,255,.80);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--line);
+}
+
+.header-inner{
+  width:min(1180px,calc(100% - 28px));
+  min-height:76px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+}
+
+.brand-icon{
+  width:44px;
+  height:44px;
+  border-radius:15px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(135deg,var(--blue),var(--mint));
+  box-shadow:0 8px 20px rgba(160,196,255,.22);
+  font-size:22px;
+}
+
+.brand-title{
+  font-size:17px;
+  font-weight:900;
+}
+
+.brand-sub{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:1px;
+}
+
+.header-actions{
+  display:flex;
+  gap:8px;
+}
+
+.header-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+  border:1px solid var(--line);
+  background:white;
+  color:var(--text);
+  padding:9px 13px;
+  border-radius:13px;
+  font-size:12px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.header-btn:hover{
+  transform:translateY(-1px);
+}
+
+/* =========================
+   LAYOUT
+========================= */
+
+.container{
+  width:min(1180px,calc(100% - 28px));
+  margin:auto;
+  padding:32px 0 65px;
+}
+
+.back{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  text-decoration:none;
+  color:var(--muted);
+  font-size:13px;
+  font-weight:800;
+  margin-bottom:18px;
+}
+
+.page-head{
+  margin-bottom:25px;
+}
+
+.page-tag{
+  display:inline-flex;
+  padding:7px 12px;
+  border-radius:999px;
+  background:rgba(255,255,255,.8);
+  border:1px solid var(--line);
+  font-size:11px;
+  font-weight:900;
+  margin-bottom:10px;
+}
+
+.page-head h1{
+  font-size:clamp(28px,5vw,42px);
+  line-height:1.1;
+  font-weight:900;
+}
+
+.page-head p{
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.7;
+  margin-top:8px;
+}
+
+/* =========================
+   INFO
+========================= */
+
+.info{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  background:rgba(255,255,255,.82);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:16px 18px;
+  margin-bottom:25px;
+}
+
+.info-icon{
+  width:38px;
+  height:38px;
+  border-radius:13px;
+  display:grid;
+  place-items:center;
+  flex:0 0 auto;
+  background:#EEF5FF;
+}
+
+.info-text{
+  font-size:12px;
+  line-height:1.7;
+  color:var(--muted);
+}
+
+.info-text strong{
+  color:var(--text);
+}
+
+/* =========================
+   SECTION GRID
+========================= */
+
+.content-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px;
+}
+
+.content-card{
+  background:rgba(255,255,255,.90);
+  border:1px solid var(--line);
+  border-radius:23px;
+  padding:20px;
+  box-shadow:var(--shadow);
+}
+
+.content-card.full{
+  grid-column:1/-1;
+}
+
+.card-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:15px;
+}
+
+.card-title{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.card-icon{
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  display:grid;
+  place-items:center;
+  background:#F1F6FF;
+  font-size:20px;
+  flex:0 0 auto;
+}
+
+.card-title h2{
+  font-size:17px;
+  font-weight:900;
+}
+
+.card-title p{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:2px;
+}
+
+.card-status{
+  padding:6px 9px;
+  border-radius:999px;
+  background:#F0FFF0;
+  color:#5C9560;
+  font-size:10px;
+  font-weight:900;
+}
+
+/* =========================
+   FIELD
+========================= */
+
+.field{
+  margin-bottom:13px;
+}
+
+.field:last-child{
+  margin-bottom:0;
+}
+
+.field label{
+  display:block;
+  margin-bottom:6px;
+  font-size:12px;
+  font-weight:900;
+}
+
+.field small{
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.5;
+  margin-top:5px;
+}
+
+.input,
+.textarea,
+.select{
+  width:100%;
+  border:1px solid rgba(61,64,91,.12);
+  background:#FBFCFF;
+  color:var(--text);
+  outline:none;
+  border-radius:14px;
+  padding:11px 13px;
+  font-size:13px;
+  transition:.2s;
+}
+
+.textarea{
+  min-height:100px;
+  resize:vertical;
+  line-height:1.6;
+}
+
+.input:focus,
+.textarea:focus,
+.select:focus{
+  border-color:rgba(160,196,255,.9);
+  box-shadow:0 0 0 4px rgba(160,196,255,.16);
+  background:white;
+}
+
+/* =========================
+   TWO FIELDS
+========================= */
+
+.two{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+/* =========================
+   TOGGLE
+========================= */
+
+.toggle-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:12px 13px;
+  border-radius:14px;
+  background:#FAFBFE;
+  border:1px solid rgba(61,64,91,.07);
+}
+
+.toggle-info strong{
+  display:block;
+  font-size:12px;
+}
+
+.toggle-info span{
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+  margin-top:3px;
+}
+
+.switch{
+  position:relative;
+  width:47px;
+  height:27px;
+  flex:0 0 auto;
+}
+
+.switch input{
+  opacity:0;
+  width:0;
+  height:0;
+}
+
+.slider{
+  position:absolute;
+  inset:0;
+  background:#DDE2EC;
+  border-radius:999px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.slider::before{
+  content:"";
+  position:absolute;
+  width:21px;
+  height:21px;
+  left:3px;
+  top:3px;
+  border-radius:50%;
+  background:white;
+  box-shadow:0 2px 5px rgba(0,0,0,.12);
+  transition:.2s;
+}
+
+.switch input:checked + .slider{
+  background:var(--blue);
+}
+
+.switch input:checked + .slider::before{
+  transform:translateX(20px);
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:15px;
+}
+
+.btn{
+  border:0;
+  border-radius:13px;
+  padding:10px 14px;
+  font:inherit;
+  font-size:12px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.btn-primary{
+  background:var(--blue);
+  color:var(--text);
+}
+
+.btn-secondary{
+  background:#F4F6FA;
+  color:var(--text);
+  border:1px solid var(--line);
+}
+
+.btn-danger{
+  background:#FFF0F2;
+  color:var(--danger);
+}
+
+.btn:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+/* =========================
+   DATABASE CONTENT
+========================= */
+
+.db-box{
+  margin-top:20px;
+  background:#F9FAFD;
+  border:1px dashed rgba(61,64,91,.15);
+  border-radius:17px;
+  padding:15px;
+}
+
+.db-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px;
+}
+
+.db-head strong{
+  font-size:13px;
+}
+
+.db-head span{
+  color:var(--muted);
+  font-size:10px;
+}
+
+.db-list{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.db-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:10px 11px;
+  border-radius:13px;
+  background:white;
+  border:1px solid rgba(61,64,91,.07);
+}
+
+.db-row-main{
+  min-width:0;
+  flex:1;
+}
+
+.db-key{
+  font-size:10px;
+  color:var(--muted);
+}
+
+.db-value{
+  margin-top:2px;
+  font-size:12px;
+  font-weight:800;
+  word-break:break-word;
+}
+
+.db-edit{
+  border:0;
+  background:#EEF5FF;
+  color:var(--text);
+  padding:7px 9px;
+  border-radius:10px;
+  font:inherit;
+  font-size:10px;
+  font-weight:900;
+  cursor:pointer;
+  white-space:nowrap;
+}
+
+.empty{
+  padding:18px;
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:5000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  background:rgba(61,64,91,.28);
+  backdrop-filter:blur(7px);
+}
+
+.modal.show{
+  display:flex;
+}
+
+.modal-box{
+  width:min(560px,100%);
+  max-height:90vh;
+  overflow:auto;
+  background:white;
+  border-radius:24px;
+  box-shadow:0 25px 70px rgba(61,64,91,.22);
+  padding:21px;
+}
+
+.modal-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:17px;
+}
+
+.modal-head h3{
+  font-size:18px;
+  font-weight:900;
+}
+
+.close{
+  width:35px;
+  height:35px;
+  border:0;
+  border-radius:11px;
+  background:#F4F6FA;
+  cursor:pointer;
+  font-size:17px;
+}
+
+.modal-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  margin-top:17px;
+}
+
+/* =========================
+   TOAST
+========================= */
+
+.toast{
+  position:fixed;
+  z-index:9000;
+  left:50%;
+  bottom:22px;
+  transform:translate(-50%,20px);
+  opacity:0;
+  pointer-events:none;
+  color:white;
+  background:rgba(61,64,91,.95);
+  border-radius:14px;
+  padding:11px 17px;
+  font-size:12px;
+  font-weight:800;
+  transition:.25s;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translate(-50%,0);
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+  text-align:center;
+  color:var(--muted);
+  font-size:11px;
+  padding-bottom:30px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:800px){
+
+  .content-grid{
+    grid-template-columns:1fr;
+  }
+
+  .content-card.full{
+    grid-column:auto;
+  }
+
+}
+
+@media(max-width:600px){
+
+  .header-inner{
+    width:calc(100% - 20px);
+    min-height:68px;
+  }
+
+  .brand-icon{
+    width:39px;
+    height:39px;
+    border-radius:13px;
+  }
+
+  .brand-title{
+    font-size:15px;
+  }
+
+  .brand-sub{
+    font-size:9px;
+  }
+
+  .header-btn{
+    padding:8px 9px;
+    font-size:10px;
+  }
+
+  .container{
+    width:calc(100% - 20px);
+    padding-top:24px;
+  }
+
+  .page-head h1{
+    font-size:29px;
+  }
+
+  .page-head p{
+    font-size:12px;
+  }
+
+  .content-card{
+    padding:16px;
+    border-radius:20px;
+  }
+
+  .two{
+    grid-template-columns:1fr;
+  }
+
+  .float{
+    opacity:.45;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="cloud c1"></div>
+<div class="cloud c2"></div>
+<div class="cloud c3"></div>
+
+<img
+  class="float one"
+  src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
+  alt=""
+>
+
+<img
+  class="float two"
+  src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
+  alt=""
+>
+
+<!-- LOADING -->
+<div class="loading" id="loading">
+  <div class="loading-box">
+    <div class="loading-icon">☁️</div>
+    <div class="loading-text">
+      กำลังตรวจสอบสิทธิ์ Admin...
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+
+    <div class="brand">
+
+      <div class="brand-icon">
+        🍫
+      </div>
+
+      <div>
+        <div class="brand-title">
+          Bennie Choco
+        </div>
+
+        <div class="brand-sub">
+          Distributor Portal · Website Admin
+        </div>
+      </div>
+
+    </div>
+
+    <div class="header-actions">
+
+      <a
+        href="admin.html"
+        class="header-btn"
+      >
+        ← Admin
+      </a>
+
+      <a
+        href="index.html"
+        target="_blank"
+        class="header-btn"
+      >
+        ↗ หน้าเว็บ
+      </a>
+
+    </div>
+
+  </div>
+</header>
+
+<main class="container">
+
+  <a
+    href="admin.html"
+    class="back"
+  >
+    ← กลับหน้า Admin
+  </a>
+
+  <section class="page-head">
+
+    <div class="page-tag">
+      🏠 WEBSITE MANAGEMENT
+    </div>
+
+    <h1>
+      จัดการเว็บไซต์
+    </h1>
+
+    <p>
+      แก้ไขเนื้อหาหลักของหน้า Bennie Choco
+      โดยแบ่งตามส่วนที่เห็นจริงบนหน้าเว็บ
+    </p>
+
+  </section>
+
+
+  <!-- INFO -->
+  <div class="info">
+
+    <div class="info-icon">
+      ☁️
+    </div>
+
+    <div class="info-text">
+
+      <strong>
+        หน้านี้จัดการเนื้อหาของ index.html
+      </strong>
+
+      <br>
+
+      แบ่งเป็น Hero, สมุด, จุดเด่น, ขั้นตอนการสมัคร,
+      ปุ่ม CTA, Footer และเพลง
+
+      <br>
+
+      ข้อมูลที่มีอยู่ใน <strong>site_content</strong>
+      จะแสดงด้านล่างเพื่อให้แก้ไขได้โดยไม่เดาคอลัมน์ของฐานข้อมูล
+
+    </div>
+
+  </div>
+
+
+  <!-- CONTENT -->
+  <div class="content-grid">
+
+
+    <!-- =====================
+         HERO
+    ====================== -->
+
+    <section class="content-card">
+
+      <div class="card-head">
+
+        <div class="card-title">
+
+          <div class="card-icon">
+            ☁️
+          </div>
+
+          <div>
+            <h2>หน้าเปิด / Hero</h2>
+            <p>ข้อความต้อนรับด้านบนหน้าเว็บ</p>
+          </div>
+
+        </div>
+
+        <div class="card-status">
+          หน้าแรก
+        </div>
+
+      </div>
+
+      <div class="field">
+        <label>ชื่อแบรนด์</label>
+
+        <input
+          class="input"
+          id="heroBrand"
+          value="Bennie Choco"
+        >
+      </div>
+
+      <div class="field">
+        <label>ชื่อระบบ</label>
+
+        <input
+          class="input"
+          id="heroSubtitle"
+          value="Distributor Portal"
+        >
+      </div>
+
+      <div class="field">
+        <label>ข้อความต้อนรับ</label>
+
+        <textarea
+          class="textarea"
+          id="heroTitle"
+        >ยินดีต้อนรับสู่ Bennie Choco Distributor Portal</textarea>
+      </div>
+
+      <div class="field">
+        <label>ข้อความอธิบาย</label>
+
+        <textarea
+          class="textarea"
+          id="heroDescription"
+        >พื้นที่สำหรับตัวแทนจำหน่าย เพื่อดูข้อมูลสินค้า ราคา และข่าวสารต่าง ๆ</textarea>
+      </div>
+
+      <div class="actions">
+
+        <button
+          class="btn btn-primary"
+          onclick="saveLocalSection('hero')"
+        >
+          💾 บันทึกส่วนนี้
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================
+         NOTEBOOK
+    ====================== -->
+
+    <section class="content-card">
+
+      <div class="card-head">
+
+        <div class="card-title">
+
+          <div class="card-icon">
+            📖
+          </div>
+
+          <div>
+            <h2>สมุด / เนื้อหาหลัก</h2>
+            <p>ข้อความที่อยู่ภายในสมุดบนหน้าแรก</p>
+          </div>
+
+        </div>
+
+        <div class="card-status">
+          เนื้อหา
+        </div>
+
+      </div>
+
+      <div class="field">
+
+        <label>
+          ชื่อหน้า / หัวข้อ
+        </label>
+
+        <input
+          class="input"
+          id="bookTitle"
+          placeholder="เช่น Bennie Choco"
+        >
+
+      </div>
+
+      <div class="field">
+
+        <label>
+          ข้อความหน้าแรก
+        </label>
+
+        <textarea
+          class="textarea"
+          id="bookPage1"
+          placeholder="ข้อความที่จะอยู่ในสมุด..."
+        ></textarea>
+
+      </div>
+
+      <div class="field">
+
+        <label>
+          ข้อความหน้าถัดไป
+        </label>
+
+        <textarea
+          class="textarea"
+          id="bookPage2"
+          placeholder="ข้อความหน้าถัดไป..."
+        ></textarea>
+
+      </div>
+
+      <div class="toggle-row">
+
+        <div class="toggle-info">
+
+          <strong>
+            แสดงสมุดบนหน้าเว็บ
+          </strong>
+
+          <span>
+            เปิดหรือปิดส่วนสมุด
+          </span>
+
+        </div>
+
+        <label class="switch">
+
+          <input
+            type="checkbox"
+            id="bookVisible"
+            checked
+          >
+
+          <span class="slider"></span>
+
+        </label>
+
+      </div>
+
+      <div class="actions">
+
+        <button
+          class="btn btn-primary"
+          onclick="saveLocalSection('book')"
+        >
+          💾 บันทึกส่วนนี้
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================
+         FEATURES
+    ====================== -->
+
+    <section class="content-card full">
+
+      <div class="card-head">
+
+        <div class="card-title">
+
+          <div class="card-icon">
+            ✨
+          </div>
+
+          <div>
+            <h2>จุดเด่นของระบบ</h2>
+            <p>Features ที่แสดงบนหน้าแรก</p>
+          </div>
+
+        </div>
+
+        <div class="card-status">
+          Features
+        </div>
+
+      </div>
+
+      <div class="two">
+
+        <div class="field">
+
+          <label>
+            จุดเด่นที่ 1
+          </label>
+
+          <input
+            class="input"
+            id="feature1Title"
+            placeholder="หัวข้อ"
+          >
+
+        </div>
+
+        <div class="field">
+
+          <label>
+            รายละเอียด 1
+          </label>
+
+          <input
+            class="input"
+            id="feature1Desc"
+            placeholder="รายละเอียด"
+          >
+
+        </div>
+
+        <div class="field">
+
+          <label>
+            จุดเด่นที่ 2
+          </label>
+
+          <input
+            class="input"
+            id="feature2Title"
+            placeholder="หัวข้อ"
+          >
+
+        </div>
+
+        <div class="field">
+
+          <label>
+            รายละเอียด 2
+          </label>
+
+          <input
+            class="input"
+            id="feature2Desc"
+            placeholder="รายละเอียด"
+          >
+
+        </div>
+
+        <div class="field">
+
+          <label>
+            จุดเด่นที่ 3
+          </label>
+
+          <input
+            class="input"
+            id="feature3Title"
+            placeholder="หัวข้อ"
+          >
+
+        </div>
+
+        <div class="field">
+
+          <label>
+            รายละเอียด 3
+          </label>
+
+          <input
+            class="input"
+            id="feature3Desc"
+            placeholder="รายละเอียด"
+          >
+
+        </div>
+
+      </div>
+
+      <div class="actions">
+
+        <button
+          class="btn btn-primary"
+          onclick="saveLocalSection('features')"
+        >
+          💾 บันทึก Features
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================
+         JOIN STEPS
+    ====================== -->
+
+    <section class="content-card">
+
+      <div class="card-head">
+
+        <div class="card-title">
+
+          <div class="card-icon">
+            📝
+          </div>
+
+          <div>
+            <h2>ขั้นตอนการสมัคร</h2>
+            <p>Join Steps บนหน้าเว็บ</p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="field">
+
+        <label>ขั้นตอนที่ 1</label>
+
+        <input
+          class="input"
+          id="step1"
+          placeholder="เช่น สมัครเป็นตัวแทน"
+        >
+
+      </div>
+
+      <div class="field">
+
+        <label>ขั้นตอนที่ 2</label>
+
+        <input
+          class="input"
+          id="step2"
+          placeholder="เช่น รอการตรวจสอบ"
+        >
+
+      </div>
+
+      <div class="field">
+
+        <label>ขั้นตอนที่ 3</label>
+
+        <input
+          class="input"
+          id="step3"
+          placeholder="เช่น เข้าสู่ระบบ"
+        >
+
+      </div>
+
+      <div class="field">
+
+        <label>ขั้นตอนที่ 4</label>
+
+        <input
+          class="input"
+          id="step4"
+          placeholder="เช่น เริ่มใช้งานระบบ"
+        >
+
+      </div>
+
+      <div class="actions">
+
+        <button
+          class="btn btn-primary"
+          onclick="saveLocalSection('steps')"
+        >
+          💾 บันทึกขั้นตอน
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================
+         CTA
+    ====================== -->
+
+    <section class="content-card">
+
+      <div class="card-head">
+
+        <div class="card-title">
+
+          <div class="card-icon">
+            💌
+          </div>
+
+          <div>
+            <h2>ปุ่ม CTA</h2>
+            <p>ส่วนเชิญชวนด้านล่างหน้าเว็บ</p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="field">
+
+        <label>
+          หัวข้อ
+        </label>
+
+        <input
+          class="input"
+          id="ctaTitle"
+          placeholder="หัวข้อ CTA"
+        >
+
+      </div>
+
+      <div class="field">
+
+        <label>
+          รายละเอียด
+        </label>
+
+        <textarea
+          class="textarea"
+          id="ctaDescription"
+          placeholder="ข้อความอธิบาย"
+        ></textarea>
+
+      </div>
+
+      <div class="two">
+
+        <div class="field">
+
+          <label>
+            ข้อความปุ่มสมัคร
+          </label>
+
+          <input
+            class="input"
+            id="ctaRegisterText"
+            value="☁ สมัครเป็นตัวแทน"
+          >
+
+        </div>
+
+        <div class="field">
+
+          <label>
+            ลิงก์ปุ่มสมัคร
+          </label>
+
+          <input
+            class="input"
+            id="ctaRegisterLink"
+            value="register.html"
+          >
+
+        </div>
+
+        <div class="field">
+
+          <label>
+            ข้อความปุ่มเข้าสู่ระบบ
+          </label>
+
+          <input
+            class="input"
+            id="ctaLoginText"
+            value="♡ เข้าสู่ระบบตัวแทน"
+          >
+
+        </div>
+
+        <div class="field">
+
+          <label>
+            ลิงก์ปุ่มเข้าสู่ระบบ
+          </label>
+
+          <input
+            class="input"
+            id="ctaLoginLink"
+            value="login.html"
+          >
+
+        </div>
+
+      </div>
+
+      <div class="actions">
+
+        <button
+          class="btn btn-primary"
+          onclick="saveLocalSection('cta')"
+        >
+          💾 บันทึก CTA
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================
+         IMAGES
+    ====================== -->
+
+    <section class="content-card">
+
+      <div class="card-head">
+
+        <div class="card-title">
+
+          <div class="card-icon">
+            🖼️
+          </div>
+
+          <div>
+            <h2>รูปภาพ</h2>
+            <p>จัดการ URL รูปภาพที่ใช้บนหน้าเว็บ</p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="field">
+
+        <label>
+          รูปตกแต่ง / Floating Asset
+        </label>
+
+        <input
+          class="input"
+          id="floatingImage"
+          value="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
+        >
+
+      </div>
+
+      <div class="field">
+
+        <label>
+          ดอกไม้ด้านล่าง
+        </label>
+
+        <input
+          class="input"
+          id="flowerImage"
+          value="https://i.postimg.cc/fRjsbZCQ/Flower3.png"
+        >
+
+      </div>
+
+      <div class="field">
+
+        <label>
+          รูป Hero / ภาพหลัก
+        </label>
+
+        <input
+          class="input"
+          id="heroImage"
+          placeholder="ใส่ URL รูปภาพ"
+        >
+
+      </div>
+
+      <div class="actions">
+
+        <button
+          class="btn btn-primary"
+          onclick="saveLocalSection('images')"
+        >
+          💾 บันทึกรูปภาพ
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================
+         DISPLAY
+    ====================== -->
+
+    <section class="content-card">
+
+      <div class="card-head">
+
+        <div class="card-title">
+
+          <div class="card-icon">
+            👁️
+          </div>
+
+          <div>
+            <h2>เปิด / ปิดส่วนต่าง ๆ</h2>
+            <p>ควบคุมการแสดงผลของหน้าเว็บ</p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="toggle-row">
+
+        <div class="toggle-info">
+          <strong>Hero</strong>
+          <span>ส่วนเปิดหน้าเว็บ</span>
+        </div>
+
+        <label class="switch">
+          <input
+            type="checkbox"
+            id="showHero"
+            checked
+          >
+          <span class="slider"></span>
+        </label>
+
+      </div>
+
+      <br>
+
+      <div class="toggle-row">
+
+        <div class="toggle-info">
+          <strong>Features</strong>
+          <span>ส่วนจุดเด่น</span>
+        </div>
+
+        <label class="switch">
+          <input
+            type="checkbox"
+            id="showFeatures"
+            checked
+          >
+          <span class="slider"></span>
+        </label>
+
+      </div>
+
+      <br>
+
+      <div class="toggle-row">
+
+        <div class="toggle-info">
+          <strong>ขั้นตอนการสมัคร</strong>
+          <span>ส่วน Join Steps</span>
+        </div>
+
+        <label class="switch">
+          <input
+            type="checkbox"
+            id="showSteps"
+            checked
+          >
+          <span class="slider"></span>
+        </label>
+
+      </div>
+
+      <br>
+
+      <div class="toggle-row">
+
+        <div class="toggle-info">
+          <strong>CTA</strong>
+          <span>ส่วนปุ่มด้านล่าง</span>
+        </div>
+
+        <label class="switch">
+          <input
+            type="checkbox"
+            id="showCta"
+            checked
+          >
+          <span class="slider"></span>
+        </label>
+
+      </div>
+
+      <div class="actions">
+
+        <button
+          class="btn btn-primary"
+          onclick="saveLocalSection('visibility')"
+        >
+          💾 บันทึกการแสดงผล
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================
+         MUSIC
+    ====================== -->
+
+    <section class="content-card">
+
+      <div class="card-head">
+
+        <div class="card-title">
+
+          <div class="card-icon">
+            🎵
+          </div>
+
+          <div>
+            <h2>เพลง / เสียง</h2>
+            <p>ตั้งค่าเพลงประกอบหน้าเว็บ</p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="toggle-row">
+
+        <div class="toggle-info">
+
+          <strong>
+            เปิดระบบเพลง
+          </strong>
+
+          <span>
+            แสดงปุ่มเปิดเพลงบนหน้าเว็บ
+          </span>
+
+        </div>
+
+        <label class="switch">
+
+          <input
+            type="checkbox"
+            id="musicEnabled"
+          >
+
+          <span class="slider"></span>
+
+        </label>
+
+      </div>
+
+      <br>
+
+      <div class="field">
+
+        <label>
+          URL เพลง
+        </label>
+
+        <input
+          class="input"
+          id="musicUrl"
+          placeholder="URL ไฟล์เพลง"
+        >
+
+        <small>
+          ควรใช้ไฟล์เสียงที่คุณมีสิทธิ์ใช้งาน
+        </small>
+
+      </div>
+
+      <div class="actions">
+
+        <button
+          class="btn btn-primary"
+          onclick="saveLocalSection('music')"
+        >
+          💾 บันทึกเพลง
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================
+         CONTACT
+    ====================== -->
+
+    <section class="content-card">
+
+      <div class="card-head">
+
+        <div class="card-title">
+
+          <div class="card-icon">
+            💬
+          </div>
+
+          <div>
+            <h2>ช่องทางติดต่อ</h2>
+            <p>ข้อมูลติดต่อที่แสดงบนหน้าเว็บ</p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="field">
+
+        <label>
+          Facebook
+        </label>
+
+        <input
+          class="input"
+          id="contactFacebook"
+          value="บ้อบเบ้บ"
+        >
+
+      </div>
+
+      <div class="field">
+
+        <label>
+          LINE
+        </label>
+
+        <input
+          class="input"
+          id="contactLine"
+          value="https://line.me/ti/p/GKW1TDYvpB"
+        >
+
+      </div>
+
+      <div class="field">
+
+        <label>
+          ช่องทางส่งออเดอร์ร้าน
+        </label>
+
+        <input
+          class="input"
+          id="orderLine"
+          value="https://line.me/ti/g/FyZW-swGc6"
+        >
+
+      </div>
+
+      <div class="actions">
+
+        <button
+          class="btn btn-primary"
+          onclick="saveLocalSection('contact')"
+        >
+          💾 บันทึกช่องทางติดต่อ
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================
+         THEME
+    ====================== -->
+
+    <section class="content-card">
+
+      <div class="card-head">
+
+        <div class="card-title">
+
+          <div class="card-icon">
+            🎨
+          </div>
+
+          <div>
+            <h2>สี / ธีม</h2>
+            <p>สีหลักของหน้าเว็บไซต์</p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="two">
+
+        <div class="field">
+
+          <label>
+            Pastel Blue
+          </label>
+
+          <input
+            class="input"
+            id="themeBlue"
+            value="#A0C4FF"
+          >
+
+        </div>
+
+        <div class="field">
+
+          <label>
+            Pastel Mint
+          </label>
+
+          <input
+            class="input"
+            id="themeMint"
+            value="#CAFFBF"
+          >
+
+        </div>
+
+        <div class="field">
+
+          <label>
+            Vanilla Yellow
+          </label>
+
+          <input
+            class="input"
+            id="themeYellow"
+            value="#FDFFB6"
+          >
+
+        </div>
+
+        <div class="field">
+
+          <label>
+            สีข้อความ
+          </label>
+
+          <input
+            class="input"
+            id="themeText"
+            value="#3D405B"
+          >
+
+        </div>
+
+      </div>
+
+      <div class="actions">
+
+        <button
+          class="btn btn-primary"
+          onclick="saveLocalSection('theme')"
+        >
+          💾 บันทึกธีม
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================
+         DATABASE
+    ====================== -->
+
+    <section class="content-card full">
+
+      <div class="card-head">
+
+        <div class="card-title">
+
+          <div class="card-icon">
+            🗄️
+          </div>
+
+          <div>
+            <h2>ข้อมูลจากฐานข้อมูล</h2>
+            <p>ข้อมูลที่พบใน site_content</p>
+          </div>
+
+        </div>
+
+        <button
+          class="btn btn-secondary"
+          onclick="loadSiteContent()"
+        >
+          ↻ โหลดใหม่
+        </button>
+
+      </div>
+
+      <div
+        class="db-box"
+        id="databaseBox"
+      >
+
+        <div class="empty">
+          กำลังโหลดข้อมูล...
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</main>
+
+<footer class="footer">
+  <strong>Bennie Choco</strong>
+  · Website Admin
+</footer>
+
+
+<!-- =========================
+     EDIT MODAL
+========================= -->
+
+<div
+  class="modal"
+  id="editModal"
+>
+
+  <div class="modal-box">
+
+    <div class="modal-head">
+
+      <h3 id="modalTitle">
+        แก้ไขข้อมูล
+      </h3>
+
+      <button
+        class="close"
+        onclick="closeModal()"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <div id="modalFields"></div>
+
+    <div class="modal-actions">
+
+      <button
+        class="btn btn-secondary"
+        onclick="closeModal()"
+      >
+        ยกเลิก
+      </button>
+
+      <button
+        class="btn btn-primary"
+        id="modalSaveBtn"
+      >
+        💾 บันทึก
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<div
+  class="toast"
+  id="toast"
+></div>
+
+
+<script>
+/* =========================================================
+   SUPABASE
+========================================================= */
+
+const SUPABASE_URL =
+  "https://arhvdvaugcjzkdbxesma.supabase.co";
+
+const SUPABASE_ANON_KEY =
+  "sb_publishable_Ctpm1h1NQKTdOPpY9yQ2qw_7kQg_57Z";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let currentUser = null;
+let siteContent = [];
+let editingRow = null;
+let editingIdField = null;
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function escapeHtml(value){
+
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+
+function showToast(message){
+
+  const toast =
+    document.getElementById("toast");
+
+  toast.textContent = message;
+
+  toast.classList.add("show");
+
+  clearTimeout(
+    window.__toastTimer
+  );
+
+  window.__toastTimer =
+    setTimeout(() => {
+      toast.classList.remove("show");
+    },2600);
+}
+
+
+function hideLoading(){
+
+  document
+    .getElementById("loading")
+    .classList.add("hide");
+}
+
+
+/* =========================================================
+   ADMIN AUTH
+========================================================= */
+
+async function checkAdmin(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .rpc("is_admin");
+
+  if(error){
+
+    console.error(error);
+
+    return false;
+  }
+
+  return data === true;
+}
+
+
+async function init(){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .auth
+        .getSession();
+
+    if(error){
+      throw error;
+    }
+
+    if(!data?.session?.user){
+
+      window.location.href =
+        "admin-login.html";
+
+      return;
+    }
+
+    currentUser =
+      data.session.user;
+
+    const isAdmin =
+      await checkAdmin();
+
+    if(!isAdmin){
+
+      await supabaseClient
+        .auth
+        .signOut();
+
+      alert(
+        "บัญชีนี้ไม่มีสิทธิ์ Admin"
+      );
+
+      window.location.href =
+        "admin-login.html";
+
+      return;
+    }
+
+    loadLocalSettings();
+
+    await loadSiteContent();
+
+    hideLoading();
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      "ไม่สามารถตรวจสอบสิทธิ์ Admin ได้"
+    );
+
+    window.location.href =
+      "admin-login.html";
+  }
+
+}
+
+
+/* =========================================================
+   SITE CONTENT
+========================================================= */
+
+async function loadSiteContent(){
+
+  const box =
+    document.getElementById(
+      "databaseBox"
+    );
+
+  box.innerHTML = `
+    <div class="empty">
+      กำลังโหลดข้อมูลจาก site_content...
+    </div>
+  `;
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("site_content")
+      .select("*")
+      .limit(100);
+
+  if(error){
+
+    console.error(
+      "site_content:",
+      error
+    );
+
+    box.innerHTML = `
+      <div class="empty">
+        ไม่สามารถโหลด site_content ได้<br>
+        <small>${escapeHtml(error.message)}</small>
+      </div>
+    `;
+
+    return;
+  }
+
+  siteContent =
+    data || [];
+
+  renderSiteContent();
+}
+
+
+function renderSiteContent(){
+
+  const box =
+    document.getElementById(
+      "databaseBox"
+    );
+
+  if(!siteContent.length){
+
+    box.innerHTML = `
+      <div class="empty">
+        ยังไม่มีข้อมูลใน site_content
+      </div>
+    `;
+
+    return;
+  }
+
+  box.innerHTML = `
+    <div class="db-head">
+      <strong>
+        พบข้อมูล ${siteContent.length} รายการ
+      </strong>
+
+      <span>
+        แตะ “แก้ไข” เพื่อดูข้อมูลแต่ละรายการ
+      </span>
+    </div>
+
+    <div class="db-list">
+
+      ${siteContent.map(
+        (row,index) => {
+
+          const idField =
+            getIdField(row);
+
+          const label =
+            getLabel(row,index);
+
+          const preview =
+            getPreview(row);
+
+          return `
+
+            <div class="db-row">
+
+              <div class="db-row-main">
+
+                <div class="db-key">
+                  ${escapeHtml(
+                    idField
+                      ? String(row[idField])
+                      : `รายการ ${index + 1}`
+                  )}
+                </div>
+
+                <div class="db-value">
+                  ${escapeHtml(label)}
+                  ${preview
+                    ? ` · ${escapeHtml(preview)}`
+                    : ""
+                  }
+                </div>
+
+              </div>
+
+              <button
+                class="db-edit"
+                onclick="openEdit(${index})"
+              >
+                ✏️ แก้ไข
+              </button>
+
+            </div>
+
+          `;
+        }
+      ).join("")}
+
+    </div>
+  `;
+}
+
+
+function getIdField(row){
+
+  const candidates = [
+    "id",
+    "key",
+    "slug",
+    "code",
+    "section",
+    "content_id"
+  ];
+
+  return candidates.find(
+    key =>
+      Object.prototype.hasOwnProperty.call(
+        row,
+        key
+      )
+  ) || null;
+}
+
+
+function getLabel(row,index){
+
+  const candidates = [
+    "title",
+    "name",
+    "key",
+    "slug",
+    "section",
+    "type",
+    "label",
+    "code"
+  ];
+
+  for(const key of candidates){
+
+    if(
+      row[key] !== undefined &&
+      row[key] !== null &&
+      String(row[key]).trim() !== ""
+    ){
+
+      return String(row[key]);
+    }
+  }
+
+  return `ข้อมูลรายการ ${index + 1}`;
+}
+
+
+function getPreview(row){
+
+  const candidates = [
+    "content",
+    "text",
+    "description",
+    "value",
+    "url",
+    "image_url"
+  ];
+
+  for(const key of candidates){
+
+    if(
+      row[key] !== undefined &&
+      row[key] !== null &&
+      String(row[key]).trim() !== ""
+    ){
+
+      return String(row[key])
+        .replace(/\s+/g," ")
+        .slice(0,90);
+    }
+  }
+
+  return "";
+}
+
+
+/* =========================================================
+   EDIT DATABASE ROW
+========================================================= */
+
+function openEdit(index){
+
+  const row =
+    siteContent[index];
+
+  if(!row){
+    return;
+  }
+
+  editingRow =
+    row;
+
+  editingIdField =
+    getIdField(row);
+
+  document.getElementById(
+    "modalTitle"
+  ).textContent =
+    `แก้ไข ${getLabel(row,index)}`;
+
+  const fields =
+    document.getElementById(
+      "modalFields"
+    );
+
+  const editableKeys =
+    Object.keys(row).filter(
+      key => {
+
+        if(
+          key === "created_at" ||
+          key === "updated_at"
+        ){
+          return false;
+        }
+
+        if(
+          key === editingIdField
+        ){
+          return false;
+        }
+
+        const value =
+          row[key];
+
+        return (
+          typeof value === "string" ||
+          typeof value === "number" ||
+          typeof value === "boolean" ||
+          value === null
+        );
+      }
+    );
+
+  if(!editableKeys.length){
+
+    fields.innerHTML = `
+      <div class="empty">
+        ไม่พบฟิลด์ที่สามารถแก้ไขได้
+      </div>
+    `;
+
+  }else{
+
+    fields.innerHTML =
+      editableKeys.map(
+        key => {
+
+          const value =
+            row[key];
+
+          if(typeof value === "boolean"){
+
+            return `
+
+              <div class="toggle-row">
+
+                <div class="toggle-info">
+
+                  <strong>
+                    ${escapeHtml(key)}
+                  </strong>
+
+                </div>
+
+                <label class="switch">
+
+                  <input
+                    type="checkbox"
+                    data-edit-key="${escapeHtml(key)}"
+                    ${value ? "checked" : ""}
+                  >
+
+                  <span class="slider"></span>
+
+                </label>
+
+              </div>
+
+              <br>
+
+            `;
+          }
+
+          const isLong =
+            String(value ?? "").length > 100;
+
+          return `
+
+            <div class="field">
+
+              <label>
+                ${escapeHtml(key)}
+              </label>
+
+              ${
+                isLong
+                  ? `
+                    <textarea
+                      class="textarea"
+                      data-edit-key="${escapeHtml(key)}"
+                    >${escapeHtml(value ?? "")}</textarea>
+                  `
+                  : `
+                    <input
+                      class="input"
+                      data-edit-key="${escapeHtml(key)}"
+                      value="${escapeHtml(value ?? "")}"
+                    >
+                  `
+              }
+
+            </div>
+
+          `;
+        }
+      ).join("");
+  }
+
+  document
+    .getElementById("modalSaveBtn")
+    .onclick =
+      saveDatabaseRow;
+
+  document
+    .getElementById("editModal")
+    .classList.add("show");
+}
+
+
+async function saveDatabaseRow(){
+
+  if(!editingRow){
+
+    return;
+  }
+
+  if(!editingIdField){
+
+    showToast(
+      "ไม่พบ ID สำหรับบันทึกข้อมูล"
+    );
+
+    return;
+  }
+
+  const saveButton =
+    document.getElementById(
+      "modalSaveBtn"
+    );
+
+  saveButton.disabled = true;
+
+  saveButton.textContent =
+    "กำลังบันทึก...";
+
+  try{
+
+    const payload = {};
+
+    document
+      .querySelectorAll(
+        "[data-edit-key]"
+      )
+      .forEach(el => {
+
+        const key =
+          el.dataset.editKey;
+
+        if(
+          el.type === "checkbox"
+        ){
+
+          payload[key] =
+            el.checked;
+
+          return;
+        }
+
+        const oldValue =
+          editingRow[key];
+
+        const value =
+          el.value;
+
+        if(
+          typeof oldValue === "number"
+        ){
+
+          payload[key] =
+            value === ""
+              ? null
+              : Number(value);
+
+        }else{
+
+          payload[key] =
+            value;
+        }
+
+      });
+
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from("site_content")
+        .update(payload)
+        .eq(
+          editingIdField,
+          editingRow[editingIdField]
+        );
+
+    if(error){
+
+      throw error;
+    }
+
+    showToast(
+      "บันทึกข้อมูลเรียบร้อย ✓"
+    );
+
+    closeModal();
+
+    await loadSiteContent();
+
+  }catch(error){
+
+    console.error(error);
+
+    showToast(
+      "บันทึกไม่สำเร็จ: " +
+      error.message
+    );
+
+  }finally{
+
+    saveButton.disabled = false;
+
+    saveButton.textContent =
+      "💾 บันทึก";
+  }
+}
+
+
+function closeModal(){
+
+  document
+    .getElementById("editModal")
+    .classList.remove("show");
+
+  editingRow = null;
+  editingIdField = null;
+}
+
+
+/* =========================================================
+   LOCAL SETTINGS
+========================================================= */
+
+/*
+  ส่วนนี้ใช้ localStorage เป็นค่าเริ่มต้น
+  จนกว่าเราจะกำหนด schema ของ site_content
+  ให้ตรงกับข้อมูลจริงใน Supabase
+*/
+
+function saveLocalSection(section){
+
+  const data =
+    collectFormData();
+
+  localStorage.setItem(
+    "bennieChocoAdminWebsite",
+    JSON.stringify(data)
+  );
+
+  showToast(
+    `บันทึกการตั้งค่า ${section} แล้ว ✓`
+  );
+}
+
+
+function collectFormData(){
+
+  return {
+
+    hero:{
+      brand:
+        value("heroBrand"),
+
+      subtitle:
+        value("heroSubtitle"),
+
+      title:
+        value("heroTitle"),
+
+      description:
+        value("heroDescription")
+    },
+
+    book:{
+      title:
+        value("bookTitle"),
+
+      page1:
+        value("bookPage1"),
+
+      page2:
+        value("bookPage2"),
+
+      visible:
+        checked("bookVisible")
+    },
+
+    features:{
+      feature1Title:
+        value("feature1Title"),
+
+      feature1Desc:
+        value("feature1Desc"),
+
+      feature2Title:
+        value("feature2Title"),
+
+      feature2Desc:
+        value("feature2Desc"),
+
+      feature3Title:
+        value("feature3Title"),
+
+      feature3Desc:
+        value("feature3Desc")
+    },
+
+    steps:{
+      step1:
+        value("step1"),
+
+      step2:
+        value("step2"),
+
+      step3:
+        value("step3"),
+
+      step4:
+        value("step4")
+    },
+
+    cta:{
+      title:
+        value("ctaTitle"),
+
+      description:
+        value("ctaDescription"),
+
+      registerText:
+        value("ctaRegisterText"),
+
+      registerLink:
+        value("ctaRegisterLink"),
+
+      loginText:
+        value("ctaLoginText"),
+
+      loginLink:
+        value("ctaLoginLink")
+    },
+
+    images:{
+      floating:
+        value("floatingImage"),
+
+      flower:
+        value("flowerImage"),
+
+      hero:
+        value("heroImage")
+    },
+
+    visibility:{
+      hero:
+        checked("showHero"),
+
+      features:
+        checked("showFeatures"),
+
+      steps:
+        checked("showSteps"),
+
+      cta:
+        checked("showCta")
+    },
+
+    music:{
+      enabled:
+        checked("musicEnabled"),
+
+      url:
+        value("musicUrl")
+    },
+
+    contact:{
+      facebook:
+        value("contactFacebook"),
+
+      line:
+        value("contactLine"),
+
+      orderLine:
+        value("orderLine")
+    },
+
+    theme:{
+      blue:
+        value("themeBlue"),
+
+      mint:
+        value("themeMint"),
+
+      yellow:
+        value("themeYellow"),
+
+      text:
+        value("themeText")
+    }
+
+  };
+}
+
+
+function value(id){
+
+  const el =
+    document.getElementById(id);
+
+  return el
+    ? el.value
+    : "";
+}
+
+
+function checked(id){
+
+  const el =
+    document.getElementById(id);
+
+  return el
+    ? el.checked
+    : false;
+}
+
+
+function loadLocalSettings(){
+
+  const raw =
+    localStorage.getItem(
+      "bennieChocoAdminWebsite"
+    );
+
+  if(!raw){
+    return;
+  }
+
+  try{
+
+    const data =
+      JSON.parse(raw);
+
+    if(data.hero){
+
+      setValue(
+        "heroBrand",
+        data.hero.brand
+      );
+
+      setValue(
+        "heroSubtitle",
+        data.hero.subtitle
+      );
+
+      setValue(
+        "heroTitle",
+        data.hero.title
+      );
+
+      setValue(
+        "heroDescription",
+        data.hero.description
+      );
+    }
+
+
+    if(data.book){
+
+      setValue(
+        "bookTitle",
+        data.book.title
+      );
+
+      setValue(
+        "bookPage1",
+        data.book.page1
+      );
+
+      setValue(
+        "bookPage2",
+        data.book.page2
+      );
+
+      setChecked(
+        "bookVisible",
+        data.book.visible
+      );
+    }
+
+
+    if(data.features){
+
+      setValue(
+        "feature1Title",
+        data.features.feature1Title
+      );
+
+      setValue(
+        "feature1Desc",
+        data.features.feature1Desc
+      );
+
+      setValue(
+        "feature2Title",
+        data.features.feature2Title
+      );
+
+      setValue(
+        "feature2Desc",
+        data.features.feature2Desc
+      );
+
+      setValue(
+        "feature3Title",
+        data.features.feature3Title
+      );
+
+      setValue(
+        "feature3Desc",
+        data.features.feature3Desc
+      );
+    }
+
+
+    if(data.steps){
+
+      setValue(
+        "step1",
+        data.steps.step1
+      );
+
+      setValue(
+        "step2",
+        data.steps.step2
+      );
+
+      setValue(
+        "step3",
+        data.steps.step3
+      );
+
+      setValue(
+        "step4",
+        data.steps.step4
+      );
+    }
+
+
+    if(data.cta){
+
+      setValue(
+        "ctaTitle",
+        data.cta.title
+      );
+
+      setValue(
+        "ctaDescription",
+        data.cta.description
+      );
+
+      setValue(
+        "ctaRegisterText",
+        data.cta.registerText
+      );
+
+      setValue(
+        "ctaRegisterLink",
+        data.cta.registerLink
+      );
+
+      setValue(
+        "ctaLoginText",
+        data.cta.loginText
+      );
+
+      setValue(
+        "ctaLoginLink",
+        data.cta.loginLink
+      );
+    }
+
+
+    if(data.images){
+
+      setValue(
+        "floatingImage",
+        data.images.floating
+      );
+
+      setValue(
+        "flowerImage",
+        data.images.flower
+      );
+
+      setValue(
+        "heroImage",
+        data.images.hero
+      );
+    }
+
+
+    if(data.visibility){
+
+      setChecked(
+        "showHero",
+        data.visibility.hero
+      );
+
+      setChecked(
+        "showFeatures",
+        data.visibility.features
+      );
+
+      setChecked(
+        "showSteps",
+        data.visibility.steps
+      );
+
+      setChecked(
+        "showCta",
+        data.visibility.cta
+      );
+    }
+
+
+    if(data.music){
+
+      setChecked(
+        "musicEnabled",
+        data.music.enabled
+      );
+
+      setValue(
+        "musicUrl",
+        data.music.url
+      );
+    }
+
+
+    if(data.contact){
+
+      setValue(
+        "contactFacebook",
+        data.contact.facebook
+      );
+
+      setValue(
+        "contactLine",
+        data.contact.line
+      );
+
+      setValue(
+        "orderLine",
+        data.contact.orderLine
+      );
+    }
+
+
+    if(data.theme){
+
+      setValue(
+        "themeBlue",
+        data.theme.blue
+      );
+
+      setValue(
+        "themeMint",
+        data.theme.mint
+      );
+
+      setValue(
+        "themeYellow",
+        data.theme.yellow
+      );
+
+      setValue(
+        "themeText",
+        data.theme.text
+      );
+    }
+
+  }catch(error){
+
+    console.error(
+      "local settings:",
+      error
+    );
+  }
+}
+
+
+function setValue(id,value){
+
+  const el =
+    document.getElementById(id);
+
+  if(el && value !== undefined){
+
+    el.value =
+      value ?? "";
+  }
+}
+
+
+function setChecked(id,value){
+
+  const el =
+    document.getElementById(id);
+
+  if(el && value !== undefined){
+
+    el.checked =
+      Boolean(value);
+  }
+}
+
+
+/* =========================================================
+   MODAL BACKDROP
+========================================================= */
+
+document
+  .getElementById("editModal")
+  .addEventListener(
+    "click",
+    event => {
+
+      if(
+        event.target.id ===
+        "editModal"
+      ){
+
+        closeModal();
+      }
+
+    }
+  );
+
+
+/* =========================================================
+   AUTH STATE
+========================================================= */
+
+supabaseClient
+  .auth
+  .onAuthStateChange(
+    (event) => {
+
+      if(
+        event === "SIGNED_OUT"
+      ){
+
+        window.location.href =
+          "admin-login.html";
+      }
+
+    }
+  );
+
+
+/* =========================================================
+   START
+========================================================= */
+
+init();
+
+</script>
+
+</body>
+</html>
