@@ -447,6 +447,7 @@ body{
   text-decoration:none;
   font-size:11px;
   font-weight:800;
+  transition:.2s ease;
 }
 
 .contact-item:hover{
@@ -1192,15 +1193,7 @@ body{
 
     <div class="contact-list">
 
-      <a
-        class="contact-item"
-        href="#"
-        onclick="return false;"
-      >
-        Facebook :
-        บ้อบเบ้บ
-      </a>
-
+      <!-- LINE ADMIN -->
 
       <a
         class="contact-item"
@@ -1409,12 +1402,6 @@ body{
 
     <div class="announcement-actions">
 
-
-      <!--
-        ใช้ BUTTON แทน A
-        เพื่อควบคุมการเปลี่ยนหน้าเอง
-        และป้องกันอาการ popup ซ้อน/กระพริบ
-      -->
 
       <button
         type="button"
@@ -1675,11 +1662,6 @@ function closeAnnouncement(){
     "show"
   );
 
-  /*
-    คืนค่า scroll ของหน้า
-    เผื่อมีการล็อกไว้ในอนาคต
-  */
-
   document.body.style.overflow = "";
 
 }
@@ -1718,17 +1700,6 @@ announcementModal.addEventListener(
    VIEW ALL ANNOUNCEMENTS
 ========================================================= */
 
-/*
-  เปลี่ยนจาก <a href="announcements.html">
-  เป็น button แล้วควบคุมการเปลี่ยนหน้าเอง
-
-  เหตุผล:
-  - ปิด popup ก่อน
-  - คืนค่า body scroll
-  - ป้องกันการกดซ้ำ
-  - ใช้ location.assign แบบชัดเจน
-*/
-
 viewAllAnnouncements.addEventListener(
   "click",
   () => {
@@ -1751,11 +1722,6 @@ viewAllAnnouncements.addEventListener(
 
     closeAnnouncement();
 
-
-    /*
-      รอให้ popup ถูกถอดออกจากหน้าจอ
-      ก่อนเปลี่ยนหน้า
-    */
 
     setTimeout(() => {
 
@@ -1818,11 +1784,6 @@ function showAnnouncement(
       : "";
 
 
-  /*
-    ปักหมุด
-    → แสดงคำว่า ประกาศสำคัญ
-  */
-
   if(
     announcement.pinned === true
   ){
@@ -1837,10 +1798,6 @@ function showAnnouncement(
 
   }
 
-
-  /*
-    รูปภาพ
-  */
 
   const imageUrl =
     escapeText(
@@ -1890,16 +1847,6 @@ async function loadAnnouncement(){
 
   try{
 
-    /*
-      ดึงเฉพาะประกาศที่เผยแพร่แล้ว
-
-      pinned = true
-      จะมาก่อน
-
-      ถ้า pinned เท่ากัน
-      → เอาประกาศล่าสุดก่อน
-    */
-
     const {
       data,
       error
@@ -1941,11 +1888,6 @@ async function loadAnnouncement(){
         error
       );
 
-      /*
-        ถ้าประกาศมีปัญหา
-        Dashboard ยังต้องใช้งานได้
-      */
-
       return;
 
     }
@@ -1955,11 +1897,6 @@ async function loadAnnouncement(){
       !data ||
       data.length === 0
     ){
-
-      /*
-        ไม่มีประกาศ
-        → ไม่ต้องแสดง Popup
-      */
 
       return;
 
@@ -2014,12 +1951,6 @@ async function loadDashboard(){
       sessionData?.session;
 
 
-    /*
-      ไม่มี session
-      → แสดง modal
-      → ไม่ redirect ทันที
-    */
-
     if(!session){
 
       hideLoading();
@@ -2037,10 +1968,6 @@ async function loadDashboard(){
     const user =
       session.user;
 
-
-    /*
-      ดึง profile ของตัวเอง
-    */
 
     const {
       data: profile,
@@ -2083,10 +2010,6 @@ async function loadDashboard(){
 
     }
 
-
-    /*
-      ตรวจสอบสถานะ
-    */
 
     if(
       profile.status !==
@@ -2153,10 +2076,6 @@ async function loadDashboard(){
     }
 
 
-    /*
-      แสดงข้อมูลตัวแทน
-    */
-
     const nickname =
       escapeText(
         profile.nickname
@@ -2207,17 +2126,8 @@ async function loadDashboard(){
       "ใช้งานได้";
 
 
-    /*
-      ซ่อน Loading
-    */
-
     hideLoading();
 
-
-    /*
-      โหลดประกาศหลังจาก
-      ตรวจสอบ Active แล้วเท่านั้น
-    */
 
     loadAnnouncement();
 
@@ -2299,12 +2209,6 @@ logoutBtn.addEventListener(
 
 supabaseClient.auth.onAuthStateChange(
   (event,session) => {
-
-    /*
-      ถ้าผู้ใช้กดออกจากระบบ
-      และยังไม่ได้อยู่ใน error modal
-      ให้กลับ Login
-    */
 
     if(
       event === "SIGNED_OUT" &&
