@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bennie Choco — Admin Login</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --blue:#A0C4FF;
+  --mint:#CAFFBF;
+  --yellow:#FDFFB6;
+  --cream:#fffdf7;
+  --white:#ffffff;
+  --text:#3D405B;
+  --muted:#7b7f96;
+  --border:#e7e9f1;
+  --danger:#e76f7a;
+  --shadow:0 18px 50px rgba(61,64,91,.10);
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html{
+  min-height:100%;
+}
+
+body{
+  min-height:100vh;
+  font-family:"Prompt",sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 10% 10%,rgba(160,196,255,.45),transparent 28%),
+    radial-gradient(circle at 90% 15%,rgba(202,255,191,.45),transparent 30%),
+    linear-gradient(180deg,#fafdff 0%,#fffef8 100%);
+  overflow-x:hidden;
+}
+
+/* clouds */
+.cloud{
+  position:fixed;
+  width:110px;
+  height:38px;
+  background:rgba(255,255,255,.82);
+  border-radius:50px;
+  filter:blur(.2px);
+  z-index:0;
+  pointer-events:none;
+}
+
+.cloud::before,
+.cloud::after{
+  content:"";
+  position:absolute;
+  background:inherit;
+  border-radius:50%;
+}
+
+.cloud::before{
+  width:50px;
+  height:50px;
+  left:18px;
+  top:-23px;
+}
+
+.cloud::after{
+  width:65px;
+  height:65px;
+  right:12px;
+  top:-32px;
+}
+
+.cloud.one{
+  top:9%;
+  left:-25px;
+  transform:scale(.8);
+}
+
+.cloud.two{
+  top:23%;
+  right:-35px;
+  transform:scale(1.05);
+}
+
+.cloud.three{
+  top:66%;
+  left:-45px;
+  transform:scale(.65);
+}
+
+.cloud.four{
+  bottom:8%;
+  right:-35px;
+  transform:scale(.75);
+}
+
+/* floating image */
+.float-img{
+  position:fixed;
+  width:55px;
+  opacity:.75;
+  pointer-events:none;
+  z-index:1;
+  animation:float 5s ease-in-out infinite;
+}
+
+.float-img.a{
+  top:17%;
+  left:7%;
+}
+
+.float-img.b{
+  top:43%;
+  right:5%;
+  animation-delay:1.2s;
+}
+
+.float-img.c{
+  bottom:18%;
+  left:4%;
+  width:45px;
+  animation-delay:2s;
+}
+
+@keyframes float{
+  0%,100%{
+    transform:translateY(0) rotate(-3deg);
+  }
+  50%{
+    transform:translateY(-10px) rotate(3deg);
+  }
+}
+
+/* main */
+.page{
+  position:relative;
+  z-index:2;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px 16px 40px;
+}
+
+.login-card{
+  width:100%;
+  max-width:430px;
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(255,255,255,.9);
+  border-radius:30px;
+  padding:30px 22px 24px;
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(14px);
+}
+
+/* logo */
+.logo-wrap{
+  text-align:center;
+  margin-bottom:22px;
+}
+
+.logo{
+  width:78px;
+  height:78px;
+  margin:0 auto 14px;
+  border-radius:24px;
+  background:
+    linear-gradient(145deg,var(--blue),#d7e7ff);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:36px;
+  box-shadow:
+    0 10px 25px rgba(160,196,255,.35),
+    inset 0 1px 0 rgba(255,255,255,.8);
+}
+
+.logo-wrap h1{
+  font-size:24px;
+  line-height:1.3;
+  font-weight:700;
+}
+
+.logo-wrap p{
+  margin-top:5px;
+  color:var(--muted);
+  font-size:14px;
+}
+
+/* badge */
+.admin-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  margin-top:12px;
+  padding:6px 12px;
+  border-radius:999px;
+  background:#fff9cf;
+  color:#756b2c;
+  font-size:12px;
+  font-weight:500;
+}
+
+/* form */
+.form-group{
+  margin-top:18px;
+}
+
+label{
+  display:block;
+  margin-bottom:7px;
+  font-size:14px;
+  font-weight:500;
+}
+
+.input-wrap{
+  position:relative;
+}
+
+input{
+  width:100%;
+  height:52px;
+  border:1px solid var(--border);
+  border-radius:16px;
+  background:#fff;
+  padding:0 15px;
+  font-family:inherit;
+  font-size:16px;
+  color:var(--text);
+  outline:none;
+  transition:.2s;
+}
+
+input:focus{
+  border-color:var(--blue);
+  box-shadow:0 0 0 4px rgba(160,196,255,.18);
+}
+
+input::placeholder{
+  color:#b3b6c3;
+}
+
+.password-input{
+  padding-right:54px;
+}
+
+.toggle-password{
+  position:absolute;
+  right:8px;
+  top:7px;
+  width:38px;
+  height:38px;
+  border:0;
+  border-radius:12px;
+  background:#f5f7fb;
+  color:#6f7488;
+  cursor:pointer;
+  font-family:inherit;
+  font-size:16px;
+}
+
+/* button */
+.login-btn{
+  width:100%;
+  min-height:54px;
+  margin-top:24px;
+  border:0;
+  border-radius:17px;
+  background:linear-gradient(135deg,#9ec3ff,#b9d5ff);
+  color:#30415e;
+  font-family:inherit;
+  font-size:16px;
+  font-weight:600;
+  cursor:pointer;
+  box-shadow:0 10px 22px rgba(160,196,255,.30);
+  transition:.2s;
+}
+
+.login-btn:hover{
+  transform:translateY(-1px);
+}
+
+.login-btn:active{
+  transform:translateY(1px);
+}
+
+.login-btn:disabled{
+  opacity:.65;
+  cursor:not-allowed;
+  transform:none;
+}
+
+/* status */
+.status{
+  display:none;
+  margin-top:16px;
+  padding:13px 14px;
+  border-radius:15px;
+  font-size:13px;
+  line-height:1.6;
+}
+
+.status.show{
+  display:block;
+}
+
+.status.error{
+  background:#fff0f1;
+  color:#a9444f;
+  border:1px solid #ffd6da;
+}
+
+.status.info{
+  background:#eff6ff;
+  color:#496789;
+  border:1px solid #dbeaff;
+}
+
+.status.success{
+  background:#effcf0;
+  color:#4c7650;
+  border:1px solid #d8f0d9;
+}
+
+/* back */
+.back-link{
+  display:block;
+  margin-top:20px;
+  text-align:center;
+  color:#70758a;
+  text-decoration:none;
+  font-size:13px;
+}
+
+.back-link:hover{
+  text-decoration:underline;
+}
+
+/* note */
+.security-note{
+  margin-top:22px;
+  padding:13px 14px;
+  border-radius:16px;
+  background:#f8fbff;
+  border:1px solid #e7f0ff;
+  font-size:12px;
+  line-height:1.7;
+  color:#74798b;
+}
+
+.security-note strong{
+  color:#596079;
+}
+
+/* music */
+.music-btn{
+  position:fixed;
+  right:16px;
+  bottom:16px;
+  z-index:20;
+  width:46px;
+  height:46px;
+  border:1px solid rgba(255,255,255,.9);
+  border-radius:50%;
+  background:rgba(255,255,255,.9);
+  box-shadow:0 8px 25px rgba(61,64,91,.12);
+  cursor:pointer;
+  font-size:18px;
+}
+
+/* small screen */
+@media(max-width:360px){
+  .page{
+    padding:18px 12px 30px;
+  }
+
+  .login-card{
+    padding:26px 18px 22px;
+    border-radius:26px;
+  }
+
+  .logo-wrap h1{
+    font-size:22px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="cloud one"></div>
+<div class="cloud two"></div>
+<div class="cloud three"></div>
+<div class="cloud four"></div>
+
+<img
+  class="float-img a"
+  src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
+  alt=""
+>
+<img
+  class="float-img b"
+  src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
+  alt=""
+>
+<img
+  class="float-img c"
+  src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
+  alt=""
+>
+
+<main class="page">
+
+  <section class="login-card">
+
+    <div class="logo-wrap">
+
+      <div class="logo">☁️</div>
+
+      <h1>Bennie Choco</h1>
+
+      <p>เข้าสู่ระบบผู้ดูแลเว็บไซต์</p>
+
+      <div class="admin-badge">
+        ♙ Admin Only
+      </div>
+
+    </div>
+
+    <form id="adminLoginForm">
+
+      <div class="form-group">
+
+        <label for="email">
+          อีเมลแอดมิน
+        </label>
+
+        <input
+          id="email"
+          type="email"
+          autocomplete="username"
+          placeholder="admin@example.com"
+          required
+        >
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="password">
+          รหัสผ่าน
+        </label>
+
+        <div class="input-wrap">
+
+          <input
+            id="password"
+            class="password-input"
+            type="password"
+            autocomplete="current-password"
+            placeholder="กรอกรหัสผ่าน"
+            required
+          >
+
+          <button
+            type="button"
+            class="toggle-password"
+            id="togglePassword"
+            aria-label="แสดงรหัสผ่าน"
+          >
+            ◉
+          </button>
+
+        </div>
+
+      </div>
+
+      <button
+        type="submit"
+        class="login-btn"
+        id="loginBtn"
+      >
+        ♡ เข้าสู่ระบบแอดมิน
+      </button>
+
+      <div
+        id="status"
+        class="status"
+      ></div>
+
+    </form>
+
+    <div class="security-note">
+      <strong>🔐 พื้นที่สำหรับผู้ดูแลเท่านั้น</strong><br>
+      บัญชีที่จะเข้าสู่ระบบหน้านี้ต้องถูกเพิ่มเป็น
+      Admin ในระบบก่อน ไม่สามารถสมัครเป็น Admin
+      จากหน้าเว็บไซต์นี้ได้
+    </div>
+
+    <a
+      href="index.html"
+      class="back-link"
+    >
+      ← กลับหน้าเว็บไซต์
+    </a>
+
+  </section>
+
+</main>
+
+<button
+  class="music-btn"
+  id="musicBtn"
+  type="button"
+  aria-label="เปิดเพลง"
+>
+  ♫
+</button>
+
+<script>
+/* =========================================================
+   SUPABASE CONFIG — NEW PROJECT ONLY
+========================================================= */
+
+const SUPABASE_URL =
+  "https://arhvdvaugcjzkdbxesma.supabase.co";
+
+const SUPABASE_ANON_KEY =
+  "sb_publishable_Ctpm1h1NQKTdOPpY9yQ2qw_7kQg_57Z";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const form =
+  document.getElementById("adminLoginForm");
+
+const emailInput =
+  document.getElementById("email");
+
+const passwordInput =
+  document.getElementById("password");
+
+const togglePassword =
+  document.getElementById("togglePassword");
+
+const loginBtn =
+  document.getElementById("loginBtn");
+
+const statusBox =
+  document.getElementById("status");
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+function showStatus(message, type = "info") {
+
+  statusBox.textContent = message;
+
+  statusBox.className =
+    "status show " + type;
+}
+
+function clearStatus() {
+
+  statusBox.textContent = "";
+
+  statusBox.className =
+    "status";
+}
+
+
+/* =========================================================
+   PASSWORD TOGGLE
+========================================================= */
+
+togglePassword.addEventListener("click", () => {
+
+  const isPassword =
+    passwordInput.type === "password";
+
+  passwordInput.type =
+    isPassword ? "text" : "password";
+
+  togglePassword.textContent =
+    isPassword ? "◌" : "◉";
+
+  togglePassword.setAttribute(
+    "aria-label",
+    isPassword
+      ? "ซ่อนรหัสผ่าน"
+      : "แสดงรหัสผ่าน"
+  );
+
+});
+
+
+/* =========================================================
+   CHECK ADMIN
+========================================================= */
+
+async function checkAdmin(userId) {
+
+  const { data, error } =
+    await supabaseClient
+      .from("admin_users")
+      .select("user_id")
+      .eq("user_id", userId)
+      .maybeSingle();
+
+  if (error) {
+    console.error("Admin check error:", error);
+    return {
+      isAdmin: false,
+      error
+    };
+  }
+
+  return {
+    isAdmin: !!data,
+    error: null
+  };
+}
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+form.addEventListener("submit", async (event) => {
+
+  event.preventDefault();
+
+  clearStatus();
+
+  const email =
+    emailInput.value.trim();
+
+  const password =
+    passwordInput.value;
+
+  if (!email || !password) {
+
+    showStatus(
+      "กรุณากรอกอีเมลและรหัสผ่านให้ครบ",
+      "error"
+    );
+
+    return;
+  }
+
+  loginBtn.disabled = true;
+
+  loginBtn.textContent =
+    "กำลังตรวจสอบ...";
+
+  try {
+
+    /* ---------------------------------------------
+       1. SIGN IN
+    --------------------------------------------- */
+
+    const {
+      data,
+      error
+    } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) {
+      throw error;
+    }
+
+    if (!data.user) {
+
+      throw new Error(
+        "ไม่พบข้อมูลผู้ใช้งาน"
+      );
+    }
+
+
+    /* ---------------------------------------------
+       2. CHECK ADMIN ROLE
+    --------------------------------------------- */
+
+    const adminResult =
+      await checkAdmin(data.user.id);
+
+    if (adminResult.error) {
+
+      await supabaseClient.auth.signOut();
+
+      throw new Error(
+        "ไม่สามารถตรวจสอบสิทธิ์แอดมินได้"
+      );
+    }
+
+    if (!adminResult.isAdmin) {
+
+      await supabaseClient.auth.signOut();
+
+      showStatus(
+        "บัญชีนี้ยังไม่มีสิทธิ์ผู้ดูแลระบบ",
+        "error"
+      );
+
+      return;
+    }
+
+
+    /* ---------------------------------------------
+       3. SUCCESS
+    --------------------------------------------- */
+
+    showStatus(
+      "เข้าสู่ระบบแอดมินสำเร็จ กำลังเข้าสู่หลังบ้าน...",
+      "success"
+    );
+
+    setTimeout(() => {
+
+      window.location.href =
+        "admin.html";
+
+    }, 600);
+
+  } catch (error) {
+
+    console.error(error);
+
+    let message =
+      "ไม่สามารถเข้าสู่ระบบได้";
+
+    if (
+      error.message &&
+      error.message.toLowerCase().includes(
+        "invalid login credentials"
+      )
+    ) {
+
+      message =
+        "อีเมลหรือรหัสผ่านไม่ถูกต้อง";
+
+    } else if (
+      error.message &&
+      error.message.toLowerCase().includes(
+        "email not confirmed"
+      )
+    ) {
+
+      message =
+        "อีเมลนี้ยังไม่ได้รับการยืนยัน";
+
+    } else if (
+      error.message
+    ) {
+
+      message =
+        error.message;
+    }
+
+    showStatus(
+      message,
+      "error"
+    );
+
+  } finally {
+
+    loginBtn.disabled = false;
+
+    loginBtn.textContent =
+      "♡ เข้าสู่ระบบแอดมิน";
+
+  }
+
+});
+
+
+/* =========================================================
+   AUTO CHECK EXISTING SESSION
+========================================================= */
+
+async function checkExistingSession() {
+
+  const {
+    data
+  } =
+    await supabaseClient.auth.getSession();
+
+  const session =
+    data.session;
+
+  if (!session || !session.user) {
+    return;
+  }
+
+  const adminResult =
+    await checkAdmin(
+      session.user.id
+    );
+
+  if (
+    adminResult.isAdmin
+  ) {
+
+    showStatus(
+      "พบเซสชันแอดมิน กำลังเข้าสู่หลังบ้าน...",
+      "success"
+    );
+
+    setTimeout(() => {
+
+      window.location.href =
+        "admin.html";
+
+    }, 500);
+
+  }
+
+}
+
+checkExistingSession();
+
+
+/* =========================================================
+   MUSIC BUTTON
+   ยังไม่มีไฟล์เพลงจริง — ปุ่มไว้ก่อน
+========================================================= */
+
+const musicBtn =
+  document.getElementById("musicBtn");
+
+musicBtn.addEventListener("click", () => {
+
+  showStatus(
+    "ปุ่มเพลงพร้อมไว้สำหรับใส่เพลงของเว็บไซต์ภายหลัง",
+    "info"
+  );
+
+});
+</script>
+
+</body>
+</html>
