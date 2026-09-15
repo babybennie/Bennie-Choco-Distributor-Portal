@@ -1,0 +1,1914 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bennie Choco — Admin Dashboard</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --blue:#A0C4FF;
+  --mint:#CAFFBF;
+  --yellow:#FDFFB6;
+  --cream:#FFFDF7;
+  --white:#FFFFFF;
+  --text:#3D405B;
+  --muted:#7B7F99;
+  --line:rgba(61,64,91,.10);
+  --shadow:0 14px 35px rgba(61,64,91,.10);
+  --radius:24px;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  min-height:100vh;
+  font-family:"Nunito","Noto Sans Thai",sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 15% 10%,rgba(160,196,255,.45),transparent 28%),
+    radial-gradient(circle at 90% 20%,rgba(202,255,191,.45),transparent 25%),
+    linear-gradient(180deg,#F9FCFF 0%,#FFFDF7 100%);
+  overflow-x:hidden;
+}
+
+/* =========================
+   DECORATION
+========================= */
+
+.cloud{
+  position:fixed;
+  z-index:-2;
+  pointer-events:none;
+  opacity:.75;
+}
+
+.cloud::before,
+.cloud::after{
+  content:"";
+  position:absolute;
+  background:rgba(255,255,255,.82);
+  border-radius:999px;
+}
+
+.cloud.c1{
+  width:180px;
+  height:60px;
+  top:100px;
+  left:-45px;
+}
+
+.cloud.c1::before{
+  width:85px;
+  height:85px;
+  left:28px;
+  bottom:15px;
+}
+
+.cloud.c1::after{
+  width:105px;
+  height:105px;
+  right:20px;
+  bottom:8px;
+}
+
+.cloud.c2{
+  width:230px;
+  height:65px;
+  top:320px;
+  right:-70px;
+}
+
+.cloud.c2::before{
+  width:95px;
+  height:95px;
+  left:35px;
+  bottom:10px;
+}
+
+.cloud.c2::after{
+  width:120px;
+  height:120px;
+  right:35px;
+  bottom:5px;
+}
+
+.cloud.c3{
+  width:190px;
+  height:55px;
+  bottom:80px;
+  left:-55px;
+}
+
+.cloud.c3::before{
+  width:80px;
+  height:80px;
+  left:30px;
+  bottom:12px;
+}
+
+.cloud.c3::after{
+  width:100px;
+  height:100px;
+  right:25px;
+  bottom:4px;
+}
+
+.float-item{
+  position:fixed;
+  width:72px;
+  opacity:.88;
+  pointer-events:none;
+  z-index:-1;
+  animation:float 5s ease-in-out infinite;
+}
+
+.float-1{
+  top:145px;
+  right:5%;
+}
+
+.float-2{
+  top:55%;
+  left:3%;
+  width:58px;
+  animation-delay:1.3s;
+}
+
+.float-3{
+  bottom:75px;
+  right:5%;
+  width:62px;
+  animation-delay:2.2s;
+}
+
+@keyframes float{
+  0%,100%{transform:translateY(0) rotate(-2deg)}
+  50%{transform:translateY(-12px) rotate(2deg)}
+}
+
+/* =========================
+   LOADING
+========================= */
+
+.loading{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,253,247,.96);
+  backdrop-filter:blur(10px);
+  transition:.3s ease;
+}
+
+.loading.hide{
+  opacity:0;
+  pointer-events:none;
+}
+
+.loading-box{
+  text-align:center;
+}
+
+.loading-icon{
+  font-size:42px;
+  animation:bounce 1s infinite;
+}
+
+.loading-text{
+  margin-top:10px;
+  font-weight:800;
+}
+
+@keyframes bounce{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-8px)}
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:rgba(255,255,255,.78);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--line);
+}
+
+.header-inner{
+  width:min(1180px,calc(100% - 32px));
+  margin:auto;
+  min-height:78px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.brand-icon{
+  width:45px;
+  height:45px;
+  border-radius:15px;
+  background:linear-gradient(135deg,var(--blue),var(--mint));
+  display:grid;
+  place-items:center;
+  font-size:23px;
+  box-shadow:0 7px 18px rgba(160,196,255,.25);
+}
+
+.brand-title{
+  font-size:18px;
+  font-weight:900;
+}
+
+.brand-sub{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:1px;
+}
+
+.header-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.header-btn{
+  border:1px solid var(--line);
+  background:white;
+  color:var(--text);
+  text-decoration:none;
+  padding:10px 15px;
+  border-radius:14px;
+  font:inherit;
+  font-weight:800;
+  cursor:pointer;
+  transition:.2s ease;
+}
+
+.header-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 18px rgba(61,64,91,.08);
+}
+
+.logout-btn{
+  background:#FFF0F0;
+  color:#B64A4A;
+  border-color:rgba(182,74,74,.12);
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.container{
+  width:min(1180px,calc(100% - 32px));
+  margin:0 auto;
+  padding:38px 0 70px;
+}
+
+.hero{
+  margin-bottom:30px;
+}
+
+.hero-label{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:8px 13px;
+  border-radius:999px;
+  background:rgba(255,255,255,.78);
+  border:1px solid var(--line);
+  font-size:12px;
+  font-weight:800;
+  margin-bottom:13px;
+}
+
+.hero h1{
+  font-size:clamp(30px,5vw,46px);
+  line-height:1.1;
+  font-weight:900;
+  letter-spacing:-1px;
+}
+
+.hero h1 span{
+  display:inline-block;
+}
+
+.hero p{
+  margin-top:10px;
+  color:var(--muted);
+  font-size:15px;
+  line-height:1.7;
+}
+
+/* =========================
+   OVERVIEW
+========================= */
+
+.overview{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+  margin-bottom:32px;
+}
+
+.stat-card{
+  background:rgba(255,255,255,.86);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:18px;
+  box-shadow:var(--shadow);
+}
+
+.stat-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.stat-icon{
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  border-radius:14px;
+  font-size:20px;
+}
+
+.stat-card:nth-child(1) .stat-icon{
+  background:#EAF2FF;
+}
+
+.stat-card:nth-child(2) .stat-icon{
+  background:#FFF7C7;
+}
+
+.stat-card:nth-child(3) .stat-icon{
+  background:#E9FFE5;
+}
+
+.stat-card:nth-child(4) .stat-icon{
+  background:#F2EAFE;
+}
+
+.stat-number{
+  margin-top:13px;
+  font-size:28px;
+  line-height:1;
+  font-weight:900;
+}
+
+.stat-label{
+  margin-top:7px;
+  font-size:13px;
+  color:var(--muted);
+  font-weight:700;
+}
+
+/* =========================
+   SECTION TITLE
+========================= */
+
+.section-heading{
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  gap:15px;
+  margin-bottom:15px;
+}
+
+.section-heading h2{
+  font-size:22px;
+  font-weight:900;
+}
+
+.section-heading p{
+  margin-top:3px;
+  color:var(--muted);
+  font-size:13px;
+}
+
+/* =========================
+   MENU
+========================= */
+
+.menu-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px;
+}
+
+.menu-card{
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:17px;
+  min-height:132px;
+  padding:21px;
+  text-decoration:none;
+  color:var(--text);
+  background:rgba(255,255,255,.88);
+  border:1px solid var(--line);
+  border-radius:24px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  transition:transform .22s ease,box-shadow .22s ease;
+}
+
+.menu-card::after{
+  content:"";
+  position:absolute;
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  right:-45px;
+  bottom:-60px;
+  background:var(--blue);
+  opacity:.16;
+}
+
+.menu-card:nth-child(2)::after{
+  background:var(--mint);
+}
+
+.menu-card:nth-child(3)::after{
+  background:var(--yellow);
+}
+
+.menu-card:nth-child(4)::after{
+  background:#DCC7FF;
+}
+
+.menu-card:nth-child(5)::after{
+  background:#FFCCE5;
+}
+
+.menu-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 18px 38px rgba(61,64,91,.13);
+}
+
+.menu-icon{
+  position:relative;
+  z-index:1;
+  flex:0 0 auto;
+  width:58px;
+  height:58px;
+  display:grid;
+  place-items:center;
+  border-radius:19px;
+  background:#F4F8FF;
+  font-size:28px;
+}
+
+.menu-content{
+  position:relative;
+  z-index:1;
+  min-width:0;
+  flex:1;
+}
+
+.menu-title{
+  font-size:17px;
+  font-weight:900;
+}
+
+.menu-desc{
+  margin-top:5px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.55;
+}
+
+.menu-arrow{
+  position:relative;
+  z-index:1;
+  flex:0 0 auto;
+  width:34px;
+  height:34px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  background:rgba(255,255,255,.8);
+  font-size:17px;
+  font-weight:900;
+}
+
+/* =========================
+   RECENT
+========================= */
+
+.recent{
+  margin-top:34px;
+  background:rgba(255,255,255,.88);
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:22px;
+  box-shadow:var(--shadow);
+}
+
+.recent-list{
+  margin-top:15px;
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+}
+
+.activity{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:12px 13px;
+  border-radius:15px;
+  background:#FAFBFE;
+}
+
+.activity-dot{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:var(--blue);
+  flex:0 0 auto;
+}
+
+.activity-text{
+  flex:1;
+  font-size:13px;
+  font-weight:700;
+}
+
+.activity-time{
+  color:var(--muted);
+  font-size:11px;
+  white-space:nowrap;
+}
+
+.empty-activity{
+  text-align:center;
+  padding:24px 10px;
+  color:var(--muted);
+  font-size:13px;
+}
+
+/* =========================
+   QUICK ACTION
+========================= */
+
+.quick-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+
+.quick-btn{
+  border:1px solid var(--line);
+  background:white;
+  color:var(--text);
+  border-radius:14px;
+  padding:10px 14px;
+  font:inherit;
+  font-size:12px;
+  font-weight:800;
+  cursor:pointer;
+  text-decoration:none;
+}
+
+.quick-btn:hover{
+  background:#F8FAFF;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+  text-align:center;
+  padding:0 20px 35px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.footer strong{
+  color:var(--text);
+}
+
+/* =========================
+   TOAST
+========================= */
+
+.toast{
+  position:fixed;
+  z-index:9998;
+  left:50%;
+  bottom:25px;
+  transform:translate(-50%,20px);
+  opacity:0;
+  pointer-events:none;
+  background:rgba(61,64,91,.94);
+  color:white;
+  padding:12px 18px;
+  border-radius:14px;
+  font-size:13px;
+  font-weight:700;
+  transition:.25s ease;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translate(-50%,0);
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:850px){
+
+  .overview{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .menu-grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+@media(max-width:600px){
+
+  .header-inner{
+    min-height:68px;
+    width:min(100% - 22px,1180px);
+  }
+
+  .brand-title{
+    font-size:16px;
+  }
+
+  .brand-sub{
+    font-size:10px;
+  }
+
+  .brand-icon{
+    width:40px;
+    height:40px;
+    border-radius:13px;
+  }
+
+  .header-actions{
+    gap:5px;
+  }
+
+  .header-btn{
+    padding:8px 10px;
+    border-radius:12px;
+    font-size:11px;
+  }
+
+  .container{
+    width:min(100% - 22px,1180px);
+    padding-top:27px;
+  }
+
+  .hero h1{
+    font-size:31px;
+  }
+
+  .hero p{
+    font-size:13px;
+  }
+
+  .overview{
+    gap:9px;
+    margin-bottom:27px;
+  }
+
+  .stat-card{
+    padding:14px;
+    border-radius:18px;
+  }
+
+  .stat-icon{
+    width:36px;
+    height:36px;
+    border-radius:12px;
+    font-size:17px;
+  }
+
+  .stat-number{
+    font-size:23px;
+    margin-top:11px;
+  }
+
+  .stat-label{
+    font-size:11px;
+  }
+
+  .section-heading h2{
+    font-size:19px;
+  }
+
+  .menu-card{
+    min-height:112px;
+    padding:17px;
+    border-radius:20px;
+    gap:13px;
+  }
+
+  .menu-icon{
+    width:49px;
+    height:49px;
+    border-radius:16px;
+    font-size:23px;
+  }
+
+  .menu-title{
+    font-size:15px;
+  }
+
+  .menu-desc{
+    font-size:11px;
+  }
+
+  .menu-arrow{
+    width:30px;
+    height:30px;
+    border-radius:10px;
+  }
+
+  .recent{
+    padding:17px;
+    border-radius:20px;
+  }
+
+  .activity{
+    align-items:flex-start;
+  }
+
+  .activity-text{
+    font-size:12px;
+  }
+
+  .activity-time{
+    font-size:10px;
+  }
+
+  .float-item{
+    opacity:.5;
+  }
+}
+
+@media(max-width:380px){
+
+  .brand-sub{
+    display:none;
+  }
+
+  .header-btn{
+    padding:8px;
+  }
+
+  .hero h1{
+    font-size:28px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- DECORATION -->
+<div class="cloud c1"></div>
+<div class="cloud c2"></div>
+<div class="cloud c3"></div>
+
+<img
+  class="float-item float-1"
+  src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
+  alt=""
+>
+
+<img
+  class="float-item float-2"
+  src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
+  alt=""
+>
+
+<img
+  class="float-item float-3"
+  src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
+  alt=""
+>
+
+<!-- LOADING -->
+<div class="loading" id="loading">
+  <div class="loading-box">
+    <div class="loading-icon">☁️</div>
+    <div class="loading-text">กำลังตรวจสอบสิทธิ์ Admin...</div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+
+    <div class="brand">
+      <div class="brand-icon">🍫</div>
+
+      <div>
+        <div class="brand-title">Bennie Choco</div>
+        <div class="brand-sub">Distributor Portal · Admin</div>
+      </div>
+    </div>
+
+    <div class="header-actions">
+
+      <a
+        class="header-btn"
+        href="index.html"
+      >
+        🏠 หน้าเว็บ
+      </a>
+
+      <button
+        class="header-btn logout-btn"
+        id="logoutBtn"
+        type="button"
+      >
+        ออกจากระบบ
+      </button>
+
+    </div>
+
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="container">
+
+  <!-- HERO -->
+  <section class="hero">
+
+    <div class="hero-label">
+      ☁️ Bennie Choco · Admin
+    </div>
+
+    <h1>
+      ศูนย์ควบคุม
+      <span>Distributor Portal</span>
+    </h1>
+
+    <p>
+      จัดการเว็บไซต์ ตัวแทน สินค้า และประกาศ
+      ได้จากที่นี่
+    </p>
+
+  </section>
+
+  <!-- OVERVIEW -->
+  <section class="overview">
+
+    <div class="stat-card">
+
+      <div class="stat-top">
+        <div class="stat-icon">👥</div>
+      </div>
+
+      <div
+        class="stat-number"
+        id="statAgents"
+      >
+        —
+      </div>
+
+      <div class="stat-label">
+        ตัวแทนทั้งหมด
+      </div>
+
+    </div>
+
+    <div class="stat-card">
+
+      <div class="stat-top">
+        <div class="stat-icon">⏳</div>
+      </div>
+
+      <div
+        class="stat-number"
+        id="statPending"
+      >
+        —
+      </div>
+
+      <div class="stat-label">
+        รอตรวจสอบ
+      </div>
+
+    </div>
+
+    <div class="stat-card">
+
+      <div class="stat-top">
+        <div class="stat-icon">📦</div>
+      </div>
+
+      <div
+        class="stat-number"
+        id="statProducts"
+      >
+        —
+      </div>
+
+      <div class="stat-label">
+        สินค้าที่เปิดใช้งาน
+      </div>
+
+    </div>
+
+    <div class="stat-card">
+
+      <div class="stat-top">
+        <div class="stat-icon">📢</div>
+      </div>
+
+      <div
+        class="stat-number"
+        id="statAnnouncements"
+      >
+        —
+      </div>
+
+      <div class="stat-label">
+        ประกาศที่เผยแพร่
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- MENU -->
+  <section>
+
+    <div class="section-heading">
+
+      <div>
+        <h2>เมนูจัดการ</h2>
+        <p>เลือกส่วนที่ต้องการจัดการ</p>
+      </div>
+
+    </div>
+
+    <div class="menu-grid">
+
+      <!-- WEBSITE -->
+      <a
+        class="menu-card"
+        href="admin1.html"
+      >
+
+        <div class="menu-icon">
+          🏠
+        </div>
+
+        <div class="menu-content">
+
+          <div class="menu-title">
+            จัดการเว็บไซต์
+          </div>
+
+          <div class="menu-desc">
+            แก้ไขข้อความ รูปภาพ ปุ่ม ลิงก์
+            ส่วนแสดงผล และรายละเอียดหน้าเว็บ
+          </div>
+
+        </div>
+
+        <div class="menu-arrow">
+          ›
+        </div>
+
+      </a>
+
+      <!-- AGENTS -->
+      <a
+        class="menu-card"
+        href="admin2.html"
+      >
+
+        <div class="menu-icon">
+          👥
+        </div>
+
+        <div class="menu-content">
+
+          <div class="menu-title">
+            จัดการตัวแทน
+          </div>
+
+          <div class="menu-desc">
+            ตรวจสอบตัวแทน อนุมัติ ปฏิเสธ
+            หรือระงับบัญชี
+          </div>
+
+        </div>
+
+        <div class="menu-arrow">
+          ›
+        </div>
+
+      </a>
+
+      <!-- PRODUCTS -->
+      <a
+        class="menu-card"
+        href="admin3.html"
+      >
+
+        <div class="menu-icon">
+          📦
+        </div>
+
+        <div class="menu-content">
+
+          <div class="menu-title">
+            จัดการสินค้า
+          </div>
+
+          <div class="menu-desc">
+            เพิ่ม แก้ไข ราคา รูปภาพ รายละเอียด
+            และสถานะสินค้า
+          </div>
+
+        </div>
+
+        <div class="menu-arrow">
+          ›
+        </div>
+
+      </a>
+
+      <!-- ANNOUNCEMENTS -->
+      <a
+        class="menu-card"
+        href="admin4.html"
+      >
+
+        <div class="menu-icon">
+          📢
+        </div>
+
+        <div class="menu-content">
+
+          <div class="menu-title">
+            จัดการประกาศ
+          </div>
+
+          <div class="menu-desc">
+            เพิ่ม แก้ไข เผยแพร่ หรือปิดประกาศ
+            สำหรับตัวแทน
+          </div>
+
+        </div>
+
+        <div class="menu-arrow">
+          ›
+        </div>
+
+      </a>
+
+      <!-- SETTINGS -->
+      <a
+        class="menu-card"
+        href="admin5.html"
+      >
+
+        <div class="menu-icon">
+          ⚙️
+        </div>
+
+        <div class="menu-content">
+
+          <div class="menu-title">
+            ตั้งค่าระบบ
+          </div>
+
+          <div class="menu-desc">
+            ตั้งค่าพื้นฐานของ Distributor Portal
+            และการแสดงผลระบบ
+          </div>
+
+        </div>
+
+        <div class="menu-arrow">
+          ›
+        </div>
+
+      </a>
+
+    </div>
+
+  </section>
+
+  <!-- RECENT ACTIVITY -->
+  <section class="recent">
+
+    <div class="section-heading">
+
+      <div>
+        <h2>กิจกรรมล่าสุด</h2>
+        <p>ภาพรวมการเปลี่ยนแปลงในระบบ</p>
+      </div>
+
+    </div>
+
+    <div
+      class="recent-list"
+      id="recentList"
+    >
+
+      <div class="empty-activity">
+        กำลังโหลดข้อมูล...
+      </div>
+
+    </div>
+
+    <div class="quick-actions">
+
+      <button
+        class="quick-btn"
+        id="refreshBtn"
+        type="button"
+      >
+        ↻ รีเฟรชข้อมูล
+      </button>
+
+      <a
+        class="quick-btn"
+        href="index.html"
+      >
+        ↗ เปิดหน้าเว็บ
+      </a>
+
+    </div>
+
+  </section>
+
+</main>
+
+<footer class="footer">
+  <strong>Bennie Choco</strong>
+  · Distributor Portal Admin
+</footer>
+
+<div
+  class="toast"
+  id="toast"
+></div>
+
+<script>
+/* =========================================================
+   SUPABASE
+========================================================= */
+
+const SUPABASE_URL =
+  "https://arhvdvaugcjzkdbxesma.supabase.co";
+
+const SUPABASE_ANON_KEY =
+  "sb_publishable_Ctpm1h1NQKTdOPpY9yQ2qw_7kQg_57Z";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let currentUser = null;
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function showToast(message){
+
+  const el =
+    document.getElementById("toast");
+
+  el.textContent = message;
+
+  el.classList.add("show");
+
+  clearTimeout(
+    window.__toastTimer
+  );
+
+  window.__toastTimer =
+    setTimeout(() => {
+
+      el.classList.remove("show");
+
+    }, 2600);
+}
+
+
+function hideLoading(){
+
+  const el =
+    document.getElementById("loading");
+
+  el.classList.add("hide");
+
+}
+
+
+/* =========================================================
+   ADMIN CHECK
+========================================================= */
+
+async function checkAdmin(userId){
+
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .rpc("is_admin");
+
+  if(error){
+
+    console.error(
+      "is_admin error:",
+      error
+    );
+
+    return false;
+  }
+
+  return data === true;
+}
+
+
+/* =========================================================
+   AUTH
+========================================================= */
+
+async function init(){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .auth
+        .getSession();
+
+    if(error){
+
+      throw error;
+    }
+
+    const session =
+      data?.session;
+
+    if(!session?.user){
+
+      window.location.href =
+        "admin-login.html";
+
+      return;
+    }
+
+    currentUser =
+      session.user;
+
+    const isAdmin =
+      await checkAdmin(
+        currentUser.id
+      );
+
+    if(!isAdmin){
+
+      await supabaseClient
+        .auth
+        .signOut();
+
+      alert(
+        "บัญชีนี้ไม่มีสิทธิ์ Admin"
+      );
+
+      window.location.href =
+        "admin-login.html";
+
+      return;
+    }
+
+    await loadDashboard();
+
+    hideLoading();
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      "ไม่สามารถตรวจสอบสิทธิ์ Admin ได้"
+    );
+
+    window.location.href =
+      "admin-login.html";
+  }
+
+}
+
+
+/* =========================================================
+   LOAD DASHBOARD
+========================================================= */
+
+async function loadDashboard(){
+
+  await Promise.all([
+    loadAgentStats(),
+    loadProductStats(),
+    loadAnnouncementStats(),
+    loadRecentActivity()
+  ]);
+
+}
+
+
+/* =========================================================
+   AGENT STATS
+========================================================= */
+
+async function loadAgentStats(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select("status");
+
+  if(error){
+
+    console.error(
+      "profiles:",
+      error
+    );
+
+    document.getElementById(
+      "statAgents"
+    ).textContent = "—";
+
+    document.getElementById(
+      "statPending"
+    ).textContent = "—";
+
+    return;
+  }
+
+  const rows =
+    data || [];
+
+  const total =
+    rows.length;
+
+  const pending =
+    rows.filter(
+      row => row.status === "pending"
+    ).length;
+
+  document.getElementById(
+    "statAgents"
+  ).textContent =
+    total.toLocaleString("th-TH");
+
+  document.getElementById(
+    "statPending"
+  ).textContent =
+    pending.toLocaleString("th-TH");
+}
+
+
+/* =========================================================
+   PRODUCT STATS
+========================================================= */
+
+async function loadProductStats(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("products")
+      .select("id,status");
+
+  if(error){
+
+    console.error(
+      "products:",
+      error
+    );
+
+    document.getElementById(
+      "statProducts"
+    ).textContent = "—";
+
+    return;
+  }
+
+  const active =
+    (data || []).filter(
+      row => row.status === "active"
+    ).length;
+
+  document.getElementById(
+    "statProducts"
+  ).textContent =
+    active.toLocaleString("th-TH");
+}
+
+
+/* =========================================================
+   ANNOUNCEMENT STATS
+========================================================= */
+
+async function loadAnnouncementStats(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("announcements")
+      .select("*");
+
+  if(error){
+
+    console.error(
+      "announcements:",
+      error
+    );
+
+    document.getElementById(
+      "statAnnouncements"
+    ).textContent = "—";
+
+    return;
+  }
+
+  const rows =
+    data || [];
+
+  /*
+    announcement schema may vary.
+    We therefore inspect common
+    publish/status fields safely.
+  */
+
+  const published =
+    rows.filter(row => {
+
+      const status =
+        String(
+          row.status ??
+          row.state ??
+          ""
+        ).toLowerCase();
+
+      if(
+        status === "published" ||
+        status === "active" ||
+        status === "show"
+      ){
+        return true;
+      }
+
+      /*
+        If the table has no status-like
+        field, existing rows are counted.
+      */
+
+      const hasStatus =
+        Object.prototype.hasOwnProperty
+          .call(row,"status") ||
+        Object.prototype.hasOwnProperty
+          .call(row,"state");
+
+      return !hasStatus;
+
+    }).length;
+
+  document.getElementById(
+    "statAnnouncements"
+  ).textContent =
+    published.toLocaleString("th-TH");
+}
+
+
+/* =========================================================
+   RECENT ACTIVITY
+========================================================= */
+
+async function loadRecentActivity(){
+
+  const list =
+    document.getElementById(
+      "recentList"
+    );
+
+  list.innerHTML = `
+    <div class="empty-activity">
+      กำลังโหลดข้อมูล...
+    </div>
+  `;
+
+  const activities = [];
+
+
+  /* ---------- profiles ---------- */
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("profiles")
+        .select(
+          "nickname,distributor_code,status,created_at"
+        )
+        .order(
+          "created_at",
+          { ascending:false }
+        )
+        .limit(3);
+
+    if(!error){
+
+      (data || []).forEach(row => {
+
+        activities.push({
+          type:"agent",
+          text:
+            row.status === "pending"
+              ? `มีตัวแทนใหม่รอตรวจสอบ · ${row.nickname || row.distributor_code || ""}`
+              : `ตัวแทน ${row.nickname || row.distributor_code || ""} เข้าสู่ระบบ`,
+          date:row.created_at
+        });
+
+      });
+
+    }
+
+  }catch(error){
+
+    console.error(error);
+  }
+
+
+  /* ---------- products ---------- */
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("products")
+        .select(
+          "name,created_at"
+        )
+        .order(
+          "created_at",
+          { ascending:false }
+        )
+        .limit(3);
+
+    if(!error){
+
+      (data || []).forEach(row => {
+
+        activities.push({
+          type:"product",
+          text:
+            `เพิ่มสินค้า ${row.name || "สินค้า"}`,
+          date:row.created_at
+        });
+
+      });
+
+    }
+
+  }catch(error){
+
+    console.error(error);
+  }
+
+
+  /* ---------- announcements ---------- */
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("announcements")
+        .select("*")
+        .order(
+          "created_at",
+          { ascending:false }
+        )
+        .limit(3);
+
+    if(!error){
+
+      (data || []).forEach(row => {
+
+        const title =
+          row.title ||
+          row.name ||
+          row.subject ||
+          "ประกาศ";
+
+        const date =
+          row.created_at ||
+          row.updated_at;
+
+        activities.push({
+          type:"announcement",
+          text:
+            `มีการจัดการประกาศ · ${title}`,
+          date
+        });
+
+      });
+
+    }
+
+  }catch(error){
+
+    console.error(error);
+  }
+
+
+  activities.sort(
+    (a,b) =>
+      new Date(b.date || 0) -
+      new Date(a.date || 0)
+  );
+
+
+  const latest =
+    activities.slice(0,6);
+
+
+  if(!latest.length){
+
+    list.innerHTML = `
+      <div class="empty-activity">
+        ยังไม่มีกิจกรรมล่าสุด
+      </div>
+    `;
+
+    return;
+  }
+
+
+  list.innerHTML =
+    latest.map(item => {
+
+      let icon = "●";
+
+      if(item.type === "agent"){
+        icon = "👤";
+      }
+
+      if(item.type === "product"){
+        icon = "📦";
+      }
+
+      if(item.type === "announcement"){
+        icon = "📢";
+      }
+
+      return `
+        <div class="activity">
+
+          <div
+            class="activity-dot"
+            style="display:grid;place-items:center;width:24px;height:24px;background:#F4F8FF;font-size:12px;"
+          >
+            ${icon}
+          </div>
+
+          <div class="activity-text">
+            ${escapeHtml(item.text)}
+          </div>
+
+          <div class="activity-time">
+            ${formatDate(item.date)}
+          </div>
+
+        </div>
+      `;
+
+    }).join("");
+}
+
+
+/* =========================================================
+   FORMAT
+========================================================= */
+
+function formatDate(value){
+
+  if(!value){
+    return "";
+  }
+
+  const date =
+    new Date(value);
+
+  if(
+    Number.isNaN(
+      date.getTime()
+    )
+  ){
+    return "";
+  }
+
+  return date.toLocaleString(
+    "th-TH",
+    {
+      day:"numeric",
+      month:"short",
+      hour:"2-digit",
+      minute:"2-digit"
+    }
+  );
+}
+
+
+function escapeHtml(value){
+
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+document
+  .getElementById("logoutBtn")
+  .addEventListener(
+    "click",
+    async () => {
+
+      const ok =
+        confirm(
+          "ต้องการออกจากระบบ Admin หรือไม่?"
+        );
+
+      if(!ok){
+        return;
+      }
+
+      await supabaseClient
+        .auth
+        .signOut();
+
+      window.location.href =
+        "admin-login.html";
+    }
+  );
+
+
+/* =========================================================
+   REFRESH
+========================================================= */
+
+document
+  .getElementById("refreshBtn")
+  .addEventListener(
+    "click",
+    async () => {
+
+      const button =
+        document.getElementById(
+          "refreshBtn"
+        );
+
+      button.disabled = true;
+
+      button.textContent =
+        "↻ กำลังโหลด...";
+
+      try{
+
+        await loadDashboard();
+
+        showToast(
+          "รีเฟรชข้อมูลแล้ว ✓"
+        );
+
+      }catch(error){
+
+        console.error(error);
+
+        showToast(
+          "รีเฟรชไม่สำเร็จ"
+        );
+
+      }finally{
+
+        button.disabled = false;
+
+        button.textContent =
+          "↻ รีเฟรชข้อมูล";
+      }
+
+    }
+  );
+
+
+/* =========================================================
+   AUTH STATE
+========================================================= */
+
+supabaseClient
+  .auth
+  .onAuthStateChange(
+    (event, session) => {
+
+      if(
+        event === "SIGNED_OUT"
+      ){
+
+        window.location.href =
+          "admin-login.html";
+
+      }
+
+    }
+  );
+
+
+/* =========================================================
+   START
+========================================================= */
+
+init();
+
+</script>
+
+</body>
+</html>
