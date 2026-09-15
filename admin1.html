@@ -24,6 +24,7 @@
   --line:rgba(61,64,91,.10);
   --shadow:0 14px 35px rgba(61,64,91,.10);
   --danger:#d95c68;
+  --success:#63a56a;
 }
 
 *{
@@ -489,6 +490,38 @@ a{
 }
 
 /* =========================
+   URL PREVIEW
+========================= */
+
+.url-preview{
+  margin-top:10px;
+  display:none;
+  overflow:hidden;
+  border:1px solid rgba(61,64,91,.08);
+  border-radius:16px;
+  background:#FBFCFF;
+}
+
+.url-preview.show{
+  display:block;
+}
+
+.url-preview img{
+  display:block;
+  width:100%;
+  max-height:220px;
+  object-fit:contain;
+  background:#f4f6fa;
+}
+
+.url-preview-text{
+  padding:9px 11px;
+  font-size:10px;
+  color:var(--muted);
+  word-break:break-all;
+}
+
+/* =========================
    TWO FIELDS
 ========================= */
 
@@ -603,6 +636,11 @@ a{
 .btn-danger{
   background:#FFF0F2;
   color:var(--danger);
+}
+
+.btn-success{
+  background:#ECFFEF;
+  color:#4E8C56;
 }
 
 .btn:disabled{
@@ -772,6 +810,8 @@ a{
   font-size:12px;
   font-weight:800;
   transition:.25s;
+  max-width:calc(100% - 30px);
+  text-align:center;
 }
 
 .toast.show{
@@ -959,7 +999,6 @@ a{
 
   </section>
 
-
   <!-- INFO -->
   <div class="info">
 
@@ -976,7 +1015,7 @@ a{
       <br>
 
       แบ่งเป็น Hero, สมุด, จุดเด่น, ขั้นตอนการสมัคร,
-      ปุ่ม CTA, Footer และเพลง
+      ปุ่ม CTA, รูปภาพ, เพลง และข้อมูลแชร์ลิงก์
 
       <br>
 
@@ -992,10 +1031,7 @@ a{
   <div class="content-grid">
 
 
-    <!-- =====================
-         HERO
-    ====================== -->
-
+    <!-- HERO -->
     <section class="content-card">
 
       <div class="card-head">
@@ -1071,10 +1107,7 @@ a{
     </section>
 
 
-    <!-- =====================
-         NOTEBOOK
-    ====================== -->
-
+    <!-- NOTEBOOK -->
     <section class="content-card">
 
       <div class="card-head">
@@ -1182,10 +1215,7 @@ a{
     </section>
 
 
-    <!-- =====================
-         FEATURES
-    ====================== -->
-
+    <!-- FEATURES -->
     <section class="content-card full">
 
       <div class="card-head">
@@ -1212,87 +1242,57 @@ a{
       <div class="two">
 
         <div class="field">
-
-          <label>
-            จุดเด่นที่ 1
-          </label>
-
+          <label>จุดเด่นที่ 1</label>
           <input
             class="input"
             id="feature1Title"
             placeholder="หัวข้อ"
           >
-
         </div>
 
         <div class="field">
-
-          <label>
-            รายละเอียด 1
-          </label>
-
+          <label>รายละเอียด 1</label>
           <input
             class="input"
             id="feature1Desc"
             placeholder="รายละเอียด"
           >
-
         </div>
 
         <div class="field">
-
-          <label>
-            จุดเด่นที่ 2
-          </label>
-
+          <label>จุดเด่นที่ 2</label>
           <input
             class="input"
             id="feature2Title"
             placeholder="หัวข้อ"
           >
-
         </div>
 
         <div class="field">
-
-          <label>
-            รายละเอียด 2
-          </label>
-
+          <label>รายละเอียด 2</label>
           <input
             class="input"
             id="feature2Desc"
             placeholder="รายละเอียด"
           >
-
         </div>
 
         <div class="field">
-
-          <label>
-            จุดเด่นที่ 3
-          </label>
-
+          <label>จุดเด่นที่ 3</label>
           <input
             class="input"
             id="feature3Title"
             placeholder="หัวข้อ"
           >
-
         </div>
 
         <div class="field">
-
-          <label>
-            รายละเอียด 3
-          </label>
-
+          <label>รายละเอียด 3</label>
           <input
             class="input"
             id="feature3Desc"
             placeholder="รายละเอียด"
           >
-
         </div>
 
       </div>
@@ -1311,10 +1311,7 @@ a{
     </section>
 
 
-    <!-- =====================
-         JOIN STEPS
-    ====================== -->
-
+    <!-- JOIN STEPS -->
     <section class="content-card">
 
       <div class="card-head">
@@ -1335,7 +1332,6 @@ a{
       </div>
 
       <div class="field">
-
         <label>ขั้นตอนที่ 1</label>
 
         <input
@@ -1343,11 +1339,9 @@ a{
           id="step1"
           placeholder="เช่น สมัครเป็นตัวแทน"
         >
-
       </div>
 
       <div class="field">
-
         <label>ขั้นตอนที่ 2</label>
 
         <input
@@ -1355,11 +1349,9 @@ a{
           id="step2"
           placeholder="เช่น รอการตรวจสอบ"
         >
-
       </div>
 
       <div class="field">
-
         <label>ขั้นตอนที่ 3</label>
 
         <input
@@ -1367,11 +1359,9 @@ a{
           id="step3"
           placeholder="เช่น เข้าสู่ระบบ"
         >
-
       </div>
 
       <div class="field">
-
         <label>ขั้นตอนที่ 4</label>
 
         <input
@@ -1379,7 +1369,6 @@ a{
           id="step4"
           placeholder="เช่น เริ่มใช้งานระบบ"
         >
-
       </div>
 
       <div class="actions">
@@ -1396,10 +1385,7 @@ a{
     </section>
 
 
-    <!-- =====================
-         CTA
-    ====================== -->
-
+    <!-- CTA -->
     <section class="content-card">
 
       <div class="card-head">
@@ -1521,10 +1507,7 @@ a{
     </section>
 
 
-    <!-- =====================
-         IMAGES
-    ====================== -->
-
+    <!-- IMAGES -->
     <section class="content-card">
 
       <div class="card-head">
@@ -1600,10 +1583,7 @@ a{
     </section>
 
 
-    <!-- =====================
-         DISPLAY
-    ====================== -->
-
+    <!-- DISPLAY -->
     <section class="content-card">
 
       <div class="card-head">
@@ -1780,12 +1760,28 @@ a{
         >
 
         <small>
-          ควรใช้ไฟล์เสียงที่คุณมีสิทธิ์ใช้งาน
+          รองรับ URL ไฟล์ .mp3 / .wav / .ogg
         </small>
 
       </div>
 
       <div class="actions">
+
+        <button
+          class="btn btn-success"
+          type="button"
+          onclick="testMusic()"
+        >
+          ▶ ทดสอบเพลง
+        </button>
+
+        <button
+          class="btn btn-secondary"
+          type="button"
+          onclick="stopTestMusic()"
+        >
+          ■ หยุด
+        </button>
 
         <button
           class="btn btn-primary"
@@ -1796,13 +1792,98 @@ a{
 
       </div>
 
+      <audio
+        id="musicTestAudio"
+        preload="none"
+      ></audio>
+
     </section>
 
 
     <!-- =====================
-         CONTACT
+         SHARE / PROMO
     ====================== -->
 
+    <section class="content-card">
+
+      <div class="card-head">
+
+        <div class="card-title">
+
+          <div class="card-icon">
+            🔗
+          </div>
+
+          <div>
+            <h2>แชร์ลิงก์ / รูปโปรโมต</h2>
+            <p>รูปที่ใช้แสดงเมื่อแชร์หน้าเว็บไซต์</p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="field">
+
+        <label>
+          รูปโปรโมต / Share Preview
+        </label>
+
+        <input
+          class="input"
+          id="shareImage"
+          value="https://i.postimg.cc/y6b24ph9/mi-m-ch-x-488-20260114125256.png"
+          placeholder="URL รูปโปรโมต"
+          oninput="previewShareImage()"
+        >
+
+        <small>
+          รูปนี้จะใช้เป็นข้อมูลสำหรับระบบแชร์ลิงก์ของหน้าเว็บ
+        </small>
+
+      </div>
+
+      <div
+        class="url-preview"
+        id="shareImagePreview"
+      >
+
+        <img
+          id="shareImagePreviewImg"
+          src=""
+          alt="ตัวอย่างรูปแชร์"
+        >
+
+        <div
+          class="url-preview-text"
+          id="shareImagePreviewText"
+        ></div>
+
+      </div>
+
+      <div class="actions">
+
+        <button
+          class="btn btn-primary"
+          onclick="saveLocalSection('share')"
+        >
+          💾 บันทึกรูปแชร์
+        </button>
+
+        <button
+          class="btn btn-secondary"
+          type="button"
+          onclick="previewShareImage()"
+        >
+          👁️ ดูตัวอย่าง
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- CONTACT -->
     <section class="content-card">
 
       <div class="card-head">
@@ -1878,10 +1959,7 @@ a{
     </section>
 
 
-    <!-- =====================
-         THEME
-    ====================== -->
-
+    <!-- THEME -->
     <section class="content-card">
 
       <div class="card-head">
@@ -1975,10 +2053,7 @@ a{
     </section>
 
 
-    <!-- =====================
-         DATABASE
-    ====================== -->
-
+    <!-- DATABASE -->
     <section class="content-card full">
 
       <div class="card-head">
@@ -2028,9 +2103,7 @@ a{
 </footer>
 
 
-<!-- =========================
-     EDIT MODAL
-========================= -->
+<!-- EDIT MODAL -->
 
 <div
   class="modal"
@@ -2111,6 +2184,7 @@ let currentUser = null;
 let siteContent = [];
 let editingRow = null;
 let editingIdField = null;
+let testAudio = null;
 
 
 /* =========================================================
@@ -2188,9 +2262,9 @@ async function init(){
       data,
       error
     } =
-      await supabaseClient
-        .auth
-        .getSession();
+    await supabaseClient
+      .auth
+      .getSession();
 
     if(error){
       throw error;
@@ -2227,6 +2301,8 @@ async function init(){
     }
 
     loadLocalSettings();
+
+    previewShareImage();
 
     await loadSiteContent();
 
@@ -2618,7 +2694,6 @@ function openEdit(index){
 async function saveDatabaseRow(){
 
   if(!editingRow){
-
     return;
   }
 
@@ -2691,16 +2766,15 @@ async function saveDatabaseRow(){
     const {
       error
     } =
-      await supabaseClient
-        .from("site_content")
-        .update(payload)
-        .eq(
-          editingIdField,
-          editingRow[editingIdField]
-        );
+    await supabaseClient
+      .from("site_content")
+      .update(payload)
+      .eq(
+        editingIdField,
+        editingRow[editingIdField]
+      );
 
     if(error){
-
       throw error;
     }
 
@@ -2746,12 +2820,6 @@ function closeModal(){
    LOCAL SETTINGS
 ========================================================= */
 
-/*
-  ส่วนนี้ใช้ localStorage เป็นค่าเริ่มต้น
-  จนกว่าเราจะกำหนด schema ของ site_content
-  ให้ตรงกับข้อมูลจริงใน Supabase
-*/
-
 function saveLocalSection(section){
 
   const data =
@@ -2761,6 +2829,12 @@ function saveLocalSection(section){
     "bennieChocoAdminWebsite",
     JSON.stringify(data)
   );
+
+  /*
+    หมายเหตุ:
+    ตอนนี้ข้อมูลส่วนนี้ยังถูกเก็บใน localStorage
+    จนกว่า schema ของ site_content จะถูกกำหนดให้ตรงกัน
+  */
 
   showToast(
     `บันทึกการตั้งค่า ${section} แล้ว ✓`
@@ -2885,6 +2959,11 @@ function collectFormData(){
 
       url:
         value("musicUrl")
+    },
+
+    share:{
+      image:
+        value("shareImage")
     },
 
     contact:{
@@ -3151,6 +3230,15 @@ function loadLocalSettings(){
     }
 
 
+    if(data.share){
+
+      setValue(
+        "shareImage",
+        data.share.image
+      );
+    }
+
+
     if(data.contact){
 
       setValue(
@@ -3226,6 +3314,139 @@ function setChecked(id,value){
     el.checked =
       Boolean(value);
   }
+}
+
+
+/* =========================================================
+   MUSIC TEST
+========================================================= */
+
+function testMusic(){
+
+  const url =
+    value("musicUrl").trim();
+
+  if(!url){
+
+    showToast(
+      "กรุณาใส่ URL เพลงก่อน"
+    );
+
+    return;
+  }
+
+  stopTestMusic();
+
+  testAudio =
+    document.getElementById(
+      "musicTestAudio"
+    );
+
+  testAudio.src = url;
+  testAudio.loop = true;
+  testAudio.volume = 0.65;
+
+  testAudio.play()
+    .then(() => {
+
+      showToast(
+        "กำลังเล่นเพลงทดสอบ ♪"
+      );
+
+    })
+    .catch(error => {
+
+      console.error(
+        "music test:",
+        error
+      );
+
+      showToast(
+        "เล่นเพลงไม่ได้ กรุณาตรวจสอบ URL ไฟล์เสียง"
+      );
+    });
+}
+
+
+function stopTestMusic(){
+
+  const audio =
+    document.getElementById(
+      "musicTestAudio"
+    );
+
+  if(!audio){
+    return;
+  }
+
+  audio.pause();
+  audio.currentTime = 0;
+}
+
+
+/* =========================================================
+   SHARE IMAGE PREVIEW
+========================================================= */
+
+function previewShareImage(){
+
+  const input =
+    document.getElementById(
+      "shareImage"
+    );
+
+  const preview =
+    document.getElementById(
+      "shareImagePreview"
+    );
+
+  const img =
+    document.getElementById(
+      "shareImagePreviewImg"
+    );
+
+  const text =
+    document.getElementById(
+      "shareImagePreviewText"
+    );
+
+  if(!input || !preview || !img || !text){
+    return;
+  }
+
+  const url =
+    input.value.trim();
+
+  if(!url){
+
+    preview.classList.remove("show");
+
+    img.removeAttribute("src");
+
+    text.textContent = "";
+
+    return;
+  }
+
+  img.onload = () => {
+
+    preview.classList.add("show");
+
+    text.textContent =
+      url;
+  };
+
+  img.onerror = () => {
+
+    preview.classList.add("show");
+
+    text.textContent =
+      "ไม่สามารถโหลดรูปนี้ได้ กรุณาตรวจสอบ URL";
+
+  };
+
+  img.src =
+    url;
 }
 
 
