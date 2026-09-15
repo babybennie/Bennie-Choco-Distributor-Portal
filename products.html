@@ -2276,6 +2276,55 @@ document.addEventListener(
 
 
 /* =========================================================
+   CUSTOMER-SAFE COPY TEXT
+   ---------------------------------------------------------
+   สำคัญ:
+   ฟังก์ชันนี้สร้างข้อความสำหรับส่งให้ลูกค้าโดยเฉพาะ
+
+   ❌ ไม่ใส่ราคาปลีก
+   ❌ ไม่ใส่ราคาตัวแทน
+   ❌ ไม่ใส่ข้อมูลภายใน
+========================================================= */
+
+function getCustomerProductText(product){
+
+  const name =
+    product.name ||
+    "-";
+
+  const description =
+    product.description ||
+    "ไม่มีรายละเอียดสินค้า";
+
+  let text = `
+🍫 Bennie Choco
+
+สินค้า: ${name}
+
+รายละเอียด:
+${description}
+`.trim();
+
+  /*
+    แจ้งเฉพาะสถานะสินค้าหมด
+    ไม่มีข้อมูลราคา
+  */
+
+  if(
+    product.status === "out_of_stock"
+  ){
+
+    text +=
+      "\n\n⚠️ สินค้าหมด";
+
+  }
+
+  return text;
+
+}
+
+
+/* =========================================================
    COPY PRODUCT DETAIL
 ========================================================= */
 
@@ -2299,61 +2348,20 @@ async function copyProductDetail(
     return;
   }
 
-  const name =
-    product.name ||
-    "-";
-
-  const category =
-    product.category ||
-    "-";
-
-  const description =
-    product.description ||
-    "ไม่มีรายละเอียดสินค้า";
-
-  const retail =
-    formatPrice(
-      product.retail_price
-    );
-
-  const distributor =
-    formatPrice(
-      product.distributor_price
-    );
-
-  const outOfStock =
-    product.status ===
-    "out_of_stock";
-
   /*
-    ข้อความที่ตัวแทนสามารถ
-    คัดลอกไปส่งต่อลูกค้าได้ทันที
+    ใช้ข้อความ Customer-safe เท่านั้น
   */
 
-  let text = `
-🍫 Bennie Choco
-
-สินค้า: ${name}
-หมวดหมู่: ${category}
-
-รายละเอียด:
-${description}
-
-ราคาปลีก: ${retail}
-ราคาตัวแทน: ${distributor}
-`.trim();
-
-  if(outOfStock){
-
-    text +=
-      "\n\n⚠️ สินค้าหมด";
-
-  }
+  const text =
+    getCustomerProductText(
+      product
+    );
 
   try{
 
     /*
-      วิธีหลัก
+      วิธีหลักสำหรับ HTTPS
+      เช่น Netlify + Safari / Chrome
     */
 
     if(
@@ -2394,6 +2402,14 @@ ${description}
 
     textarea.style.top =
       "0";
+
+    textarea.style.opacity =
+      "0";
+
+    textarea.setAttribute(
+      "readonly",
+      ""
+    );
 
     document.body.appendChild(
       textarea
