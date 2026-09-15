@@ -8,13 +8,14 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Noto+Sans+Thai:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 *{
   box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
 }
 
 html{
@@ -24,13 +25,10 @@ html{
 body{
   margin:0;
   min-height:100vh;
-  font-family:"Noto Sans Thai","Nunito",sans-serif;
+  font-family:"Nunito","Noto Sans Thai",sans-serif;
   color:#3d405b;
   background:
-    radial-gradient(circle at 10% 5%,rgba(160,196,255,.45),transparent 28%),
-    radial-gradient(circle at 90% 10%,rgba(202,255,191,.42),transparent 25%),
-    radial-gradient(circle at 50% 100%,rgba(253,255,182,.38),transparent 35%),
-    #f8fbff;
+    linear-gradient(180deg,#eef7ff 0%,#f8fbff 45%,#fffdf4 100%);
   overflow-x:hidden;
 }
 
@@ -45,320 +43,207 @@ button{
   cursor:pointer;
 }
 
-a{
-  color:inherit;
-  text-decoration:none;
-}
-
 .cloud{
   position:fixed;
-  border-radius:999px;
-  background:rgba(255,255,255,.72);
-  filter:blur(.2px);
-  box-shadow:0 10px 30px rgba(100,130,170,.08);
+  z-index:-1;
   pointer-events:none;
-  z-index:0;
+  opacity:.65;
 }
 
 .cloud:before,
 .cloud:after{
   content:"";
   position:absolute;
-  background:inherit;
+  background:rgba(255,255,255,.9);
   border-radius:50%;
 }
 
-.cloud.c1{
+.cloud{
   width:190px;
-  height:55px;
-  top:8%;
-  left:-40px;
+  height:65px;
+  border-radius:60px;
+  background:rgba(255,255,255,.9);
 }
 
-.cloud.c1:before{
-  width:80px;
-  height:80px;
-  left:28px;
+.cloud:before{
+  width:85px;
+  height:85px;
+  left:30px;
   bottom:10px;
 }
 
-.cloud.c1:after{
-  width:65px;
-  height:65px;
-  left:90px;
+.cloud:after{
+  width:105px;
+  height:105px;
+  right:25px;
   bottom:8px;
 }
 
-.cloud.c2{
-  width:230px;
-  height:65px;
-  right:-55px;
-  top:24%;
+.c1{
+  top:80px;
+  left:-50px;
 }
 
-.cloud.c2:before{
-  width:90px;
-  height:90px;
-  left:35px;
-  bottom:8px;
+.c2{
+  top:300px;
+  right:-70px;
+  transform:scale(.8);
 }
 
-.cloud.c2:after{
-  width:75px;
-  height:75px;
-  left:115px;
-  bottom:7px;
+.c3{
+  bottom:80px;
+  left:-80px;
+  transform:scale(.65);
 }
 
-.cloud.c3{
-  width:200px;
-  height:55px;
-  left:12%;
-  bottom:5%;
-  opacity:.65;
-}
-
-.cloud.c3:before{
-  width:75px;
-  height:75px;
-  left:35px;
-  bottom:7px;
-}
-
-.cloud.c3:after{
-  width:65px;
-  height:65px;
-  left:110px;
-  bottom:5px;
-}
-
-.float-img{
+.float{
   position:fixed;
-  width:76px;
-  height:76px;
-  object-fit:contain;
-  opacity:.82;
+  width:74px;
+  z-index:-1;
   pointer-events:none;
-  z-index:1;
-  animation:float 5s ease-in-out infinite;
+  opacity:.9;
 }
 
-.float-img.f1{
-  left:2%;
-  top:36%;
+.f1{
+  top:130px;
+  right:6%;
 }
 
-.float-img.f2{
-  right:2%;
-  top:62%;
-  animation-delay:1.4s;
+.f2{
+  top:56%;
+  left:3%;
+  transform:rotate(-12deg);
 }
 
-.float-img.f3{
-  right:7%;
-  top:9%;
-  width:62px;
-  height:62px;
-  animation-delay:2.2s;
+.f3{
+  bottom:70px;
+  right:5%;
+  transform:rotate(10deg);
 }
 
-@keyframes float{
-  0%,100%{
-    transform:translateY(0) rotate(-2deg);
-  }
-  50%{
-    transform:translateY(-13px) rotate(3deg);
-  }
-}
-
-.loading{
+#loading{
   position:fixed;
   inset:0;
-  background:rgba(248,251,255,.97);
-  display:flex;
-  align-items:center;
-  justify-content:center;
   z-index:9999;
-  transition:.3s;
+  display:grid;
+  place-items:center;
+  background:rgba(245,250,255,.96);
+  transition:.25s;
 }
 
-.loading.hide{
+#loading.hide{
   opacity:0;
   visibility:hidden;
+  pointer-events:none;
 }
 
-.loader-box{
+.loading-box{
+  width:min(90%,360px);
+  background:#fff;
+  border:1px solid rgba(160,196,255,.35);
+  border-radius:28px;
+  padding:30px 22px;
   text-align:center;
+  box-shadow:0 18px 60px rgba(91,126,175,.13);
 }
 
-.spinner{
-  width:48px;
-  height:48px;
-  border:5px solid #e5edff;
-  border-top-color:#8fb8ff;
-  border-radius:50%;
-  animation:spin .8s linear infinite;
-  margin:auto;
+.loading-icon{
+  font-size:38px;
+  margin-bottom:10px;
 }
 
-@keyframes spin{
-  to{
-    transform:rotate(360deg);
-  }
-}
-
-.loader-text{
-  margin-top:13px;
-  font-weight:700;
-  color:#6c7898;
-}
-
-.page{
-  position:relative;
-  z-index:2;
-  width:min(1450px,calc(100% - 28px));
-  margin:auto;
-  padding:20px 0 50px;
-}
-
-.header{
+header{
   position:sticky;
-  top:12px;
+  top:0;
   z-index:100;
+  background:rgba(255,255,255,.84);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(160,196,255,.2);
+}
+
+.header-inner{
+  width:min(1400px,94%);
+  margin:auto;
+  min-height:76px;
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:15px;
-  padding:14px 18px;
-  margin-bottom:20px;
-  border:1px solid rgba(255,255,255,.85);
-  border-radius:26px;
-  background:rgba(255,255,255,.82);
-  backdrop-filter:blur(20px);
-  box-shadow:0 18px 45px rgba(92,117,155,.12);
 }
 
 .brand{
   display:flex;
   align-items:center;
   gap:12px;
-  min-width:0;
 }
 
 .brand-icon{
-  width:48px;
-  height:48px;
-  flex:none;
+  width:45px;
+  height:45px;
+  border-radius:15px;
   display:grid;
   place-items:center;
-  border-radius:17px;
   background:linear-gradient(135deg,#a0c4ff,#caffbf);
-  box-shadow:0 8px 20px rgba(108,142,205,.15);
   font-size:23px;
+  box-shadow:0 8px 20px rgba(100,140,190,.12);
 }
 
 .brand-title{
+  font-weight:800;
   font-size:18px;
-  font-weight:900;
-  color:#4d5878;
-  line-height:1.2;
 }
 
 .brand-sub{
-  margin-top:2px;
   font-size:11px;
-  color:#8a94ad;
+  color:#8993a8;
+  margin-top:2px;
 }
 
 .header-actions{
   display:flex;
-  align-items:center;
   gap:8px;
 }
 
-.icon-btn{
-  min-height:42px;
-  border:0;
-  border-radius:15px;
-  padding:0 14px;
-  background:#f3f7ff;
-  color:#66718e;
-  font-weight:700;
-  transition:.2s;
-}
-
-.icon-btn:hover{
-  transform:translateY(-2px);
-  background:#e8f0ff;
-}
-
-.logout-btn{
-  background:#fff0f0;
-  color:#c56d76;
-}
-
-.layout{
+.container{
+  width:min(1400px,94%);
+  margin:24px auto 60px;
   display:grid;
-  grid-template-columns:260px minmax(0,1fr);
-  gap:18px;
-  align-items:start;
+  grid-template-columns:245px minmax(0,1fr);
+  gap:20px;
 }
 
 .sidebar{
   position:sticky;
-  top:98px;
-  padding:14px;
-  border:1px solid rgba(255,255,255,.9);
-  border-radius:28px;
-  background:rgba(255,255,255,.78);
-  backdrop-filter:blur(20px);
-  box-shadow:0 18px 45px rgba(92,117,155,.10);
-}
-
-.nav-title{
-  padding:7px 10px 10px;
-  color:#a0a8bb;
-  font-size:10px;
-  font-weight:900;
-  letter-spacing:.08em;
+  top:96px;
+  height:max-content;
+  background:rgba(255,255,255,.84);
+  border:1px solid rgba(160,196,255,.22);
+  border-radius:25px;
+  padding:12px;
+  box-shadow:0 15px 50px rgba(86,120,160,.08);
 }
 
 .nav-btn{
   width:100%;
-  display:flex;
-  align-items:center;
-  gap:11px;
-  padding:12px 13px;
-  margin-bottom:5px;
   border:0;
-  border-radius:16px;
   background:transparent;
-  color:#68738f;
+  color:#68728a;
   text-align:left;
-  font-weight:800;
+  padding:13px 14px;
+  border-radius:16px;
+  margin-bottom:4px;
+  font-weight:700;
   transition:.2s;
 }
 
 .nav-btn:hover{
-  background:#f4f8ff;
-  transform:translateX(2px);
+  background:#f3f8ff;
 }
 
 .nav-btn.active{
-  color:#4f689b;
-  background:linear-gradient(135deg,#eaf2ff,#f2fff0);
-  box-shadow:inset 0 0 0 1px rgba(160,196,255,.28);
-}
-
-.nav-icon{
-  width:30px;
-  height:30px;
-  display:grid;
-  place-items:center;
-  border-radius:11px;
-  background:rgba(255,255,255,.78);
-  font-size:16px;
-  flex:none;
+  background:linear-gradient(135deg,#e3efff,#edfff0);
+  color:#3d405b;
+  box-shadow:inset 0 0 0 1px rgba(160,196,255,.2);
 }
 
 .main{
@@ -371,100 +256,194 @@ a{
 
 .section.active{
   display:block;
-  animation:fadeIn .25s ease;
 }
 
-@keyframes fadeIn{
-  from{
-    opacity:0;
-    transform:translateY(6px);
-  }
-  to{
-    opacity:1;
-    transform:none;
-  }
+.page-head{
+  margin-bottom:18px;
 }
 
-.section-head{
-  margin-bottom:16px;
-}
-
-.section-title{
-  margin:0;
+.page-title{
   font-size:25px;
-  font-weight:900;
-  color:#4d5878;
+  font-weight:800;
+  margin:0;
 }
 
-.section-desc{
-  margin:5px 0 0;
-  color:#929bb0;
+.page-sub{
+  color:#8993a8;
+  font-size:13px;
+  margin-top:4px;
+}
+
+.notice{
+  background:linear-gradient(135deg,rgba(160,196,255,.16),rgba(202,255,191,.2));
+  border:1px solid rgba(160,196,255,.25);
+  border-radius:20px;
+  padding:16px;
+  font-size:13px;
+  line-height:1.75;
+  margin-bottom:18px;
+}
+
+.content-card{
+  background:rgba(255,255,255,.9);
+  border:1px solid rgba(160,196,255,.18);
+  border-radius:22px;
+  padding:18px;
+  box-shadow:0 12px 45px rgba(76,110,150,.06);
+  margin-bottom:14px;
+}
+
+.content-card-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:15px;
+  margin-bottom:14px;
+}
+
+.content-card-title{
+  font-weight:800;
+  font-size:16px;
+}
+
+.content-card-sub{
+  color:#929bad;
+  font-size:11px;
+  margin-top:3px;
+}
+
+.row-actions{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.primary,
+.secondary,
+.success,
+.warning,
+.danger{
+  border:0;
+  border-radius:13px;
+  padding:9px 13px;
+  font-size:12px;
+  font-weight:800;
+  transition:.2s;
+}
+
+.primary{
+  background:#a0c4ff;
+  color:#26334d;
+}
+
+.secondary{
+  background:#edf3fb;
+  color:#59657d;
+}
+
+.success{
+  background:#dff8d8;
+  color:#397047;
+}
+
+.warning{
+  background:#fff2bd;
+  color:#7b6827;
+}
+
+.danger{
+  background:#ffe1e1;
+  color:#9b4d4d;
+}
+
+.primary:hover,
+.secondary:hover,
+.success:hover,
+.warning:hover,
+.danger:hover{
+  transform:translateY(-1px);
+  filter:brightness(.98);
+}
+
+.primary:disabled,
+.secondary:disabled,
+.success:disabled,
+.warning:disabled,
+.danger:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+  transform:none;
+}
+
+.quick-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin-bottom:18px;
+}
+
+.quick-card{
+  border:1px solid rgba(160,196,255,.18);
+  background:#fff;
+  border-radius:20px;
+  padding:18px;
+  text-align:left;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.quick-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 35px rgba(80,120,170,.1);
+}
+
+.quick-icon{
+  font-size:25px;
+  margin-bottom:8px;
+}
+
+.quick-title{
+  font-weight:800;
   font-size:13px;
 }
 
-.card{
-  background:rgba(255,255,255,.84);
-  border:1px solid rgba(255,255,255,.92);
-  border-radius:27px;
-  padding:18px;
-  box-shadow:0 18px 45px rgba(92,117,155,.09);
-  backdrop-filter:blur(16px);
-}
-
-.card + .card{
-  margin-top:16px;
+.quick-sub{
+  color:#929bad;
+  font-size:11px;
+  margin-top:3px;
+  line-height:1.5;
 }
 
 .stats{
   display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:12px;
-  margin-bottom:16px;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin-bottom:14px;
 }
 
 .stat{
-  position:relative;
-  overflow:hidden;
-  padding:17px;
-  border-radius:22px;
-  background:rgba(255,255,255,.86);
-  border:1px solid rgba(255,255,255,.95);
-  box-shadow:0 12px 32px rgba(92,117,155,.08);
-}
-
-.stat:after{
-  content:"";
-  position:absolute;
-  width:85px;
-  height:85px;
-  border-radius:50%;
-  right:-30px;
-  top:-30px;
-  background:#edf4ff;
-}
-
-.stat-icon{
-  font-size:21px;
+  background:#fff;
+  border-radius:19px;
+  padding:15px;
+  border:1px solid rgba(160,196,255,.18);
 }
 
 .stat-label{
-  margin-top:8px;
-  color:#9099ad;
+  color:#8d96a8;
   font-size:11px;
-  font-weight:800;
 }
 
 .stat-value{
-  margin-top:1px;
   font-size:25px;
-  font-weight:900;
-  color:#55617e;
+  font-weight:800;
+  margin-top:3px;
 }
 
 .toolbar{
   display:flex;
-  align-items:center;
   gap:9px;
+  margin-bottom:14px;
   flex-wrap:wrap;
 }
 
@@ -472,111 +451,41 @@ a{
 .textarea,
 .select{
   width:100%;
-  border:1px solid #e2e9f5;
-  border-radius:15px;
+  border:1px solid #e0e8f2;
   background:#fff;
-  color:#46516d;
+  color:#3d405b;
+  border-radius:13px;
+  padding:11px 12px;
   outline:none;
   transition:.2s;
-}
-
-.input{
-  height:45px;
-  padding:0 13px;
-}
-
-.textarea{
-  min-height:105px;
-  padding:12px 13px;
-  resize:vertical;
-}
-
-.select{
-  height:45px;
-  padding:0 12px;
 }
 
 .input:focus,
 .textarea:focus,
 .select:focus{
   border-color:#a0c4ff;
-  box-shadow:0 0 0 4px rgba(160,196,255,.14);
+  box-shadow:0 0 0 3px rgba(160,196,255,.12);
 }
 
-.search-box{
-  flex:1 1 300px;
+.textarea{
+  min-height:110px;
+  resize:vertical;
 }
 
-.filter-box{
-  width:190px;
-}
-
-.primary{
-  border:0;
-  border-radius:15px;
-  min-height:45px;
-  padding:0 17px;
-  color:#40516f;
-  background:linear-gradient(135deg,#a0c4ff,#caffbf);
-  font-weight:900;
-  box-shadow:0 9px 22px rgba(116,157,213,.15);
-}
-
-.secondary{
-  border:1px solid #e3eaf5;
-  border-radius:15px;
-  min-height:45px;
-  padding:0 16px;
-  background:#fff;
-  color:#69748f;
-  font-weight:800;
-}
-
-.danger{
-  border:0;
-  border-radius:13px;
-  min-height:39px;
-  padding:0 13px;
-  background:#fff0f1;
-  color:#c36c76;
-  font-weight:800;
-}
-
-.success{
-  border:0;
-  border-radius:13px;
-  min-height:39px;
-  padding:0 13px;
-  background:#effff0;
-  color:#648c61;
-  font-weight:800;
-}
-
-.warning{
-  border:0;
-  border-radius:13px;
-  min-height:39px;
-  padding:0 13px;
-  background:#fffce8;
-  color:#9a8950;
-  font-weight:800;
-}
-
-.agent-list{
-  display:grid;
-  gap:11px;
-  margin-top:15px;
+.search{
+  flex:1;
+  min-width:200px;
 }
 
 .agent{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) auto;
-  gap:15px;
-  align-items:center;
-  padding:15px;
-  border:1px solid #edf1f8;
-  border-radius:21px;
-  background:rgba(255,255,255,.78);
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  background:#fff;
+  border:1px solid rgba(160,196,255,.18);
+  border-radius:20px;
+  padding:16px;
+  margin-bottom:10px;
 }
 
 .agent-main{
@@ -586,70 +495,66 @@ a{
 .agent-top{
   display:flex;
   align-items:center;
-  gap:9px;
   flex-wrap:wrap;
+  gap:8px;
 }
 
 .agent-name{
-  font-weight:900;
-  color:#525d79;
+  font-weight:800;
+  font-size:15px;
 }
 
 .code{
-  display:inline-flex;
-  align-items:center;
+  background:#eef5ff;
+  color:#6480a8;
+  border-radius:10px;
   padding:4px 8px;
-  border-radius:9px;
-  background:#f1f5ff;
-  color:#7184ac;
-  font-size:11px;
-  font-weight:900;
-}
-
-.email{
-  margin-top:4px;
-  color:#9099ad;
-  font-size:12px;
-  overflow-wrap:anywhere;
-}
-
-.meta{
-  display:flex;
-  gap:7px;
-  flex-wrap:wrap;
-  margin-top:7px;
-  color:#a0a8b8;
   font-size:10px;
+  font-weight:800;
 }
 
 .status{
   display:inline-flex;
   align-items:center;
-  gap:5px;
-  padding:5px 9px;
-  border-radius:999px;
+  padding:4px 8px;
+  border-radius:9px;
   font-size:10px;
-  font-weight:900;
+  font-weight:800;
 }
 
 .status.pending{
-  color:#9b8a50;
-  background:#fffbe8;
+  background:#fff2bd;
+  color:#806d26;
 }
 
 .status.active{
-  color:#5c8c63;
-  background:#effff1;
+  background:#dcf7d8;
+  color:#41784b;
 }
 
 .status.rejected{
-  color:#b66c76;
-  background:#fff0f1;
+  background:#ffe0e0;
+  color:#9a5050;
 }
 
 .status.suspended{
-  color:#777c8d;
-  background:#f0f2f6;
+  background:#e9e9ef;
+  color:#666a79;
+}
+
+.email{
+  color:#7d879b;
+  font-size:12px;
+  margin-top:6px;
+}
+
+.meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:8px;
+  color:#9aa3b4;
+  font-size:10px;
 }
 
 .agent-actions{
@@ -657,445 +562,320 @@ a{
   gap:6px;
   flex-wrap:wrap;
   justify-content:flex-end;
+  align-content:center;
 }
 
-.empty{
-  padding:45px 15px;
-  text-align:center;
-  color:#a2a9b8;
-}
-
-.empty-icon{
-  font-size:36px;
-  margin-bottom:8px;
-}
-
-.editor-grid{
+.dynamic-fields{
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
   gap:13px;
 }
 
+.dynamic-field,
 .field{
   min-width:0;
 }
 
+.dynamic-field.full,
 .field.full{
   grid-column:1/-1;
 }
 
 .label{
   display:block;
-  margin-bottom:6px;
   font-size:11px;
-  color:#7c879f;
-  font-weight:900;
-}
-
-.help{
-  margin-top:4px;
-  font-size:10px;
-  color:#a5adbd;
+  font-weight:800;
+  color:#69748b;
+  margin-bottom:6px;
 }
 
 .image-preview{
-  width:100%;
-  max-width:180px;
-  height:120px;
   object-fit:cover;
-  border-radius:17px;
-  border:1px solid #edf1f7;
-  background:#f8faff;
-}
-
-.quick-grid{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:12px;
-}
-
-.quick-card{
-  border:1px solid #edf1f7;
-  border-radius:21px;
-  padding:17px;
-  background:rgba(255,255,255,.72);
-}
-
-.quick-icon{
-  width:43px;
-  height:43px;
-  display:grid;
-  place-items:center;
   border-radius:15px;
-  background:#f1f6ff;
-  font-size:20px;
+  border:1px solid #edf0f5;
 }
 
-.quick-title{
-  margin-top:10px;
-  font-weight:900;
-  color:#56617c;
+.product-card{
+  display:grid;
+  grid-template-columns:100px minmax(0,1fr);
+  gap:15px;
+  align-items:center;
 }
 
-.quick-desc{
-  margin-top:4px;
-  color:#9ca4b5;
-  font-size:11px;
-  line-height:1.6;
+.product-image{
+  width:100px;
+  height:100px;
+  border-radius:19px;
+  object-fit:cover;
+  background:#f3f6fb;
 }
 
-.table-wrap{
-  overflow:auto;
-  border:1px solid #edf1f7;
-  border-radius:20px;
+.product-info{
+  min-width:0;
 }
 
-table{
-  width:100%;
-  min-width:720px;
-  border-collapse:collapse;
+.product-name{
+  font-weight:800;
+  font-size:16px;
 }
 
-th,
-td{
-  padding:12px;
-  border-bottom:1px solid #edf1f7;
-  text-align:left;
-  font-size:12px;
+.product-meta{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  margin-top:7px;
 }
 
-th{
-  background:#f8faff;
-  color:#7d879d;
-  font-weight:900;
+.pill{
+  display:inline-flex;
+  padding:5px 9px;
+  border-radius:10px;
+  background:#f0f5fb;
+  color:#68768d;
+  font-size:10px;
+  font-weight:800;
 }
 
-td{
-  color:#68738d;
+.pill.recommend{
+  background:#fff0bd;
+  color:#786321;
 }
 
-tr:last-child td{
-  border-bottom:0;
+.pill.new{
+  background:#e0f8db;
+  color:#47764d;
 }
 
-.notice{
-  padding:13px 15px;
-  border-radius:16px;
-  background:#f3f8ff;
-  color:#74809a;
+.pill.hidden{
+  background:#eeeef2;
+  color:#747684;
+}
+
+.product-detail{
+  color:#8b94a5;
   font-size:12px;
   line-height:1.7;
-  margin-bottom:15px;
+  margin-top:8px;
 }
 
-.warning-box{
-  background:#fffbe9;
-  color:#958650;
+.empty{
+  background:#fff;
+  border:1px dashed #dbe4ef;
+  border-radius:20px;
+  padding:35px 20px;
+  text-align:center;
+  color:#8b95a8;
+  font-size:13px;
 }
 
-.danger-box{
-  background:#fff1f2;
-  color:#a76d74;
-}
-
-.save-row{
-  display:flex;
-  gap:8px;
-  justify-content:flex-end;
-  margin-top:16px;
+.empty-icon{
+  font-size:28px;
+  margin-bottom:7px;
 }
 
 .small{
+  color:#8b95a8;
   font-size:11px;
 }
 
-.modal-bg{
+.modal{
   position:fixed;
   inset:0;
-  background:rgba(44,55,78,.35);
-  backdrop-filter:blur(8px);
+  z-index:500;
   display:none;
-  align-items:center;
-  justify-content:center;
+  place-items:center;
   padding:18px;
-  z-index:5000;
+  background:rgba(46,58,78,.3);
+  backdrop-filter:blur(7px);
 }
 
-.modal-bg.show{
-  display:flex;
+.modal.show{
+  display:grid;
 }
 
-.modal{
-  width:min(500px,100%);
+.modal-box{
+  width:min(680px,100%);
   max-height:90vh;
   overflow:auto;
   background:#fff;
   border-radius:27px;
   padding:22px;
-  box-shadow:0 30px 80px rgba(44,55,78,.2);
+  box-shadow:0 30px 100px rgba(40,55,80,.2);
+}
+
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  align-items:center;
+  margin-bottom:15px;
 }
 
 .modal-title{
-  margin:0;
-  color:#505b77;
-  font-size:20px;
-  font-weight:900;
+  font-size:18px;
+  font-weight:800;
 }
 
-.modal-text{
-  margin:8px 0 18px;
-  color:#858fa4;
-  font-size:13px;
-  line-height:1.7;
+.close{
+  width:35px;
+  height:35px;
+  border:0;
+  border-radius:12px;
+  background:#f1f4f8;
+  color:#69748a;
 }
 
 .modal-actions{
   display:flex;
-  gap:8px;
   justify-content:flex-end;
+  gap:8px;
+  margin-top:18px;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:13px;
+}
+
+.form-full{
+  grid-column:1/-1;
+}
+
+.check-row{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  font-size:12px;
+  color:#69748b;
+  margin-top:8px;
+}
+
+.check-row input{
+  accent-color:#8eb9f7;
 }
 
 .toast{
   position:fixed;
+  z-index:1000;
   left:50%;
-  bottom:22px;
+  bottom:24px;
   transform:translate(-50%,20px);
-  opacity:0;
-  visibility:hidden;
-  z-index:8000;
-  padding:12px 18px;
-  border-radius:999px;
-  background:#4e5b79;
+  background:#3d405b;
   color:#fff;
-  box-shadow:0 15px 40px rgba(50,65,95,.25);
+  padding:11px 17px;
+  border-radius:14px;
   font-size:12px;
-  font-weight:800;
+  font-weight:700;
+  opacity:0;
+  pointer-events:none;
   transition:.25s;
-  max-width:calc(100% - 30px);
+  max-width:90%;
   text-align:center;
 }
 
 .toast.show{
   opacity:1;
-  visibility:visible;
   transform:translate(-50%,0);
 }
 
-.row-actions{
-  display:flex;
-  gap:6px;
-  flex-wrap:wrap;
-}
-
-.pill{
-  display:inline-flex;
-  align-items:center;
-  padding:5px 9px;
-  border-radius:999px;
-  background:#f2f5fa;
-  color:#7d879b;
-  font-size:10px;
-  font-weight:900;
-}
-
-.content-card{
-  padding:18px;
-  border-radius:23px;
-  border:1px solid #edf1f7;
-  background:#fff;
-}
-
-.content-card + .content-card{
-  margin-top:12px;
-}
-
-.content-card-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:12px;
-  margin-bottom:14px;
-}
-
-.content-card-title{
-  font-weight:900;
-  color:#56617d;
-}
-
-.content-card-sub{
-  margin-top:3px;
-  color:#a0a8b8;
-  font-size:10px;
-}
-
-.dynamic-fields{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:11px;
-}
-
-.dynamic-field.full{
-  grid-column:1/-1;
-}
-
-.json-box{
-  width:100%;
-  min-height:180px;
-  border:1px solid #e4eaf3;
-  border-radius:15px;
-  padding:12px;
-  resize:vertical;
-  outline:none;
-  font-family:monospace;
-  font-size:11px;
-  color:#58627b;
-}
-
-@media(max-width:1050px){
-  .layout{
-    grid-template-columns:210px minmax(0,1fr);
+@media(max-width:900px){
+  .container{
+    grid-template-columns:1fr;
   }
 
-  .stats{
-    grid-template-columns:repeat(2,minmax(0,1fr));
+  .sidebar{
+    position:static;
+    display:flex;
+    overflow-x:auto;
+    gap:5px;
+    padding:8px;
+  }
+
+  .nav-btn{
+    white-space:nowrap;
+    width:auto;
+    margin:0;
+  }
+
+  .quick-grid{
+    grid-template-columns:repeat(2,1fr);
   }
 }
 
-@media(max-width:760px){
-  .page{
-    width:min(100% - 18px,700px);
-    padding-top:9px;
+@media(max-width:620px){
+  .header-inner{
+    min-height:68px;
   }
 
-  .header{
-    top:7px;
-    padding:11px;
-    border-radius:21px;
+  .brand-sub{
+    display:none;
   }
 
   .brand-title{
     font-size:15px;
   }
 
-  .brand-sub{
-    font-size:9px;
-  }
-
   .brand-icon{
-    width:42px;
-    height:42px;
-    border-radius:14px;
+    width:40px;
+    height:40px;
   }
 
-  .header-actions .icon-btn{
-    font-size:11px;
-    padding:0 10px;
-  }
-
-  .layout{
-    display:block;
-  }
-
-  .sidebar{
-    position:static;
-    margin-bottom:15px;
-    padding:8px;
-    display:flex;
-    gap:5px;
-    overflow-x:auto;
-    border-radius:20px;
-  }
-
-  .nav-title{
+  .header-actions .secondary{
     display:none;
   }
 
-  .nav-btn{
-    width:auto;
-    min-width:max-content;
-    margin:0;
-    padding:9px 11px;
-    font-size:11px;
+  .container{
+    width:92%;
+    margin-top:15px;
   }
 
-  .nav-icon{
-    width:25px;
-    height:25px;
+  .page-title{
+    font-size:21px;
+  }
+
+  .quick-grid{
+    grid-template-columns:1fr 1fr;
   }
 
   .stats{
-    gap:8px;
+    grid-template-columns:1fr 1fr;
   }
 
-  .stat{
-    padding:13px;
-    border-radius:19px;
-  }
-
-  .stat-value{
-    font-size:21px;
-  }
-
-  .card{
-    padding:13px;
-    border-radius:21px;
-  }
-
-  .section-title{
-    font-size:21px;
-  }
-
-  .editor-grid,
   .dynamic-fields,
-  .quick-grid{
+  .form-grid{
     grid-template-columns:1fr;
   }
 
+  .dynamic-field.full,
   .field.full,
-  .dynamic-field.full{
+  .form-full{
     grid-column:auto;
   }
 
   .agent{
-    grid-template-columns:1fr;
+    flex-direction:column;
   }
 
   .agent-actions{
     justify-content:flex-start;
   }
 
-  .filter-box{
-    width:100%;
+  .product-card{
+    grid-template-columns:75px minmax(0,1fr);
   }
 
-  .toolbar > button{
-    flex:1;
+  .product-image{
+    width:75px;
+    height:75px;
   }
 
-  .save-row{
-    justify-content:stretch;
+  .content-card-head{
+    flex-direction:column;
   }
 
-  .save-row button{
-    flex:1;
-  }
-
-  .float-img{
-    opacity:.45;
-  }
-}
-
-@media(max-width:420px){
-  .stats{
-    grid-template-columns:1fr 1fr;
-  }
-
-  .header-actions .back-btn{
-    display:none;
-  }
-
-  .agent-actions button{
-    flex:1;
+  .row-actions{
+    justify-content:flex-start;
   }
 }
 </style>
@@ -1103,442 +883,625 @@ tr:last-child td{
 
 <body>
 
+<div id="loading">
+  <div class="loading-box">
+    <div class="loading-icon">☁️</div>
+    <strong>กำลังตรวจสอบสิทธิ์ Admin...</strong>
+    <div class="small" style="margin-top:6px">
+      Bennie Choco Distributor Portal
+    </div>
+  </div>
+</div>
+
 <div class="cloud c1"></div>
 <div class="cloud c2"></div>
 <div class="cloud c3"></div>
 
-<img class="float-img f1" src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png" alt="">
-<img class="float-img f2" src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png" alt="">
-<img class="float-img f3" src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png" alt="">
+<img class="float f1"
+src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
+alt="">
 
-<div id="loading" class="loading">
-  <div class="loader-box">
-    <div class="spinner"></div>
-    <div class="loader-text">กำลังตรวจสอบสิทธิ์ Admin...</div>
-  </div>
-</div>
+<img class="float f2"
+src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
+alt="">
 
-<div class="page">
+<img class="float f3"
+src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
+alt="">
 
-  <header class="header">
+<header>
+  <div class="header-inner">
+
     <div class="brand">
       <div class="brand-icon">🍫</div>
+
       <div>
-        <div class="brand-title">Bennie Choco — Admin</div>
-        <div class="brand-sub">ระบบจัดการ Distributor Portal</div>
+        <div class="brand-title">
+          Bennie Choco — Admin
+        </div>
+
+        <div class="brand-sub">
+          ระบบจัดการ Distributor Portal
+        </div>
       </div>
     </div>
 
     <div class="header-actions">
-      <a class="icon-btn back-btn" href="index.html">🏠 ดูเว็บไซต์</a>
-      <button class="icon-btn logout-btn" id="logoutBtn">ออกจากระบบ</button>
+
+      <a
+        href="index.html"
+        class="secondary"
+        style="text-decoration:none"
+      >
+        🏠 หน้าเว็บไซต์
+      </a>
+
+      <button
+        id="logoutBtn"
+        class="danger"
+      >
+        ออกจากระบบ
+      </button>
+
     </div>
-  </header>
 
-  <div class="layout">
-
-    <aside class="sidebar">
-
-      <div class="nav-title">ADMIN MENU</div>
-
-      <button class="nav-btn active" data-section="website">
-        <span class="nav-icon">🏠</span>
-        <span>จัดการเว็บไซต์</span>
-      </button>
-
-      <button class="nav-btn" data-section="agents">
-        <span class="nav-icon">👥</span>
-        <span>จัดการตัวแทน</span>
-      </button>
-
-      <button class="nav-btn" data-section="products">
-        <span class="nav-icon">📦</span>
-        <span>สินค้า</span>
-      </button>
-
-      <button class="nav-btn" data-section="announcements">
-        <span class="nav-icon">📢</span>
-        <span>ประกาศ</span>
-      </button>
-
-      <button class="nav-btn" data-section="settings">
-        <span class="nav-icon">⚙️</span>
-        <span>ตั้งค่าระบบ</span>
-      </button>
-
-    </aside>
-
-    <main class="main">
-
-      <!-- =========================
-           WEBSITE
-      ========================== -->
-      <section id="section-website" class="section active">
-
-        <div class="section-head">
-          <h1 class="section-title">🏠 จัดการเว็บไซต์</h1>
-          <p class="section-desc">
-            แก้ไขข้อความ รูปภาพ ปุ่ม ลิงก์ และส่วนต่าง ๆ ของหน้าเว็บไซต์
-          </p>
-        </div>
-
-        <div class="card">
-
-          <div class="notice">
-            ส่วนนี้เชื่อมกับตาราง <b>site_content</b> ของ Supabase โปรเจกต์ใหม่
-            โดยจะอ่านข้อมูลที่มีอยู่จริงก่อน เพื่อไม่สร้างโครงสร้างใหม่ทับของเดิม
-          </div>
-
-          <div class="quick-grid">
-
-            <div class="quick-card">
-              <div class="quick-icon">✏️</div>
-              <div class="quick-title">แก้ไขข้อความ / รายละเอียด</div>
-              <div class="quick-desc">
-                แก้ชื่อร้าน คำโปรย ข้อความหน้า Home รายละเอียดต่าง ๆ
-                จากข้อมูลที่มีอยู่ใน site_content
-              </div>
-              <button class="secondary" style="margin-top:12px;width:100%" onclick="loadSiteContent()">
-                เปิดตัวแก้ไข
-              </button>
-            </div>
-
-            <div class="quick-card">
-              <div class="quick-icon">🖼️</div>
-              <div class="quick-title">แก้ไขรูปภาพ</div>
-              <div class="quick-desc">
-                แก้ URL รูป Logo, Banner, ภาพประกอบ หรือรูปส่วนต่าง ๆ
-              </div>
-              <button class="secondary" style="margin-top:12px;width:100%" onclick="loadSiteContent()">
-                จัดการรูปภาพ
-              </button>
-            </div>
-
-            <div class="quick-card">
-              <div class="quick-icon">🔗</div>
-              <div class="quick-title">แก้ไขปุ่ม / ลิงก์</div>
-              <div class="quick-desc">
-                แก้ข้อความบนปุ่มและ URL ที่หน้าเว็บไซต์ใช้
-              </div>
-              <button class="secondary" style="margin-top:12px;width:100%" onclick="loadSiteContent()">
-                จัดการลิงก์
-              </button>
-            </div>
-
-            <div class="quick-card">
-              <div class="quick-icon">🎵</div>
-              <div class="quick-title">เพลง / ส่วนแสดงผล</div>
-              <div class="quick-desc">
-                จัดการข้อมูลเพลงและค่าที่เกี่ยวข้อง หากมีอยู่ใน site_content
-              </div>
-              <button class="secondary" style="margin-top:12px;width:100%" onclick="loadSiteContent()">
-                เปิดตัวแก้ไข
-              </button>
-            </div>
-
-          </div>
-
-        </div>
-
-        <div class="card" id="siteContentEditor">
-
-          <div class="content-card-head">
-            <div>
-              <div class="content-card-title">ข้อมูลเว็บไซต์</div>
-              <div class="content-card-sub">
-                ข้อมูลจากตาราง site_content
-              </div>
-            </div>
-
-            <button class="secondary" onclick="loadSiteContent()">
-              ↻ โหลดใหม่
-            </button>
-          </div>
-
-          <div id="siteContentArea">
-            <div class="empty">
-              <div class="empty-icon">🏠</div>
-              กด “เปิดตัวแก้ไข” เพื่อโหลดข้อมูลเว็บไซต์
-            </div>
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- =========================
-           AGENTS
-      ========================== -->
-      <section id="section-agents" class="section">
-
-        <div class="section-head">
-          <h1 class="section-title">👥 จัดการตัวแทน</h1>
-          <p class="section-desc">
-            ตรวจสอบผู้สมัคร อนุมัติ ปฏิเสธ ระงับ และค้นหาข้อมูลตัวแทน
-          </p>
-        </div>
-
-        <div class="stats">
-
-          <div class="stat">
-            <div class="stat-icon">⏳</div>
-            <div class="stat-label">รอตรวจสอบ</div>
-            <div class="stat-value" id="statPending">0</div>
-          </div>
-
-          <div class="stat">
-            <div class="stat-icon">💚</div>
-            <div class="stat-label">ใช้งานอยู่</div>
-            <div class="stat-value" id="statActive">0</div>
-          </div>
-
-          <div class="stat">
-            <div class="stat-icon">🚫</div>
-            <div class="stat-label">ปฏิเสธ</div>
-            <div class="stat-value" id="statRejected">0</div>
-          </div>
-
-          <div class="stat">
-            <div class="stat-icon">🔒</div>
-            <div class="stat-label">ระงับ</div>
-            <div class="stat-value" id="statSuspended">0</div>
-          </div>
-
-        </div>
-
-        <div class="card">
-
-          <div class="toolbar">
-
-            <div class="search-box">
-              <input
-                id="agentSearch"
-                class="input"
-                placeholder="ค้นหาชื่อ / รหัสตัวแทน / Email / เลขคำขอ..."
-              >
-            </div>
-
-            <div class="filter-box">
-              <select id="agentStatus" class="select">
-                <option value="all">ทุกสถานะ</option>
-                <option value="pending">รอตรวจสอบ</option>
-                <option value="active">ใช้งานอยู่</option>
-                <option value="rejected">ปฏิเสธ</option>
-                <option value="suspended">ระงับ</option>
-              </select>
-            </div>
-
-            <button class="secondary" id="refreshAgents">
-              ↻ รีเฟรช
-            </button>
-
-          </div>
-
-          <div id="agentList" class="agent-list">
-            <div class="empty">
-              <div class="empty-icon">👥</div>
-              กำลังโหลดข้อมูลตัวแทน...
-            </div>
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- =========================
-           PRODUCTS
-      ========================== -->
-      <section id="section-products" class="section">
-
-        <div class="section-head">
-          <h1 class="section-title">📦 จัดการสินค้า</h1>
-          <p class="section-desc">
-            เพิ่ม แก้ไข ซ่อน และจัดการรายละเอียดสินค้าสำหรับตัวแทน
-          </p>
-        </div>
-
-        <div class="card">
-
-          <div class="toolbar">
-
-            <div class="search-box">
-              <input
-                id="productSearch"
-                class="input"
-                placeholder="ค้นหาสินค้า / รหัสสินค้า..."
-              >
-            </div>
-
-            <button class="secondary" onclick="loadProducts()">
-              ↻ รีเฟรช
-            </button>
-
-          </div>
-
-          <div class="notice" style="margin-top:14px">
-            ระบบจะแสดงคอลัมน์ที่มีอยู่จริงในตาราง <b>products</b>
-            เพื่อป้องกันการเขียนข้อมูลผิดโครงสร้าง
-          </div>
-
-          <div id="productsArea">
-            <div class="empty">
-              <div class="empty-icon">📦</div>
-              กำลังโหลดสินค้า...
-            </div>
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- =========================
-           ANNOUNCEMENTS
-      ========================== -->
-      <section id="section-announcements" class="section">
-
-        <div class="section-head">
-          <h1 class="section-title">📢 จัดการประกาศ</h1>
-          <p class="section-desc">
-            เพิ่ม แก้ไข ซ่อน และจัดการประกาศสำหรับตัวแทน
-          </p>
-        </div>
-
-        <div class="card">
-
-          <div class="notice">
-            ประกาศที่เปิดใช้งานสามารถนำไปแสดงในหน้า Dashboard
-            ของตัวแทนได้ ส่วนประกาศสำคัญสามารถนำไปใช้เป็น Popup ได้
-          </div>
-
-          <div id="announcementsArea">
-            <div class="empty">
-              <div class="empty-icon">📢</div>
-              กำลังโหลดประกาศ...
-            </div>
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- =========================
-           SETTINGS
-      ========================== -->
-      <section id="section-settings" class="section">
-
-        <div class="section-head">
-          <h1 class="section-title">⚙️ ตั้งค่าระบบ</h1>
-          <p class="section-desc">
-            การตั้งค่าหลักของ Distributor Portal
-          </p>
-        </div>
-
-        <div class="card">
-
-          <div class="notice">
-            <b>Supabase Project ใหม่</b><br>
-            https://arhvdvaugcjzkdbxesma.supabase.co
-            <br><br>
-            หน้า Admin นี้ใช้ Publishable Key ของโปรเจกต์ใหม่เท่านั้น
-            และไม่มีการเชื่อมต่อ Supabase โปรเจกต์เก่า
-          </div>
-
-          <div class="editor-grid">
-
-            <div class="field">
-              <label class="label">ชื่อระบบ</label>
-              <input
-                id="systemName"
-                class="input"
-                value="Bennie Choco Distributor Portal"
-              >
-            </div>
-
-            <div class="field">
-              <label class="label">คำโปรย</label>
-              <input
-                id="systemTagline"
-                class="input"
-                value="Sweet Together • Grow Together"
-              >
-            </div>
-
-            <div class="field">
-              <label class="label">ชื่อ Admin</label>
-              <input
-                id="adminLabel"
-                class="input"
-                value="Bennie Choco Admin"
-              >
-            </div>
-
-            <div class="field">
-              <label class="label">ช่องทางติดต่อ</label>
-              <input
-                id="contactText"
-                class="input"
-                placeholder="LINE / Facebook / ช่องทางอื่น"
-              >
-            </div>
-
-          </div>
-
-          <div class="save-row">
-            <button class="primary" onclick="saveLocalSettings()">
-              ✓ บันทึกการตั้งค่า
-            </button>
-          </div>
-
-        </div>
-
-        <div class="card">
-
-          <div class="content-card-title">🔐 ความปลอดภัย</div>
-
-          <div class="notice warning-box" style="margin-top:12px">
-            หน้า Admin ตรวจสิทธิ์ผ่าน <b>admin_users</b> และ RPC
-            <b>is_admin()</b> ของ Supabase โปรเจกต์ใหม่
-          </div>
-
-          <div class="notice danger-box">
-            ห้ามนำ Service Role Key มาใส่ใน HTML
-            หน้านี้ใช้ Publishable Key เท่านั้น
-          </div>
-
-        </div>
-
-      </section>
-
-    </main>
   </div>
+</header>
+
+<div class="container">
+
+  <aside class="sidebar">
+
+    <button
+      class="nav-btn active"
+      data-section="website"
+    >
+      🏠 จัดการเว็บไซต์
+    </button>
+
+    <button
+      class="nav-btn"
+      data-section="agents"
+    >
+      👥 จัดการตัวแทน
+    </button>
+
+    <button
+      class="nav-btn"
+      data-section="products"
+    >
+      📦 จัดการสินค้า
+    </button>
+
+    <button
+      class="nav-btn"
+      data-section="announcements"
+    >
+      📢 ประกาศ
+    </button>
+
+    <button
+      class="nav-btn"
+      data-section="settings"
+    >
+      ⚙️ ตั้งค่าระบบ
+    </button>
+
+  </aside>
+
+  <main class="main">
+
+    <!-- =====================================================
+         WEBSITE
+    ====================================================== -->
+
+    <section
+      id="section-website"
+      class="section active"
+    >
+
+      <div class="page-head">
+        <h1 class="page-title">
+          🏠 จัดการเว็บไซต์
+        </h1>
+
+        <div class="page-sub">
+          แก้ไขข้อมูลที่ใช้แสดงบน Distributor Portal
+        </div>
+      </div>
+
+      <div class="notice">
+        ข้อมูลส่วนนี้อ่านจาก <b>site_content</b> ใน Supabase โปรเจกต์ใหม่
+        โดยระบบจะอ่านข้อมูลจริงก่อน เพื่อป้องกันการกำหนดชื่อคอลัมน์ผิด
+      </div>
+
+      <div class="quick-grid">
+
+        <button
+          class="quick-card"
+          onclick="focusSiteContent('text')"
+        >
+          <div class="quick-icon">✏️</div>
+          <div class="quick-title">
+            ข้อความ / รายละเอียด
+          </div>
+          <div class="quick-sub">
+            แก้ไขข้อความที่แสดงบนเว็บไซต์
+          </div>
+        </button>
+
+        <button
+          class="quick-card"
+          onclick="focusSiteContent('image')"
+        >
+          <div class="quick-icon">🖼️</div>
+          <div class="quick-title">
+            รูปภาพ
+          </div>
+          <div class="quick-sub">
+            จัดการ URL รูปภาพและรูปประกอบ
+          </div>
+        </button>
+
+        <button
+          class="quick-card"
+          onclick="focusSiteContent('link')"
+        >
+          <div class="quick-icon">🔗</div>
+          <div class="quick-title">
+            ปุ่ม / ลิงก์
+          </div>
+          <div class="quick-sub">
+            แก้ไขปลายทางของปุ่ม
+          </div>
+        </button>
+
+        <button
+          class="quick-card"
+          onclick="focusSiteContent('visible')"
+        >
+          <div class="quick-icon">👁️</div>
+          <div class="quick-title">
+            เปิด-ปิดส่วนต่าง ๆ
+          </div>
+          <div class="quick-sub">
+            เปิดหรือซ่อนข้อมูลที่รองรับ boolean
+          </div>
+        </button>
+
+        <button
+          class="quick-card"
+          onclick="focusSiteContent('music')"
+        >
+          <div class="quick-icon">🎵</div>
+          <div class="quick-title">
+            เพลง
+          </div>
+          <div class="quick-sub">
+            แก้ไขข้อมูลเพลงหรือส่วนแสดงผล
+          </div>
+        </button>
+
+        <button
+          class="quick-card"
+          onclick="focusSiteContent('theme')"
+        >
+          <div class="quick-icon">🎨</div>
+          <div class="quick-title">
+            สี / ธีม
+          </div>
+          <div class="quick-sub">
+            จัดการค่าธีมเมื่อมีข้อมูลรองรับ
+          </div>
+        </button>
+
+        <button
+          class="quick-card"
+          onclick="focusSiteContent('contact')"
+        >
+          <div class="quick-icon">💬</div>
+          <div class="quick-title">
+            ช่องทางติดต่อ
+          </div>
+          <div class="quick-sub">
+            แก้ไข LINE / Facebook / ช่องทางอื่น
+          </div>
+        </button>
+
+        <button
+          class="quick-card"
+          onclick="loadSiteContent()"
+        >
+          <div class="quick-icon">🔄</div>
+          <div class="quick-title">
+            โหลดข้อมูลใหม่
+          </div>
+          <div class="quick-sub">
+            อ่านข้อมูลจาก Supabase อีกครั้ง
+          </div>
+        </button>
+
+      </div>
+
+      <div class="content-card">
+
+        <div class="content-card-head">
+
+          <div>
+            <div class="content-card-title">
+              ข้อมูลเว็บไซต์
+            </div>
+
+            <div class="content-card-sub">
+              ข้อมูลจริงจากตาราง site_content
+            </div>
+          </div>
+
+          <button
+            class="secondary"
+            onclick="loadSiteContent()"
+          >
+            🔄 โหลดใหม่
+          </button>
+
+        </div>
+
+        <div id="siteContentArea"></div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         AGENTS
+    ====================================================== -->
+
+    <section
+      id="section-agents"
+      class="section"
+    >
+
+      <div class="page-head">
+        <h1 class="page-title">
+          👥 จัดการตัวแทน
+        </h1>
+
+        <div class="page-sub">
+          ตรวจสอบและจัดการบัญชี Distributor
+        </div>
+      </div>
+
+      <div class="stats">
+
+        <div class="stat">
+          <div class="stat-label">รอตรวจสอบ</div>
+          <div id="statPending" class="stat-value">0</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">ใช้งานอยู่</div>
+          <div id="statActive" class="stat-value">0</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">ปฏิเสธ</div>
+          <div id="statRejected" class="stat-value">0</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">ระงับ</div>
+          <div id="statSuspended" class="stat-value">0</div>
+        </div>
+
+      </div>
+
+      <div class="toolbar">
+
+        <input
+          id="agentSearch"
+          class="input search"
+          placeholder="ค้นหาชื่อ / รหัสตัวแทน / Email / เลขคำขอ"
+        >
+
+        <select
+          id="agentStatus"
+          class="select"
+          style="width:auto;min-width:145px"
+        >
+          <option value="all">ทุกสถานะ</option>
+          <option value="pending">รอตรวจสอบ</option>
+          <option value="active">ใช้งานอยู่</option>
+          <option value="rejected">ปฏิเสธ</option>
+          <option value="suspended">ระงับ</option>
+        </select>
+
+        <button
+          id="refreshAgents"
+          class="secondary"
+        >
+          🔄 รีเฟรช
+        </button>
+
+      </div>
+
+      <div id="agentList"></div>
+
+    </section>
+
+
+    <!-- =====================================================
+         PRODUCTS
+    ====================================================== -->
+
+    <section
+      id="section-products"
+      class="section"
+    >
+
+      <div class="page-head">
+
+        <h1 class="page-title">
+          📦 จัดการสินค้า
+        </h1>
+
+        <div class="page-sub">
+          เพิ่ม แก้ไข และจัดการสินค้าสำหรับตัวแทน
+        </div>
+
+      </div>
+
+      <div class="notice">
+        สินค้ารองรับข้อมูล เช่น รูปสินค้า ชื่อ ราคา ราคาตัวแทน
+        รายละเอียด แท็ก สินค้าแนะนำ สินค้าใหม่ และการแสดง/ซ่อน
+      </div>
+
+      <div class="toolbar">
+
+        <input
+          id="productSearch"
+          class="input search"
+          placeholder="ค้นหาชื่อสินค้า / รหัส / ราคา / แท็ก"
+        >
+
+        <button
+          class="primary"
+          id="addProductBtn"
+        >
+          ＋ เพิ่มสินค้า
+        </button>
+
+        <button
+          class="secondary"
+          onclick="loadProducts()"
+        >
+          🔄 รีเฟรช
+        </button>
+
+      </div>
+
+      <div id="productsArea"></div>
+
+    </section>
+
+
+    <!-- =====================================================
+         ANNOUNCEMENTS
+    ====================================================== -->
+
+    <section
+      id="section-announcements"
+      class="section"
+    >
+
+      <div class="page-head">
+
+        <h1 class="page-title">
+          📢 ประกาศ
+        </h1>
+
+        <div class="page-sub">
+          จัดการประกาศที่ตัวแทนจะเห็นบน Dashboard
+        </div>
+
+      </div>
+
+      <div class="toolbar">
+
+        <button
+          class="primary"
+          id="addAnnouncementBtn"
+        >
+          ＋ เพิ่มประกาศ
+        </button>
+
+        <button
+          class="secondary"
+          onclick="loadAnnouncements()"
+        >
+          🔄 รีเฟรช
+        </button>
+
+      </div>
+
+      <div class="notice">
+        ประกาศที่เปิดแสดงสามารถนำไปแสดงบน Dashboard
+        และข้อมูลที่เป็นประกาศสำคัญสามารถนำไปใช้เป็น Popup ได้
+      </div>
+
+      <div id="announcementsArea"></div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SETTINGS
+    ====================================================== -->
+
+    <section
+      id="section-settings"
+      class="section"
+    >
+
+      <div class="page-head">
+
+        <h1 class="page-title">
+          ⚙️ ตั้งค่าระบบ
+        </h1>
+
+        <div class="page-sub">
+          การตั้งค่าของหน้า Admin นี้
+        </div>
+
+      </div>
+
+      <div class="content-card">
+
+        <div class="content-card-title">
+          ข้อมูลระบบ
+        </div>
+
+        <div
+          class="content-card-sub"
+          style="margin-bottom:15px"
+        >
+          การตั้งค่าส่วนนี้เก็บไว้ในเครื่อง Admin
+        </div>
+
+        <div class="form-grid">
+
+          <div>
+            <label class="label">
+              ชื่อระบบ
+            </label>
+
+            <input
+              id="systemName"
+              class="input"
+              value="Bennie Choco Distributor Portal"
+            >
+          </div>
+
+          <div>
+            <label class="label">
+              ชื่อ Admin
+            </label>
+
+            <input
+              id="adminLabel"
+              class="input"
+              value="Bennie Choco Admin"
+            >
+          </div>
+
+          <div class="form-full">
+
+            <label class="label">
+              Tagline
+            </label>
+
+            <input
+              id="systemTagline"
+              class="input"
+              value="Sweet Together • Grow Together"
+            >
+
+          </div>
+
+          <div class="form-full">
+
+            <label class="label">
+              ช่องทางติดต่อ Admin
+            </label>
+
+            <textarea
+              id="contactText"
+              class="textarea"
+              placeholder="เช่น LINE: ...&#10;Facebook: ..."
+            ></textarea>
+
+          </div>
+
+        </div>
+
+        <div style="margin-top:15px">
+
+          <button
+            class="primary"
+            onclick="saveLocalSettings()"
+          >
+            💾 บันทึกการตั้งค่า
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="notice">
+        <b>🔐 ความปลอดภัย</b><br>
+        ระบบ Admin ใช้ <b>admin_users</b> และ <b>is_admin()</b>
+        จาก Supabase โปรเจกต์ใหม่เท่านั้น
+        ห้ามนำ Service Role Key หรือ Secret Key มาใส่ใน HTML
+      </div>
+
+    </section>
+
+  </main>
+
 </div>
 
 
-<!-- =========================
+<!-- =====================================================
      STATUS MODAL
-========================== -->
+====================================================== -->
 
-<div id="statusModal" class="modal-bg">
+<div
+  id="statusModal"
+  class="modal"
+>
 
-  <div class="modal">
+  <div class="modal-box">
 
-    <h2 class="modal-title" id="modalTitle">
-      เปลี่ยนสถานะตัวแทน
-    </h2>
+    <div class="modal-head">
 
-    <div class="modal-text" id="modalText"></div>
+      <div
+        id="modalTitle"
+        class="modal-title"
+      >
+        ยืนยันการเปลี่ยนสถานะ
+      </div>
+
+      <button
+        class="close"
+        onclick="closeModal()"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <div
+      id="modalText"
+      style="
+        color:#727d91;
+        font-size:13px;
+        line-height:1.8
+      "
+    ></div>
 
     <div class="modal-actions">
 
-      <button class="secondary" onclick="closeModal()">
+      <button
+        class="secondary"
+        onclick="closeModal()"
+      >
         ยกเลิก
       </button>
 
-      <button class="primary" id="confirmStatusBtn">
+      <button
+        id="confirmStatusBtn"
+        class="primary"
+      >
         ยืนยัน
       </button>
 
@@ -1549,27 +1512,50 @@ tr:last-child td{
 </div>
 
 
-<!-- =========================
+<!-- =====================================================
      EDIT MODAL
-========================== -->
+====================================================== -->
 
-<div id="editModal" class="modal-bg">
+<div
+  id="editModal"
+  class="modal"
+>
 
-  <div class="modal">
+  <div class="modal-box">
 
-    <h2 class="modal-title" id="editModalTitle">
-      แก้ไขข้อมูล
-    </h2>
+    <div class="modal-head">
+
+      <div
+        id="editModalTitle"
+        class="modal-title"
+      >
+        แก้ไขข้อมูล
+      </div>
+
+      <button
+        class="close"
+        onclick="closeEditModal()"
+      >
+        ×
+      </button>
+
+    </div>
 
     <div id="editModalBody"></div>
 
-    <div class="modal-actions" style="margin-top:18px">
+    <div class="modal-actions">
 
-      <button class="secondary" onclick="closeEditModal()">
+      <button
+        class="secondary"
+        onclick="closeEditModal()"
+      >
         ยกเลิก
       </button>
 
-      <button class="primary" id="saveEditBtn">
+      <button
+        id="saveEditBtn"
+        class="primary"
+      >
         บันทึก
       </button>
 
@@ -1580,7 +1566,118 @@ tr:last-child td{
 </div>
 
 
-<div id="toast" class="toast"></div>
+<!-- =====================================================
+     PRODUCT MODAL
+====================================================== -->
+
+<div
+  id="productModal"
+  class="modal"
+>
+
+  <div class="modal-box">
+
+    <div class="modal-head">
+
+      <div
+        id="productModalTitle"
+        class="modal-title"
+      >
+        📦 เพิ่มสินค้า
+      </div>
+
+      <button
+        class="close"
+        onclick="closeProductModal()"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <div id="productModalBody"></div>
+
+    <div class="modal-actions">
+
+      <button
+        class="secondary"
+        onclick="closeProductModal()"
+      >
+        ยกเลิก
+      </button>
+
+      <button
+        id="saveProductBtn"
+        class="primary"
+      >
+        บันทึกสินค้า
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     ANNOUNCEMENT MODAL
+====================================================== -->
+
+<div
+  id="announcementModal"
+  class="modal"
+>
+
+  <div class="modal-box">
+
+    <div class="modal-head">
+
+      <div
+        id="announcementModalTitle"
+        class="modal-title"
+      >
+        📢 เพิ่มประกาศ
+      </div>
+
+      <button
+        class="close"
+        onclick="closeAnnouncementModal()"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <div id="announcementModalBody"></div>
+
+    <div class="modal-actions">
+
+      <button
+        class="secondary"
+        onclick="closeAnnouncementModal()"
+      >
+        ยกเลิก
+      </button>
+
+      <button
+        id="saveAnnouncementBtn"
+        class="primary"
+      >
+        บันทึกประกาศ
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<div
+  id="toast"
+  class="toast"
+></div>
 
 
 <script>
@@ -1607,16 +1704,22 @@ const supabaseClient =
 ========================================================= */
 
 let currentUser = null;
+
 let agents = [];
 let products = [];
 let announcements = [];
 
+let siteContent = [];
+
 let pendingStatusChange = null;
 let pendingEdit = null;
 
+let pendingProduct = null;
+let pendingAnnouncement = null;
+
 
 /* =========================================================
-   BASIC HELPERS
+   HELPERS
 ========================================================= */
 
 function esc(value){
@@ -1645,7 +1748,7 @@ function toast(message){
   window.toastTimer =
     setTimeout(
       () => el.classList.remove("show"),
-      2300
+      2500
     );
 
 }
@@ -1667,7 +1770,7 @@ function formatDate(value){
 
   }catch{
 
-    return value;
+    return String(value);
 
   }
 
@@ -1677,18 +1780,67 @@ function formatDate(value){
 function statusLabel(status){
 
   const map = {
-
     pending:"รอตรวจสอบ",
-
     active:"ใช้งานอยู่",
-
     rejected:"ปฏิเสธ",
-
     suspended:"ระงับ"
-
   };
 
   return map[status] || status || "-";
+
+}
+
+
+function findValue(object,keys){
+
+  for(const key of keys){
+
+    if(
+      Object.prototype
+        .hasOwnProperty
+        .call(object,key)
+    ){
+
+      return object[key];
+
+    }
+
+  }
+
+  return undefined;
+
+}
+
+
+function getPrimaryLikeField(row){
+
+  const possible = [
+    "id",
+    "key",
+    "slug",
+    "code",
+    "product_id",
+    "announcement_id"
+  ];
+
+  return possible.find(
+    key =>
+      Object.prototype
+        .hasOwnProperty
+        .call(row,key)
+  );
+
+}
+
+
+function detectField(row,keys){
+
+  return keys.find(
+    key =>
+      Object.prototype
+        .hasOwnProperty
+        .call(row,key)
+  ) || null;
 
 }
 
@@ -1697,9 +1849,12 @@ function statusLabel(status){
    ADMIN AUTH
 ========================================================= */
 
-async function checkAdmin(userId){
+async function checkAdmin(){
 
-  const {data,error} =
+  const {
+    data,
+    error
+  } =
     await supabaseClient
       .rpc("is_admin");
 
@@ -1743,9 +1898,7 @@ async function init(){
       session.user;
 
     const isAdmin =
-      await checkAdmin(
-        session.user.id
-      );
+      await checkAdmin();
 
     if(!isAdmin){
 
@@ -1769,7 +1922,7 @@ async function init(){
       .getElementById("loading")
       .classList.add("hide");
 
-    loadAgents();
+    await loadAgents();
 
   }catch(error){
 
@@ -1798,7 +1951,7 @@ document
 
     button.addEventListener(
       "click",
-      () => {
+      async () => {
 
         const section =
           button.dataset.section;
@@ -1823,21 +1976,17 @@ document
           )
           .classList.add("active");
 
-        if(section === "agents"){
-          loadAgents();
-        }
+        if(section === "website")
+          await loadSiteContent();
 
-        if(section === "products"){
-          loadProducts();
-        }
+        if(section === "agents")
+          await loadAgents();
 
-        if(section === "announcements"){
-          loadAnnouncements();
-        }
+        if(section === "products")
+          await loadProducts();
 
-        if(section === "website"){
-          loadSiteContent();
-        }
+        if(section === "announcements")
+          await loadAnnouncements();
 
       }
     );
@@ -1874,9 +2023,7 @@ document
 async function loadAgents(){
 
   const area =
-    document.getElementById(
-      "agentList"
-    );
+    document.getElementById("agentList");
 
   area.innerHTML = `
     <div class="empty">
@@ -1932,7 +2079,6 @@ async function loadAgents(){
     data || [];
 
   updateAgentStats();
-
   renderAgents();
 
 }
@@ -1946,25 +2092,17 @@ function updateAgentStats(){
         x => x.status === status
       ).length;
 
-  document
-    .getElementById("statPending")
-    .textContent =
-      count("pending");
+  document.getElementById("statPending").textContent =
+    count("pending");
 
-  document
-    .getElementById("statActive")
-    .textContent =
-      count("active");
+  document.getElementById("statActive").textContent =
+    count("active");
 
-  document
-    .getElementById("statRejected")
-    .textContent =
-      count("rejected");
+  document.getElementById("statRejected").textContent =
+    count("rejected");
 
-  document
-    .getElementById("statSuspended")
-    .textContent =
-      count("suspended");
+  document.getElementById("statSuspended").textContent =
+    count("suspended");
 
 }
 
@@ -1972,9 +2110,7 @@ function updateAgentStats(){
 function renderAgents(){
 
   const area =
-    document.getElementById(
-      "agentList"
-    );
+    document.getElementById("agentList");
 
   const search =
     document
@@ -2001,16 +2137,13 @@ function renderAgents(){
         .join(" ")
         .toLowerCase();
 
-      const searchOK =
-        !search ||
-        text.includes(search);
-
-      const statusOK =
-        status === "all" ||
-        agent.status === status;
-
-      return searchOK &&
-             statusOK;
+      return (
+        (!search || text.includes(search)) &&
+        (
+          status === "all" ||
+          agent.status === status
+        )
+      );
 
     });
 
@@ -2028,142 +2161,128 @@ function renderAgents(){
   }
 
   area.innerHTML =
-    filtered
-      .map(agent => {
+    filtered.map(agent => {
 
-        const status =
-          agent.status || "pending";
+      const status =
+        agent.status || "pending";
 
-        let actions = "";
+      let actions = "";
 
-        if(status === "pending"){
+      if(status === "pending"){
 
-          actions = `
-            <button
-              class="success"
-              onclick="askStatusChange(
-                '${agent.id}',
-                'active'
-              )"
-            >
-              ✓ อนุมัติ
-            </button>
+        actions = `
+          <button
+            class="success"
+            onclick="askStatusChange('${agent.id}','active')"
+          >
+            ✓ อนุมัติ
+          </button>
 
-            <button
-              class="danger"
-              onclick="askStatusChange(
-                '${agent.id}',
-                'rejected'
-              )"
-            >
-              ✕ ปฏิเสธ
-            </button>
-          `;
+          <button
+            class="danger"
+            onclick="askStatusChange('${agent.id}','rejected')"
+          >
+            ✕ ปฏิเสธ
+          </button>
+        `;
 
-        }
+      }
 
-        if(status === "active"){
+      if(status === "active"){
 
-          actions = `
-            <button
-              class="warning"
-              onclick="askStatusChange(
-                '${agent.id}',
-                'suspended'
-              )"
-            >
-              🔒 ระงับ
-            </button>
-          `;
+        actions = `
+          <button
+            class="warning"
+            onclick="askStatusChange('${agent.id}','suspended')"
+          >
+            🔒 ระงับ
+          </button>
+        `;
 
-        }
+      }
 
-        if(
-          status === "suspended" ||
-          status === "rejected"
-        ){
+      if(
+        status === "rejected" ||
+        status === "suspended"
+      ){
 
-          actions = `
-            <button
-              class="success"
-              onclick="askStatusChange(
-                '${agent.id}',
-                'active'
-              )"
-            >
-              ✓ เปิดใช้งาน
-            </button>
-          `;
+        actions = `
+          <button
+            class="success"
+            onclick="askStatusChange('${agent.id}','active')"
+          >
+            ✓ เปิดใช้งาน
+          </button>
+        `;
 
-        }
+      }
 
-        return `
-          <div class="agent">
+      return `
+        <div class="agent">
 
-            <div class="agent-main">
+          <div class="agent-main">
 
-              <div class="agent-top">
+            <div class="agent-top">
 
-                <div class="agent-name">
-                  ${esc(agent.nickname)}
-                </div>
-
-                <div class="code">
-                  ${esc(agent.distributor_code)}
-                </div>
-
-                <div class="status ${esc(status)}">
-                  ${statusLabel(status)}
-                </div>
-
+              <div class="agent-name">
+                ${esc(agent.nickname)}
               </div>
 
-              <div class="email">
-                ${esc(agent.email)}
+              <div class="code">
+                ${esc(agent.distributor_code)}
               </div>
 
-              <div class="meta">
-
-                <span>
-                  🧾 ${esc(agent.request_no || "-")}
-                </span>
-
-                <span>
-                  สมัคร ${formatDate(agent.created_at)}
-                </span>
-
-                ${
-                  agent.approved_at
-                  ? `
-                    <span>
-                      อนุมัติ ${formatDate(agent.approved_at)}
-                    </span>
-                  `
-                  : ""
-                }
-
+              <div class="status ${esc(status)}">
+                ${statusLabel(status)}
               </div>
 
             </div>
 
-            <div class="agent-actions">
+            <div class="email">
+              ${esc(agent.email)}
+            </div>
 
-              ${actions}
+            <div class="meta">
 
-              <button
-                class="secondary"
-                onclick="viewAgent('${agent.id}')"
-              >
-                ดูข้อมูล
-              </button>
+              <span>
+                🧾 ${esc(agent.request_no || "-")}
+              </span>
+
+              <span>
+                สมัคร ${formatDate(agent.created_at)}
+              </span>
+
+              ${
+                agent.approved_at
+                ? `
+                  <span>
+                    อนุมัติ ${formatDate(agent.approved_at)}
+                  </span>
+                `
+                : ""
+              }
 
             </div>
 
           </div>
-        `;
 
-      })
-      .join("");
+          <div class="agent-actions">
+
+            ${actions}
+
+            <button
+              class="secondary"
+              onclick="viewAgent('${agent.id}')"
+            >
+              ดูข้อมูล
+            </button>
+
+          </div>
+
+        </div>
+      `;
+
+    }).join("");
 
 }
 
@@ -2210,76 +2329,36 @@ function viewAgent(id){
     .getElementById("editModalBody")
     .innerHTML = `
 
-      <div class="content-card" style="margin-top:14px">
+      <div class="dynamic-fields">
 
-        <div class="dynamic-fields">
+        <div>
+          <label class="label">ชื่อ / Nickname</label>
+          <input class="input" disabled value="${esc(agent.nickname)}">
+        </div>
 
-          <div class="field">
-            <label class="label">
-              ชื่อ / Nickname
-            </label>
-            <input
-              class="input"
-              value="${esc(agent.nickname)}"
-              disabled
-            >
-          </div>
+        <div>
+          <label class="label">รหัสตัวแทน</label>
+          <input class="input" disabled value="${esc(agent.distributor_code)}">
+        </div>
 
-          <div class="field">
-            <label class="label">
-              รหัสตัวแทน
-            </label>
-            <input
-              class="input"
-              value="${esc(agent.distributor_code)}"
-              disabled
-            >
-          </div>
+        <div class="dynamic-field full">
+          <label class="label">Email</label>
+          <input class="input" disabled value="${esc(agent.email)}">
+        </div>
 
-          <div class="field full">
-            <label class="label">
-              Email
-            </label>
-            <input
-              class="input"
-              value="${esc(agent.email)}"
-              disabled
-            >
-          </div>
+        <div>
+          <label class="label">เลขคำขอ</label>
+          <input class="input" disabled value="${esc(agent.request_no)}">
+        </div>
 
-          <div class="field">
-            <label class="label">
-              เลขคำขอ
-            </label>
-            <input
-              class="input"
-              value="${esc(agent.request_no)}"
-              disabled
-            >
-          </div>
+        <div>
+          <label class="label">สถานะ</label>
+          <input class="input" disabled value="${esc(statusLabel(agent.status))}">
+        </div>
 
-          <div class="field">
-            <label class="label">
-              สถานะ
-            </label>
-            <input
-              class="input"
-              value="${esc(statusLabel(agent.status))}"
-              disabled
-            >
-          </div>
-
-          <div class="field full">
-            <label class="label">
-              สมัครเมื่อ
-            </label>
-            <input
-              class="input"
-              value="${esc(formatDate(agent.created_at))}"
-              disabled
-            >
-          </div>
-
+        <div class="dynamic-field full">
+          <label class="label">สมัครเมื่อ</label>
+          <input class="input" disabled value="${esc(formatDate(agent.created_at))}">
         </div>
 
       </div>
@@ -2287,8 +2366,7 @@ function viewAgent(id){
 
   document
     .getElementById("saveEditBtn")
-    .style.display =
-      "none";
+    .style.display = "none";
 
   document
     .getElementById("editModal")
@@ -2297,10 +2375,7 @@ function viewAgent(id){
 }
 
 
-function askStatusChange(
-  id,
-  newStatus
-){
+function askStatusChange(id,newStatus){
 
   const agent =
     agents.find(
@@ -2343,8 +2418,7 @@ function askStatusChange(
 
 function closeModal(){
 
-  pendingStatusChange =
-    null;
+  pendingStatusChange = null;
 
   document
     .getElementById("statusModal")
@@ -2365,8 +2439,7 @@ document
       const {
         id,
         newStatus
-      } =
-        pendingStatusChange;
+      } = pendingStatusChange;
 
       const button =
         document.getElementById(
@@ -2374,9 +2447,7 @@ document
         );
 
       button.disabled = true;
-
-      button.textContent =
-        "กำลังบันทึก...";
+      button.textContent = "กำลังบันทึก...";
 
       try{
 
@@ -2394,9 +2465,7 @@ document
 
         }
 
-        const {
-          error
-        } =
+        const {error} =
           await supabaseClient
             .from("profiles")
             .update(payload)
@@ -2424,11 +2493,8 @@ document
 
       }finally{
 
-        button.disabled =
-          false;
-
-        button.textContent =
-          "ยืนยัน";
+        button.disabled = false;
+        button.textContent = "ยืนยัน";
 
       }
 
@@ -2438,7 +2504,6 @@ document
 
 /* =========================================================
    SITE CONTENT
-   Schema-safe reader/editor
 ========================================================= */
 
 async function loadSiteContent(){
@@ -2462,7 +2527,7 @@ async function loadSiteContent(){
     await supabaseClient
       .from("site_content")
       .select("*")
-      .limit(100);
+      .limit(200);
 
   if(error){
 
@@ -2482,7 +2547,10 @@ async function loadSiteContent(){
 
   }
 
-  if(!data || !data.length){
+  siteContent =
+    data || [];
+
+  if(!siteContent.length){
 
     area.innerHTML = `
       <div class="empty">
@@ -2496,14 +2564,16 @@ async function loadSiteContent(){
   }
 
   area.innerHTML =
-    data.map(
-      (row,index) =>
-        renderDynamicRow(
-          "site_content",
-          row,
-          index
-        )
-    ).join("");
+    siteContent
+      .map(
+        (row,index) =>
+          renderDynamicRow(
+            "site_content",
+            row,
+            index
+          )
+      )
+      .join("");
 
 }
 
@@ -2517,11 +2587,6 @@ function renderDynamicRow(
   const idField =
     getPrimaryLikeField(row);
 
-  const rowId =
-    idField
-    ? row[idField]
-    : index;
-
   const fields =
     Object.keys(row)
       .filter(
@@ -2533,18 +2598,17 @@ function renderDynamicRow(
       );
 
   return `
-
     <div
       class="content-card"
       data-table="${esc(table)}"
-      data-row-index="${index}"
     >
 
       <div class="content-card-head">
 
         <div>
           <div class="content-card-title">
-            ${table === "site_content"
+            ${
+              table === "site_content"
               ? "เว็บไซต์ #" + (index + 1)
               : table === "products"
               ? "สินค้า #" + (index + 1)
@@ -2553,7 +2617,8 @@ function renderDynamicRow(
           </div>
 
           <div class="content-card-sub">
-            ${idField
+            ${
+              idField
               ? esc(String(row[idField]))
               : "ข้อมูลรายการ"
             }
@@ -2564,30 +2629,10 @@ function renderDynamicRow(
 
           <button
             class="secondary"
-            onclick="editDynamicRow(
-              '${esc(table)}',
-              ${index}
-            )"
+            onclick="editDynamicRow('${esc(table)}',${index})"
           >
             ✏️ แก้ไข
           </button>
-
-          ${
-            table === "products" ||
-            table === "announcements"
-            ? `
-              <button
-                class="danger"
-                onclick="deleteDynamicRow(
-                  '${esc(table)}',
-                  ${index}
-                )"
-              >
-                ลบ
-              </button>
-            `
-            : ""
-          }
 
         </div>
 
@@ -2597,77 +2642,84 @@ function renderDynamicRow(
 
         ${
           fields
-            .slice(0,8)
-            .map(
-              key => {
+            .slice(0,10)
+            .map(key => {
 
-                const value =
-                  row[key];
+              const value = row[key];
 
-                const isLong =
-                  String(value ?? "")
-                    .length > 100 ||
-                  key
-                    .toLowerCase()
-                    .includes("description") ||
-                  key
-                    .toLowerCase()
-                    .includes("detail") ||
-                  key
-                    .toLowerCase()
-                    .includes("content") ||
-                  key
-                    .toLowerCase()
-                    .includes("text");
+              const keyLower =
+                key.toLowerCase();
 
-                return `
+              const isLong =
+                String(value ?? "").length > 100 ||
+                [
+                  "description",
+                  "detail",
+                  "content",
+                  "text",
+                  "body"
+                ].some(
+                  x => keyLower.includes(x)
+                );
 
-                  <div
-                    class="dynamic-field ${
-                      isLong
-                      ? "full"
-                      : ""
-                    }"
-                  >
+              const isBoolean =
+                typeof value === "boolean";
 
-                    <label class="label">
-                      ${esc(key)}
-                    </label>
+              return `
+                <div
+                  class="dynamic-field ${
+                    isLong ? "full" : ""
+                  }"
+                >
 
-                    ${
-                      isLong
-                      ? `
-                        <textarea
-                          class="textarea"
-                          disabled
-                        >${esc(
+                  <label class="label">
+                    ${esc(key)}
+                  </label>
+
+                  ${
+                    isBoolean
+                    ? `
+                      <select
+                        class="select"
+                        disabled
+                      >
+                        <option>
+                          ${
+                            value
+                            ? "เปิด / ใช้งาน"
+                            : "ปิด / ซ่อน"
+                          }
+                        </option>
+                      </select>
+                    `
+                    : isLong
+                    ? `
+                      <textarea
+                        class="textarea"
+                        disabled
+                      >${esc(
+                        typeof value === "object"
+                        ? JSON.stringify(value,null,2)
+                        : value ?? ""
+                      )}</textarea>
+                    `
+                    : `
+                      <input
+                        class="input"
+                        disabled
+                        value="${esc(
                           typeof value === "object"
-                          ? JSON.stringify(
-                              value,
-                              null,
-                              2
-                            )
+                          ? JSON.stringify(value)
                           : value ?? ""
-                        )}</textarea>
-                      `
-                      : `
-                        <input
-                          class="input"
-                          value="${esc(
-                            typeof value === "object"
-                            ? JSON.stringify(value)
-                            : value ?? ""
-                          )}"
-                          disabled
-                        >
-                      `
-                    }
+                        )}"
+                      >
+                    `
+                  }
 
-                  </div>
-                `;
+                </div>
+              `;
 
-              }
-            )
+            })
             .join("")
         }
 
@@ -2679,56 +2731,29 @@ function renderDynamicRow(
 }
 
 
-function getPrimaryLikeField(row){
-
-  const possible =
-    [
-      "id",
-      "key",
-      "slug",
-      "code",
-      "product_id",
-      "announcement_id"
-    ];
-
-  return possible.find(
-    x =>
-      Object.prototype
-        .hasOwnProperty
-        .call(row,x)
-  );
-
-}
-
-
 async function editDynamicRow(
   table,
   index
 ){
 
-  let source;
+  let row;
 
   if(table === "site_content")
-    source =
-      await getTableRow(
-        "site_content",
-        index
-      );
+    row = siteContent[index];
 
   if(table === "products")
-    source =
-      products[index];
+    row = products[index];
 
   if(table === "announcements")
-    source =
-      announcements[index];
+    row = announcements[index];
 
-  if(!source) return;
+  if(!row)
+    return;
 
   pendingEdit = {
     table,
     index,
-    row:source
+    row
   };
 
   document
@@ -2743,45 +2768,15 @@ async function editDynamicRow(
   document
     .getElementById("editModalBody")
     .innerHTML =
-      renderEditForm(source);
+      renderEditForm(row);
 
   document
     .getElementById("saveEditBtn")
-    .style.display =
-      "";
+    .style.display = "";
 
   document
     .getElementById("editModal")
     .classList.add("show");
-
-}
-
-
-async function getTableRow(
-  table,
-  index
-){
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from(table)
-      .select("*")
-      .limit(100);
-
-  if(error){
-
-    toast(
-      "โหลดข้อมูลไม่สำเร็จ"
-    );
-
-    return null;
-
-  }
-
-  return data?.[index] || null;
 
 }
 
@@ -2800,128 +2795,109 @@ function renderEditForm(row){
       );
 
   return `
-
-    <div class="dynamic-fields"
-         style="margin-top:15px">
+    <div class="dynamic-fields">
 
       ${
-        keys
-          .map(
-            key => {
+        keys.map(key => {
 
-              const value =
-                row[key];
+          const value = row[key];
 
-              const isLong =
-                String(value ?? "")
-                  .length > 100 ||
-                [
-                  "description",
-                  "detail",
-                  "content",
-                  "text",
-                  "body"
-                ]
-                .some(
-                  x =>
-                    key
-                      .toLowerCase()
-                      .includes(x)
-                );
+          const keyLower =
+            key.toLowerCase();
 
-              const isBoolean =
-                typeof value === "boolean";
+          const isLong =
+            String(value ?? "").length > 100 ||
+            [
+              "description",
+              "detail",
+              "content",
+              "text",
+              "body"
+            ].some(
+              x => keyLower.includes(x)
+            );
 
-              if(isBoolean){
+          const isBoolean =
+            typeof value === "boolean";
 
-                return `
+          if(isBoolean){
 
-                  <div class="dynamic-field">
+            return `
+              <div class="dynamic-field">
 
-                    <label class="label">
-                      ${esc(key)}
-                    </label>
+                <label class="label">
+                  ${esc(key)}
+                </label>
 
-                    <select
-                      class="select edit-field"
-                      data-key="${esc(key)}"
-                    >
-
-                      <option
-                        value="true"
-                        ${value ? "selected" : ""}
-                      >
-                        เปิด / ใช้งาน
-                      </option>
-
-                      <option
-                        value="false"
-                        ${!value ? "selected" : ""}
-                      >
-                        ปิด / ซ่อน
-                      </option>
-
-                    </select>
-
-                  </div>
-
-                `;
-
-              }
-
-              return `
-
-                <div
-                  class="dynamic-field ${
-                    isLong
-                    ? "full"
-                    : ""
-                  }"
+                <select
+                  class="select edit-field"
+                  data-key="${esc(key)}"
                 >
 
-                  <label class="label">
-                    ${esc(key)}
-                  </label>
+                  <option
+                    value="true"
+                    ${value ? "selected" : ""}
+                  >
+                    เปิด / ใช้งาน
+                  </option>
 
-                  ${
-                    isLong
-                    ? `
-                      <textarea
-                        class="textarea edit-field"
-                        data-key="${esc(key)}"
-                      >${esc(
-                        typeof value === "object"
-                        ? JSON.stringify(
-                            value,
-                            null,
-                            2
-                          )
-                        : value ?? ""
-                      )}</textarea>
-                    `
-                    : `
-                      <input
-                        class="input edit-field"
-                        data-key="${esc(key)}"
-                        value="${esc(
-                          typeof value === "object"
-                          ? JSON.stringify(value)
-                          : value ?? ""
-                        )}"
-                      >
-                    `
-                  }
+                  <option
+                    value="false"
+                    ${!value ? "selected" : ""}
+                  >
+                    ปิด / ซ่อน
+                  </option>
 
-                </div>
-              `;
+                </select>
 
-            }
-          )
-          .join("")
+              </div>
+            `;
+
+          }
+
+          return `
+            <div
+              class="dynamic-field ${
+                isLong ? "full" : ""
+              }"
+            >
+
+              <label class="label">
+                ${esc(key)}
+              </label>
+
+              ${
+                isLong
+                ? `
+                  <textarea
+                    class="textarea edit-field"
+                    data-key="${esc(key)}"
+                  >${esc(
+                    typeof value === "object"
+                    ? JSON.stringify(value,null,2)
+                    : value ?? ""
+                  )}</textarea>
+                `
+                : `
+                  <input
+                    class="input edit-field"
+                    data-key="${esc(key)}"
+                    value="${esc(
+                      typeof value === "object"
+                      ? JSON.stringify(value)
+                      : value ?? ""
+                    )}"
+                  >
+                `
+              }
+
+            </div>
+          `;
+
+        }).join("")
       }
 
     </div>
-
   `;
 
 }
@@ -2929,8 +2905,7 @@ function renderEditForm(row){
 
 function closeEditModal(){
 
-  pendingEdit =
-    null;
+  pendingEdit = null;
 
   document
     .getElementById("editModal")
@@ -2953,19 +2928,15 @@ document
           "saveEditBtn"
         );
 
-      button.disabled =
-        true;
-
-      button.textContent =
-        "กำลังบันทึก...";
+      button.disabled = true;
+      button.textContent = "กำลังบันทึก...";
 
       try{
 
         const {
           table,
           row
-        } =
-          pendingEdit;
+        } = pendingEdit;
 
         const payload = {};
 
@@ -2973,74 +2944,61 @@ document
           .querySelectorAll(
             "#editModalBody .edit-field"
           )
-          .forEach(
-            field => {
+          .forEach(field => {
 
-              const key =
-                field.dataset.key;
+            const key =
+              field.dataset.key;
 
-              let value =
-                field.value;
+            let value =
+              field.value;
 
-              if(
-                row[key] === true ||
-                row[key] === false
-              ){
+            if(
+              row[key] === true ||
+              row[key] === false
+            ){
 
-                value =
-                  value === "true";
+              value =
+                value === "true";
 
-              }else if(
-                typeof row[key] === "number"
-              ){
+            }else if(
+              typeof row[key] === "number"
+            ){
 
-                value =
-                  value === ""
-                  ? null
-                  : Number(value);
+              value =
+                value === ""
+                ? null
+                : Number(value);
 
-              }else if(
-                typeof row[key] === "object" &&
-                row[key] !== null
-              ){
+            }else if(
+              typeof row[key] === "object" &&
+              row[key] !== null
+            ){
 
-                try{
-
-                  value =
-                    JSON.parse(value);
-
-                }catch{
-
-                  throw new Error(
-                    "ข้อมูล " +
-                    key +
-                    " ต้องเป็น JSON ที่ถูกต้อง"
-                  );
-
-                }
-
+              try{
+                value = JSON.parse(value);
+              }catch{
+                throw new Error(
+                  "ข้อมูล " +
+                  key +
+                  " ต้องเป็น JSON ที่ถูกต้อง"
+                );
               }
 
-              payload[key] =
-                value;
-
             }
-          );
+
+            payload[key] = value;
+
+          });
 
         const idField =
           getPrimaryLikeField(row);
 
-        if(!idField){
-
+        if(!idField)
           throw new Error(
             "ไม่พบ ID ของรายการนี้"
           );
 
-        }
-
-        const {
-          error
-        } =
+        const {error} =
           await supabaseClient
             .from(table)
             .update(payload)
@@ -3078,16 +3036,119 @@ document
 
       }finally{
 
-        button.disabled =
-          false;
-
-        button.textContent =
-          "บันทึก";
+        button.disabled = false;
+        button.textContent = "บันทึก";
 
       }
 
     }
   );
+
+
+/* =========================================================
+   WEBSITE QUICK ACTION
+========================================================= */
+
+function focusSiteContent(type){
+
+  const area =
+    document.getElementById(
+      "siteContentArea"
+    );
+
+  if(!siteContent.length){
+
+    loadSiteContent();
+    return;
+
+  }
+
+  const keywords = {
+
+    text:[
+      "text",
+      "title",
+      "description",
+      "detail",
+      "content",
+      "body"
+    ],
+
+    image:[
+      "image",
+      "img",
+      "photo",
+      "cover",
+      "thumbnail"
+    ],
+
+    link:[
+      "link",
+      "url",
+      "href",
+      "button"
+    ],
+
+    visible:[
+      "visible",
+      "show",
+      "hide",
+      "active",
+      "enabled"
+    ],
+
+    music:[
+      "music",
+      "audio",
+      "song"
+    ],
+
+    theme:[
+      "theme",
+      "color",
+      "background"
+    ],
+
+    contact:[
+      "contact",
+      "line",
+      "facebook",
+      "tiktok",
+      "instagram"
+    ]
+
+  };
+
+  const words =
+    keywords[type] || [];
+
+  const cards =
+    [...area.querySelectorAll(
+      ".content-card"
+    )];
+
+  cards.forEach(card => {
+
+    const text =
+      card.textContent.toLowerCase();
+
+    const match =
+      words.some(
+        word =>
+          text.includes(word)
+      );
+
+    card.style.display =
+      match ? "" : "none";
+
+  });
+
+  toast(
+    "แสดงข้อมูลหมวด " +
+    type
+  );
+
+}
 
 
 /* =========================================================
@@ -3158,11 +3219,10 @@ function renderProducts(){
       .toLowerCase();
 
   const filtered =
-    products.filter(
-      product =>
-        JSON.stringify(product)
-          .toLowerCase()
-          .includes(search)
+    products.filter(product =>
+      JSON.stringify(product)
+        .toLowerCase()
+        .includes(search)
     );
 
   if(!filtered.length){
@@ -3170,7 +3230,11 @@ function renderProducts(){
     area.innerHTML = `
       <div class="empty">
         <div class="empty-icon">📦</div>
-        ไม่พบสินค้า
+        ${
+          products.length
+          ? "ไม่พบสินค้าที่ค้นหา"
+          : "ยังไม่มีสินค้า"
+        }
       </div>
     `;
 
@@ -3179,181 +3243,292 @@ function renderProducts(){
   }
 
   area.innerHTML =
-    filtered
-      .map(
-        (product) => {
+    filtered.map(product => {
 
-          const image =
-            findValue(
-              product,
-              [
-                "image",
-                "image_url",
-                "product_image",
-                "thumbnail",
-                "cover"
-              ]
-            );
+      const image =
+        findValue(
+          product,
+          [
+            "image",
+            "image_url",
+            "product_image",
+            "thumbnail",
+            "cover"
+          ]
+        );
 
-          const name =
-            findValue(
-              product,
-              [
-                "name",
-                "product_name",
-                "title"
-              ]
-            ) || "สินค้า";
+      const name =
+        findValue(
+          product,
+          [
+            "name",
+            "product_name",
+            "title"
+          ]
+        ) || "สินค้า";
 
-          const code =
-            findValue(
-              product,
-              [
-                "code",
-                "product_code",
-                "sku"
-              ]
-            );
+      const code =
+        findValue(
+          product,
+          [
+            "code",
+            "product_code",
+            "sku"
+          ]
+        );
 
-          const price =
-            findValue(
-              product,
-              [
-                "price",
-                "distributor_price",
-                "agent_price"
-              ]
-            );
+      const price =
+        findValue(
+          product,
+          [
+            "price",
+            "distributor_price",
+            "agent_price"
+          ]
+        );
 
-          const index =
-            products.indexOf(
-              product
-            );
+      const agentPrice =
+        findValue(
+          product,
+          [
+            "agent_price",
+            "distributor_price",
+            "dealer_price",
+            "wholesale_price"
+          ]
+        );
 
-          return `
+      const description =
+        findValue(
+          product,
+          [
+            "description",
+            "detail",
+            "content"
+          ]
+        );
 
-            <div class="content-card">
+      const tag =
+        findValue(
+          product,
+          [
+            "tag",
+            "tags",
+            "category"
+          ]
+        );
 
-              <div
-                class="content-card-head"
-              >
+      const recommended =
+        findValue(
+          product,
+          [
+            "recommended",
+            "is_recommended",
+            "featured"
+          ]
+        );
 
+      const isNew =
+        findValue(
+          product,
+          [
+            "new",
+            "is_new",
+            "new_product"
+          ]
+        );
+
+      const visible =
+        findValue(
+          product,
+          [
+            "visible",
+            "is_visible",
+            "active",
+            "published"
+          ]
+        );
+
+      const index =
+        products.indexOf(product);
+
+      return `
+        <div class="content-card">
+
+          <div class="product-card">
+
+            ${
+              image
+              ? `
+                <img
+                  src="${esc(image)}"
+                  class="product-image"
+                  onerror="this.style.display='none'"
+                >
+              `
+              : `
                 <div
+                  class="product-image"
                   style="
-                    display:flex;
-                    gap:12px;
-                    align-items:center
+                    display:grid;
+                    place-items:center;
+                    font-size:30px
                   "
                 >
+                  🍫
+                </div>
+              `
+            }
 
-                  ${
-                    image
-                    ? `
-                      <img
-                        src="${esc(image)}"
-                        class="image-preview"
-                        style="
-                          width:82px;
-                          height:70px;
-                          flex:none
-                        "
-                        onerror="
-                          this.style.display='none'
-                        "
-                      >
-                    `
-                    : `
-                      <div
-                        style="
-                          width:82px;
-                          height:70px;
-                          border-radius:17px;
-                          background:#f3f6fb;
-                          display:grid;
-                          place-items:center;
-                          font-size:25px;
-                          flex:none
-                        "
-                      >
-                        🍫
-                      </div>
-                    `
-                  }
+            <div class="product-info">
 
-                  <div>
+              <div class="product-name">
+                ${esc(name)}
+              </div>
 
-                    <div
-                      class="content-card-title"
-                    >
-                      ${esc(name)}
-                    </div>
-
-                    ${
-                      code
-                      ? `
-                        <div
-                          class="content-card-sub"
-                        >
-                          ${esc(code)}
-                        </div>
-                      `
-                      : ""
-                    }
-
-                    ${
-                      price !== undefined
-                      ? `
-                        <div
-                          class="pill"
-                          style="margin-top:6px"
-                        >
-                          ฿${esc(price)}
-                        </div>
-                      `
-                      : ""
-                    }
-
+              ${
+                code
+                ? `
+                  <div class="content-card-sub">
+                    ${esc(code)}
                   </div>
+                `
+                : ""
+              }
 
-                </div>
+              <div class="product-meta">
 
-                <div class="row-actions">
+                ${
+                  price !== undefined
+                  ? `
+                    <span class="pill">
+                      ราคา ฿${esc(price)}
+                    </span>
+                  `
+                  : ""
+                }
 
-                  <button
-                    class="secondary"
-                    onclick="
-                      editDynamicRow(
-                        'products',
-                        ${index}
-                      )
-                    "
-                  >
-                    ✏️ แก้ไข
-                  </button>
+                ${
+                  agentPrice !== undefined
+                  ? `
+                    <span class="pill">
+                      ตัวแทน ฿${esc(agentPrice)}
+                    </span>
+                  `
+                  : ""
+                }
 
-                  <button
-                    class="danger"
-                    onclick="
-                      deleteDynamicRow(
-                        'products',
-                        ${index}
-                      )
-                    "
-                  >
-                    🗑️ ลบ
-                  </button>
+                ${
+                  recommended
+                  ? `
+                    <span class="pill recommend">
+                      ⭐ สินค้าแนะนำ
+                    </span>
+                  `
+                  : ""
+                }
 
-                </div>
+                ${
+                  isNew
+                  ? `
+                    <span class="pill new">
+                      🆕 สินค้าใหม่
+                    </span>
+                  `
+                  : ""
+                }
+
+                ${
+                  visible === false
+                  ? `
+                    <span class="pill hidden">
+                      ซ่อนอยู่
+                    </span>
+                  `
+                  : ""
+                }
+
+                ${
+                  tag
+                  ? `
+                    <span class="pill">
+                      🏷️ ${esc(
+                        Array.isArray(tag)
+                        ? tag.join(", ")
+                        : tag
+                      )}
+                    </span>
+                  `
+                  : ""
+                }
+
+              </div>
+
+              ${
+                description
+                ? `
+                  <div class="product-detail">
+                    ${esc(
+                      String(description)
+                        .slice(0,220)
+                    )}
+                  </div>
+                `
+                : ""
+              }
+
+              <div
+                class="row-actions"
+                style="
+                  justify-content:flex-start;
+                  margin-top:11px
+                "
+              >
+
+                <button
+                  class="secondary"
+                  onclick="editDynamicRow('products',${index})"
+                >
+                  ✏️ แก้ไข
+                </button>
+
+                ${
+                  image
+                  ? `
+                    <button
+                      class="secondary"
+                      onclick="downloadImage('${esc(image)}','${esc(name)}')"
+                    >
+                      ⬇️ ดาวน์โหลดรูป
+                    </button>
+                  `
+                  : ""
+                }
+
+                <button
+                  class="secondary"
+                  onclick="copyProductDetails(${index})"
+                >
+                  📋 คัดลอกรายละเอียด
+                </button>
+
+                <button
+                  class="danger"
+                  onclick="deleteDynamicRow('products',${index})"
+                >
+                  🗑️ ลบ
+                </button>
 
               </div>
 
             </div>
 
-          `;
+          </div>
 
-        }
-      )
-      .join("");
+        </div>
+      `;
+
+    }).join("");
 
 }
 
@@ -3364,6 +3539,657 @@ document
     "input",
     renderProducts
   );
+
+
+document
+  .getElementById("addProductBtn")
+  .addEventListener(
+    "click",
+    openAddProduct
+  );
+
+
+function openAddProduct(){
+
+  pendingProduct = {
+    mode:"add"
+  };
+
+  document
+    .getElementById("productModalTitle")
+    .textContent =
+      "📦 เพิ่มสินค้า";
+
+  document
+    .getElementById("productModalBody")
+    .innerHTML =
+      renderProductForm();
+
+  document
+    .getElementById("productModal")
+    .classList.add("show");
+
+}
+
+
+function renderProductForm(row={}){
+
+  const name =
+    findValue(
+      row,
+      ["name","product_name","title"]
+    ) ?? "";
+
+  const image =
+    findValue(
+      row,
+      ["image","image_url","product_image","thumbnail","cover"]
+    ) ?? "";
+
+  const price =
+    findValue(
+      row,
+      ["price"]
+    ) ?? "";
+
+  const agentPrice =
+    findValue(
+      row,
+      ["agent_price","distributor_price","dealer_price"]
+    ) ?? "";
+
+  const description =
+    findValue(
+      row,
+      ["description","detail","content"]
+    ) ?? "";
+
+  const tags =
+    findValue(
+      row,
+      ["tags","tag","category"]
+    ) ?? "";
+
+  const recommended =
+    findValue(
+      row,
+      ["recommended","is_recommended","featured"]
+    ) ?? false;
+
+  const isNew =
+    findValue(
+      row,
+      ["new","is_new","new_product"]
+    ) ?? false;
+
+  const visible =
+    findValue(
+      row,
+      ["visible","is_visible","active","published"]
+    );
+
+  return `
+
+    <div class="form-grid">
+
+      <div class="form-full">
+        <label class="label">
+          ชื่อสินค้า
+        </label>
+
+        <input
+          id="newProductName"
+          class="input"
+          value="${esc(name)}"
+          placeholder="ชื่อสินค้า"
+        >
+      </div>
+
+      <div>
+        <label class="label">
+          รูปสินค้า
+        </label>
+
+        <input
+          id="newProductImage"
+          class="input"
+          value="${esc(image)}"
+          placeholder="URL รูปสินค้า"
+        >
+      </div>
+
+      <div>
+        <label class="label">
+          ราคา
+        </label>
+
+        <input
+          id="newProductPrice"
+          class="input"
+          type="number"
+          value="${esc(price)}"
+          placeholder="ราคาปกติ"
+        >
+      </div>
+
+      <div>
+        <label class="label">
+          ราคาตัวแทน
+        </label>
+
+        <input
+          id="newProductAgentPrice"
+          class="input"
+          type="number"
+          value="${esc(agentPrice)}"
+          placeholder="ราคาสำหรับตัวแทน"
+        >
+      </div>
+
+      <div>
+        <label class="label">
+          แท็กสินค้า
+        </label>
+
+        <input
+          id="newProductTags"
+          class="input"
+          value="${esc(
+            Array.isArray(tags)
+            ? tags.join(", ")
+            : tags
+          )}"
+          placeholder="เช่น chocolate, best seller"
+        >
+      </div>
+
+      <div class="form-full">
+        <label class="label">
+          รายละเอียด
+        </label>
+
+        <textarea
+          id="newProductDescription"
+          class="textarea"
+          placeholder="รายละเอียดสินค้า"
+        >${esc(description)}</textarea>
+      </div>
+
+      <div>
+
+        <label class="label">
+          แสดงสินค้า
+        </label>
+
+        <select
+          id="newProductVisible"
+          class="select"
+        >
+
+          <option
+            value="true"
+            ${
+              visible === false
+              ? ""
+              : "selected"
+            }
+          >
+            แสดง
+          </option>
+
+          <option
+            value="false"
+            ${
+              visible === false
+              ? "selected"
+              : ""
+            }
+          >
+            ซ่อน
+          </option>
+
+        </select>
+
+      </div>
+
+      <div>
+
+        <label class="label">
+          ตัวเลือกสินค้า
+        </label>
+
+        <label class="check-row">
+          <input
+            id="newProductRecommended"
+            type="checkbox"
+            ${recommended ? "checked" : ""}
+          >
+          ⭐ สินค้าแนะนำ
+        </label>
+
+        <label class="check-row">
+          <input
+            id="newProductNew"
+            type="checkbox"
+            ${isNew ? "checked" : ""}
+          >
+          🆕 สินค้าใหม่
+        </label>
+
+      </div>
+
+    </div>
+  `;
+
+}
+
+
+document
+  .getElementById("saveProductBtn")
+  .addEventListener(
+    "click",
+    saveProduct
+  );
+
+
+async function saveProduct(){
+
+  const button =
+    document.getElementById(
+      "saveProductBtn"
+    );
+
+  button.disabled = true;
+  button.textContent = "กำลังบันทึก...";
+
+  try{
+
+    const isEdit =
+      pendingProduct?.mode === "edit";
+
+    const row =
+      isEdit
+      ? pendingProduct.row
+      : {};
+
+    const payload = {};
+
+    const setIfExists =
+      (keys,value) => {
+
+        const key =
+          detectField(row,keys);
+
+        if(key)
+          payload[key] = value;
+
+      };
+
+    /*
+      เพิ่มสินค้า:
+      ถ้ามีสินค้าตัวอย่างอยู่แล้ว ระบบจะใช้ชื่อ
+      column จริงของ row นั้น
+    */
+
+    const sample =
+      products[0] || {};
+
+    const schemaRow =
+      isEdit
+      ? row
+      : sample;
+
+    function setDynamic(keys,value){
+
+      const key =
+        detectField(
+          schemaRow,
+          keys
+        );
+
+      if(key)
+        payload[key] = value;
+
+    }
+
+    const name =
+      document
+        .getElementById("newProductName")
+        .value
+        .trim();
+
+    if(!name)
+      throw new Error(
+        "กรุณากรอกชื่อสินค้า"
+      );
+
+    const image =
+      document
+        .getElementById("newProductImage")
+        .value
+        .trim();
+
+    const price =
+      document
+        .getElementById("newProductPrice")
+        .value;
+
+    const agentPrice =
+      document
+        .getElementById("newProductAgentPrice")
+        .value;
+
+    const tags =
+      document
+        .getElementById("newProductTags")
+        .value
+        .trim();
+
+    const description =
+      document
+        .getElementById("newProductDescription")
+        .value;
+
+    const visible =
+      document
+        .getElementById("newProductVisible")
+        .value === "true";
+
+    const recommended =
+      document
+        .getElementById("newProductRecommended")
+        .checked;
+
+    const isNew =
+      document
+        .getElementById("newProductNew")
+        .checked;
+
+    setDynamic(
+      ["name","product_name","title"],
+      name
+    );
+
+    setDynamic(
+      [
+        "image",
+        "image_url",
+        "product_image",
+        "thumbnail",
+        "cover"
+      ],
+      image
+    );
+
+    setDynamic(
+      ["price"],
+      price === "" ? null : Number(price)
+    );
+
+    setDynamic(
+      [
+        "agent_price",
+        "distributor_price",
+        "dealer_price",
+        "wholesale_price"
+      ],
+      agentPrice === ""
+      ? null
+      : Number(agentPrice)
+    );
+
+    setDynamic(
+      [
+        "description",
+        "detail",
+        "content"
+      ],
+      description
+    );
+
+    setDynamic(
+      ["tags","tag","category"],
+      tags
+    );
+
+    setDynamic(
+      [
+        "recommended",
+        "is_recommended",
+        "featured"
+      ],
+      recommended
+    );
+
+    setDynamic(
+      [
+        "new",
+        "is_new",
+        "new_product"
+      ],
+      isNew
+    );
+
+    setDynamic(
+      [
+        "visible",
+        "is_visible",
+        "active",
+        "published"
+      ],
+      visible
+    );
+
+    if(!Object.keys(payload).length){
+
+      throw new Error(
+        "ไม่พบชื่อคอลัมน์สินค้าในตาราง products"
+      );
+
+    }
+
+    if(isEdit){
+
+      const idField =
+        getPrimaryLikeField(row);
+
+      if(!idField)
+        throw new Error(
+          "ไม่พบ ID ของสินค้า"
+        );
+
+      const {error} =
+        await supabaseClient
+          .from("products")
+          .update(payload)
+          .eq(
+            idField,
+            row[idField]
+          );
+
+      if(error)
+        throw error;
+
+    }else{
+
+      const {error} =
+        await supabaseClient
+          .from("products")
+          .insert(payload);
+
+      if(error)
+        throw error;
+
+    }
+
+    closeProductModal();
+
+    toast(
+      isEdit
+      ? "แก้ไขสินค้าเรียบร้อยแล้ว ✓"
+      : "เพิ่มสินค้าเรียบร้อยแล้ว ✓"
+    );
+
+    await loadProducts();
+
+  }catch(error){
+
+    console.error(error);
+
+    toast(
+      "บันทึกสินค้าไม่สำเร็จ: " +
+      error.message
+    );
+
+  }finally{
+
+    button.disabled = false;
+    button.textContent = "บันทึกสินค้า";
+
+  }
+
+}
+
+
+function closeProductModal(){
+
+  pendingProduct = null;
+
+  document
+    .getElementById("productModal")
+    .classList.remove("show");
+
+}
+
+
+async function copyProductDetails(index){
+
+  const product =
+    products[index];
+
+  if(!product) return;
+
+  const name =
+    findValue(
+      product,
+      ["name","product_name","title"]
+    ) || "";
+
+  const description =
+    findValue(
+      product,
+      ["description","detail","content"]
+    ) || "";
+
+  const price =
+    findValue(
+      product,
+      ["price"]
+    );
+
+  const agentPrice =
+    findValue(
+      product,
+      [
+        "agent_price",
+        "distributor_price",
+        "dealer_price"
+      ]
+    );
+
+  const tags =
+    findValue(
+      product,
+      ["tags","tag","category"]
+    );
+
+  let text =
+    `${name}\n\n`;
+
+  if(description)
+    text += `${description}\n\n`;
+
+  if(price !== undefined)
+    text += `ราคา: ฿${price}\n`;
+
+  if(agentPrice !== undefined)
+    text += `ราคาตัวแทน: ฿${agentPrice}\n`;
+
+  if(tags)
+    text += `แท็ก: ${
+      Array.isArray(tags)
+      ? tags.join(", ")
+      : tags
+    }\n`;
+
+  try{
+
+    await navigator.clipboard.writeText(
+      text.trim()
+    );
+
+    toast(
+      "คัดลอกรายละเอียดสินค้าแล้ว ✓"
+    );
+
+  }catch{
+
+    toast(
+      "คัดลอกไม่สำเร็จ"
+    );
+
+  }
+
+}
+
+
+async function downloadImage(url,name){
+
+  try{
+
+    const response =
+      await fetch(url);
+
+    if(!response.ok)
+      throw new Error();
+
+    const blob =
+      await response.blob();
+
+    const objectURL =
+      URL.createObjectURL(blob);
+
+    const a =
+      document.createElement("a");
+
+    a.href = objectURL;
+
+    a.download =
+      `${name || "product"}.jpg`;
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    a.remove();
+
+    URL.revokeObjectURL(objectURL);
+
+  }catch{
+
+    window.open(
+      url,
+      "_blank",
+      "noopener"
+    );
+
+    toast(
+      "เปิดรูปสินค้าแล้ว หากเบราว์เซอร์ไม่อนุญาตดาวน์โหลด ให้บันทึกรูปจากหน้านั้น"
+    );
+
+  }
+
+}
 
 
 /* =========================================================
@@ -3440,157 +4266,506 @@ function renderAnnouncements(){
   }
 
   area.innerHTML =
-    announcements
-      .map(
-        announcement => {
+    announcements.map(
+      (announcement,index) => {
 
-          const index =
-            announcements.indexOf(
-              announcement
-            );
+        const title =
+          findValue(
+            announcement,
+            [
+              "title",
+              "name",
+              "headline"
+            ]
+          ) || "ประกาศ";
 
-          const title =
-            findValue(
-              announcement,
-              [
-                "title",
-                "name",
-                "headline"
-              ]
-            ) || "ประกาศ";
+        const content =
+          findValue(
+            announcement,
+            [
+              "content",
+              "detail",
+              "description",
+              "body",
+              "text"
+            ]
+          );
 
-          const content =
-            findValue(
-              announcement,
-              [
-                "content",
-                "detail",
-                "description",
-                "body",
-                "text"
-              ]
-            );
+        const important =
+          findValue(
+            announcement,
+            [
+              "important",
+              "is_important",
+              "pinned"
+            ]
+          );
 
-          const important =
-            findValue(
-              announcement,
-              [
-                "important",
-                "is_important",
-                "pinned"
-              ]
-            );
+        const visible =
+          findValue(
+            announcement,
+            [
+              "visible",
+              "is_visible",
+              "active",
+              "published"
+            ]
+          );
 
-          const visible =
-            findValue(
-              announcement,
-              [
-                "visible",
-                "is_visible",
-                "active",
-                "published"
-              ]
-            );
+        return `
+          <div class="content-card">
 
-          return `
+            <div class="content-card-head">
 
-            <div class="content-card">
+              <div>
 
-              <div class="content-card-head">
+                <div class="content-card-title">
 
-                <div>
+                  ${esc(title)}
 
-                  <div class="content-card-title">
-
-                    ${esc(title)}
-
-                    ${
-                      important
-                      ? `
-                        <span class="status pending">
-                          สำคัญ
-                        </span>
-                      `
-                      : ""
-                    }
-
-                  </div>
-
-                  <div
-                    class="content-card-sub"
-                  >
-                    ${
-                      visible === false
-                      ? "ซ่อนอยู่"
-                      : "แสดงอยู่"
-                    }
-                  </div>
+                  ${
+                    important
+                    ? `
+                      <span class="status pending">
+                        สำคัญ
+                      </span>
+                    `
+                    : ""
+                  }
 
                 </div>
 
-                <div class="row-actions">
+                <div class="content-card-sub">
 
-                  <button
-                    class="secondary"
-                    onclick="
-                      editDynamicRow(
-                        'announcements',
-                        ${index}
-                      )
-                    "
-                  >
-                    ✏️ แก้ไข
-                  </button>
-
-                  <button
-                    class="danger"
-                    onclick="
-                      deleteDynamicRow(
-                        'announcements',
-                        ${index}
-                      )
-                    "
-                  >
-                    🗑️ ลบ
-                  </button>
+                  ${
+                    visible === false
+                    ? "ซ่อนอยู่"
+                    : "แสดงอยู่"
+                  }
 
                 </div>
 
               </div>
 
-              ${
-                content
-                ? `
-                  <div
-                    style="
-                      color:#7e889e;
-                      font-size:12px;
-                      line-height:1.8;
-                      white-space:pre-wrap
-                    "
-                  >
-                    ${esc(
-                      String(content)
-                        .slice(0,500)
-                    )}
-                  </div>
-                `
-                : ""
-              }
+              <div class="row-actions">
+
+                <button
+                  class="secondary"
+                  onclick="editDynamicRow('announcements',${index})"
+                >
+                  ✏️ แก้ไข
+                </button>
+
+                <button
+                  class="danger"
+                  onclick="deleteDynamicRow('announcements',${index})"
+                >
+                  🗑️ ลบ
+                </button>
+
+              </div>
 
             </div>
 
-          `;
+            ${
+              content
+              ? `
+                <div class="product-detail">
+                  ${esc(
+                    String(content).slice(0,500)
+                  )}
+                </div>
+              `
+              : ""
+            }
 
-        }
-      )
-      .join("");
+          </div>
+        `;
+
+      }
+    ).join("");
+
+}
+
+
+document
+  .getElementById("addAnnouncementBtn")
+  .addEventListener(
+    "click",
+    openAddAnnouncement
+  );
+
+
+function openAddAnnouncement(){
+
+  pendingAnnouncement = {
+    mode:"add"
+  };
+
+  document
+    .getElementById(
+      "announcementModalTitle"
+    )
+    .textContent =
+      "📢 เพิ่มประกาศ";
+
+  document
+    .getElementById(
+      "announcementModalBody"
+    )
+    .innerHTML =
+      renderAnnouncementForm();
+
+  document
+    .getElementById(
+      "announcementModal"
+    )
+    .classList.add("show");
+
+}
+
+
+function renderAnnouncementForm(row={}){
+
+  const title =
+    findValue(
+      row,
+      ["title","name","headline"]
+    ) || "";
+
+  const content =
+    findValue(
+      row,
+      [
+        "content",
+        "detail",
+        "description",
+        "body",
+        "text"
+      ]
+    ) || "";
+
+  const important =
+    findValue(
+      row,
+      [
+        "important",
+        "is_important",
+        "pinned"
+      ]
+    ) || false;
+
+  const visible =
+    findValue(
+      row,
+      [
+        "visible",
+        "is_visible",
+        "active",
+        "published"
+      ]
+    );
+
+  return `
+
+    <div class="form-grid">
+
+      <div class="form-full">
+
+        <label class="label">
+          หัวข้อประกาศ
+        </label>
+
+        <input
+          id="announcementTitle"
+          class="input"
+          value="${esc(title)}"
+          placeholder="หัวข้อประกาศ"
+        >
+
+      </div>
+
+      <div class="form-full">
+
+        <label class="label">
+          รายละเอียด
+        </label>
+
+        <textarea
+          id="announcementContent"
+          class="textarea"
+          placeholder="รายละเอียดประกาศ"
+        >${esc(content)}</textarea>
+
+      </div>
+
+      <div>
+
+        <label class="label">
+          การแสดงผล
+        </label>
+
+        <select
+          id="announcementVisible"
+          class="select"
+        >
+
+          <option
+            value="true"
+            ${
+              visible === false
+              ? ""
+              : "selected"
+            }
+          >
+            แสดง
+          </option>
+
+          <option
+            value="false"
+            ${
+              visible === false
+              ? "selected"
+              : ""
+            }
+          >
+            ซ่อน
+          </option>
+
+        </select>
+
+      </div>
+
+      <div>
+
+        <label class="label">
+          ประเภท
+        </label>
+
+        <label class="check-row">
+
+          <input
+            id="announcementImportant"
+            type="checkbox"
+            ${important ? "checked" : ""}
+          >
+
+          ⭐ ประกาศสำคัญ
+
+        </label>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+document
+  .getElementById(
+    "saveAnnouncementBtn"
+  )
+  .addEventListener(
+    "click",
+    saveAnnouncement
+  );
+
+
+async function saveAnnouncement(){
+
+  const button =
+    document.getElementById(
+      "saveAnnouncementBtn"
+    );
+
+  button.disabled = true;
+  button.textContent = "กำลังบันทึก...";
+
+  try{
+
+    const isEdit =
+      pendingAnnouncement?.mode === "edit";
+
+    const row =
+      isEdit
+      ? pendingAnnouncement.row
+      : {};
+
+    const schemaRow =
+      isEdit
+      ? row
+      : announcements[0] || {};
+
+    const payload = {};
+
+    function setDynamic(keys,value){
+
+      const key =
+        detectField(
+          schemaRow,
+          keys
+        );
+
+      if(key)
+        payload[key] = value;
+
+    }
+
+    const title =
+      document
+        .getElementById("announcementTitle")
+        .value
+        .trim();
+
+    const content =
+      document
+        .getElementById("announcementContent")
+        .value;
+
+    const visible =
+      document
+        .getElementById("announcementVisible")
+        .value === "true";
+
+    const important =
+      document
+        .getElementById(
+          "announcementImportant"
+        )
+        .checked;
+
+    if(!title)
+      throw new Error(
+        "กรุณากรอกหัวข้อประกาศ"
+      );
+
+    setDynamic(
+      [
+        "title",
+        "name",
+        "headline"
+      ],
+      title
+    );
+
+    setDynamic(
+      [
+        "content",
+        "detail",
+        "description",
+        "body",
+        "text"
+      ],
+      content
+    );
+
+    setDynamic(
+      [
+        "visible",
+        "is_visible",
+        "active",
+        "published"
+      ],
+      visible
+    );
+
+    setDynamic(
+      [
+        "important",
+        "is_important",
+        "pinned"
+      ],
+      important
+    );
+
+    if(!Object.keys(payload).length){
+
+      throw new Error(
+        "ไม่พบชื่อคอลัมน์ของประกาศในตาราง announcements"
+      );
+
+    }
+
+    if(isEdit){
+
+      const idField =
+        getPrimaryLikeField(row);
+
+      if(!idField)
+        throw new Error(
+          "ไม่พบ ID ของประกาศ"
+        );
+
+      const {error} =
+        await supabaseClient
+          .from("announcements")
+          .update(payload)
+          .eq(
+            idField,
+            row[idField]
+          );
+
+      if(error)
+        throw error;
+
+    }else{
+
+      const {error} =
+        await supabaseClient
+          .from("announcements")
+          .insert(payload);
+
+      if(error)
+        throw error;
+
+    }
+
+    closeAnnouncementModal();
+
+    toast(
+      isEdit
+      ? "แก้ไขประกาศเรียบร้อยแล้ว ✓"
+      : "เพิ่มประกาศเรียบร้อยแล้ว ✓"
+    );
+
+    await loadAnnouncements();
+
+  }catch(error){
+
+    console.error(error);
+
+    toast(
+      "บันทึกประกาศไม่สำเร็จ: " +
+      error.message
+    );
+
+  }finally{
+
+    button.disabled = false;
+    button.textContent = "บันทึกประกาศ";
+
+  }
+
+}
+
+
+function closeAnnouncementModal(){
+
+  pendingAnnouncement = null;
+
+  document
+    .getElementById(
+      "announcementModal"
+    )
+    .classList.remove("show");
 
 }
 
 
 /* =========================================================
-   DELETE DYNAMIC ROW
+   DELETE
 ========================================================= */
 
 async function deleteDynamicRow(
@@ -3619,16 +4794,17 @@ async function deleteDynamicRow(
 
   }
 
-  if(
-    !confirm(
-      "ต้องการลบรายการนี้ใช่หรือไม่?"
-    )
-  )
+  const confirmed =
+    confirm(
+      table === "products"
+      ? "ต้องการลบสินค้านี้ใช่หรือไม่?"
+      : "ต้องการลบประกาศนี้ใช่หรือไม่?"
+    );
+
+  if(!confirmed)
     return;
 
-  const {
-    error
-  } =
+  const {error} =
     await supabaseClient
       .from(table)
       .delete()
@@ -3664,37 +4840,7 @@ async function deleteDynamicRow(
 
 
 /* =========================================================
-   FIND COMMON FIELD
-========================================================= */
-
-function findValue(
-  object,
-  keys
-){
-
-  for(
-    const key of keys
-  ){
-
-    if(
-      Object.prototype
-        .hasOwnProperty
-        .call(object,key)
-    ){
-
-      return object[key];
-
-    }
-
-  }
-
-  return undefined;
-
-}
-
-
-/* =========================================================
-   LOCAL ADMIN SETTINGS
+   LOCAL SETTINGS
 ========================================================= */
 
 function saveLocalSettings(){
@@ -3780,45 +4926,138 @@ function loadLocalSettings(){
 
 
 /* =========================================================
-   MODAL CLOSE BY BACKDROP
+   EDIT PRODUCT FROM COMMON EDIT MODAL
 ========================================================= */
 
-document
-  .getElementById("statusModal")
-  .addEventListener(
-    "click",
-    event => {
+const originalEditDynamicRow =
+  editDynamicRow;
 
-      if(
-        event.target ===
-        event.currentTarget
-      ){
+editDynamicRow =
+  async function(table,index){
 
-        closeModal();
+    if(table === "products"){
 
-      }
+      const row =
+        products[index];
+
+      if(!row) return;
+
+      pendingProduct = {
+        mode:"edit",
+        index,
+        row
+      };
+
+      document
+        .getElementById(
+          "productModalTitle"
+        )
+        .textContent =
+          "✏️ แก้ไขสินค้า";
+
+      document
+        .getElementById(
+          "productModalBody"
+        )
+        .innerHTML =
+          renderProductForm(row);
+
+      document
+        .getElementById(
+          "productModal"
+        )
+        .classList.add("show");
+
+      return;
 
     }
-  );
 
+    if(table === "announcements"){
 
-document
-  .getElementById("editModal")
-  .addEventListener(
-    "click",
-    event => {
+      const row =
+        announcements[index];
 
-      if(
-        event.target ===
-        event.currentTarget
-      ){
+      if(!row) return;
 
-        closeEditModal();
+      pendingAnnouncement = {
+        mode:"edit",
+        index,
+        row
+      };
 
-      }
+      document
+        .getElementById(
+          "announcementModalTitle"
+        )
+        .textContent =
+          "✏️ แก้ไขประกาศ";
+
+      document
+        .getElementById(
+          "announcementModalBody"
+        )
+        .innerHTML =
+          renderAnnouncementForm(row);
+
+      document
+        .getElementById(
+          "announcementModal"
+        )
+        .classList.add("show");
+
+      return;
 
     }
-  );
+
+    await originalEditDynamicRow(
+      table,
+      index
+    );
+
+  };
+
+
+/* =========================================================
+   BACKDROP CLOSE
+========================================================= */
+
+[
+  "statusModal",
+  "editModal",
+  "productModal",
+  "announcementModal"
+]
+.forEach(id => {
+
+  document
+    .getElementById(id)
+    .addEventListener(
+      "click",
+      event => {
+
+        if(
+          event.target ===
+          event.currentTarget
+        ){
+
+          if(id === "statusModal")
+            closeModal();
+
+          if(id === "editModal")
+            closeEditModal();
+
+          if(id === "productModal")
+            closeProductModal();
+
+          if(id === "announcementModal")
+            closeAnnouncementModal();
+
+        }
+
+      }
+    );
+
+});
 
 
 /* =========================================================
