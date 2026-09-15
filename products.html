@@ -1,0 +1,2586 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bennie Choco — สินค้าสำหรับตัวแทน</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --blue:#A0C4FF;
+  --blue-soft:#EAF3FF;
+  --mint:#CAFFBF;
+  --yellow:#FDFFB6;
+  --cream:#FFFDF7;
+  --white:#FFFFFF;
+  --text:#3D405B;
+  --muted:#7C819A;
+  --border:rgba(61,64,91,.10);
+  --shadow:0 14px 40px rgba(61,64,91,.10);
+  --danger:#ef6f78;
+  --green:#61b98a;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:"Noto Sans Thai","Nunito",sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 10% 15%, rgba(160,196,255,.45), transparent 25%),
+    radial-gradient(circle at 90% 25%, rgba(202,255,191,.45), transparent 24%),
+    radial-gradient(circle at 50% 100%, rgba(253,255,182,.35), transparent 30%),
+    var(--cream);
+  overflow-x:hidden;
+}
+
+/* =========================
+   Background clouds
+========================= */
+
+.cloud{
+  position:fixed;
+  z-index:-2;
+  pointer-events:none;
+  opacity:.75;
+  filter:blur(.2px);
+}
+
+.cloud::before,
+.cloud::after{
+  content:"";
+  position:absolute;
+  background:rgba(255,255,255,.9);
+  border-radius:999px;
+}
+
+.cloud.c1{
+  width:220px;
+  height:70px;
+  top:100px;
+  left:-70px;
+}
+
+.cloud.c1::before{
+  width:90px;
+  height:90px;
+  left:35px;
+  bottom:5px;
+}
+
+.cloud.c1::after{
+  width:110px;
+  height:110px;
+  right:30px;
+  bottom:0;
+}
+
+.cloud.c2{
+  width:260px;
+  height:75px;
+  top:42%;
+  right:-100px;
+}
+
+.cloud.c2::before{
+  width:100px;
+  height:100px;
+  left:40px;
+  bottom:0;
+}
+
+.cloud.c2::after{
+  width:120px;
+  height:120px;
+  right:45px;
+  bottom:0;
+}
+
+.cloud.c3{
+  width:230px;
+  height:65px;
+  bottom:80px;
+  left:-80px;
+}
+
+.cloud.c3::before{
+  width:85px;
+  height:85px;
+  left:30px;
+  bottom:0;
+}
+
+.cloud.c3::after{
+  width:100px;
+  height:100px;
+  right:30px;
+  bottom:0;
+}
+
+/* =========================
+   Floating decorations
+========================= */
+
+.floating{
+  position:fixed;
+  width:78px;
+  height:78px;
+  object-fit:contain;
+  pointer-events:none;
+  z-index:-1;
+  opacity:.9;
+  animation:float 5s ease-in-out infinite;
+}
+
+.f1{
+  top:17%;
+  left:3%;
+}
+
+.f2{
+  top:57%;
+  right:3%;
+  animation-delay:1.5s;
+}
+
+.f3{
+  bottom:8%;
+  left:7%;
+  width:65px;
+  animation-delay:3s;
+}
+
+@keyframes float{
+  0%,100%{
+    transform:translateY(0) rotate(-3deg);
+  }
+  50%{
+    transform:translateY(-12px) rotate(3deg);
+  }
+}
+
+/* =========================
+   Header
+========================= */
+
+.header{
+  position:sticky;
+  top:0;
+  z-index:20;
+  backdrop-filter:blur(18px);
+  background:rgba(255,255,255,.82);
+  border-bottom:1px solid var(--border);
+}
+
+.header-inner{
+  width:min(1180px,calc(100% - 32px));
+  margin:auto;
+  min-height:72px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-width:0;
+}
+
+.brand-icon{
+  width:46px;
+  height:46px;
+  border-radius:16px;
+  background:linear-gradient(145deg,var(--blue),#cfe0ff);
+  display:grid;
+  place-items:center;
+  font-size:23px;
+  box-shadow:0 7px 18px rgba(160,196,255,.35);
+  flex-shrink:0;
+}
+
+.brand-text{
+  min-width:0;
+}
+
+.brand-title{
+  margin:0;
+  font-size:18px;
+  font-weight:800;
+  line-height:1.2;
+}
+
+.brand-sub{
+  margin:3px 0 0;
+  font-size:12px;
+  color:var(--muted);
+}
+
+.back-btn{
+  text-decoration:none;
+  color:var(--text);
+  background:white;
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:9px 14px;
+  font-size:13px;
+  font-weight:700;
+  white-space:nowrap;
+  transition:.2s;
+}
+
+.back-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 20px rgba(61,64,91,.08);
+}
+
+/* =========================
+   Main
+========================= */
+
+.main{
+  width:min(1180px,calc(100% - 32px));
+  margin:0 auto;
+  padding:38px 0 80px;
+}
+
+.page-head{
+  margin-bottom:24px;
+}
+
+.page-kicker{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:7px 12px;
+  border-radius:999px;
+  background:rgba(255,255,255,.78);
+  border:1px solid var(--border);
+  font-size:12px;
+  font-weight:700;
+  color:#68708b;
+}
+
+.page-head h1{
+  margin:14px 0 7px;
+  font-size:clamp(28px,5vw,42px);
+  line-height:1.15;
+  font-weight:800;
+}
+
+.page-head p{
+  margin:0;
+  color:var(--muted);
+  font-size:14px;
+}
+
+/* =========================
+   Filter
+========================= */
+
+.filter-card{
+  background:rgba(255,255,255,.86);
+  border:1px solid var(--border);
+  border-radius:24px;
+  box-shadow:var(--shadow);
+  padding:18px;
+  margin-bottom:25px;
+}
+
+.filter-grid{
+  display:grid;
+  grid-template-columns:minmax(220px,1.8fr) minmax(160px,1fr) minmax(160px,1fr);
+  gap:12px;
+}
+
+.field{
+  position:relative;
+}
+
+.field label{
+  display:block;
+  font-size:11px;
+  font-weight:700;
+  color:#737991;
+  margin:0 0 6px 4px;
+}
+
+.input,
+.select{
+  width:100%;
+  height:46px;
+  border:1px solid rgba(61,64,91,.12);
+  background:#fff;
+  border-radius:14px;
+  padding:0 14px;
+  color:var(--text);
+  font-family:inherit;
+  outline:none;
+  transition:.2s;
+}
+
+.input:focus,
+.select:focus{
+  border-color:var(--blue);
+  box-shadow:0 0 0 4px rgba(160,196,255,.18);
+}
+
+.search-wrap{
+  position:relative;
+}
+
+.search-icon{
+  position:absolute;
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
+  pointer-events:none;
+  font-size:17px;
+}
+
+.search-wrap .input{
+  padding-left:42px;
+}
+
+/* =========================
+   Product count
+========================= */
+
+.result-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin:0 2px 14px;
+}
+
+.result-count{
+  font-size:13px;
+  color:var(--muted);
+}
+
+.refresh-btn{
+  border:1px solid var(--border);
+  background:white;
+  color:var(--text);
+  border-radius:12px;
+  padding:8px 12px;
+  font-family:inherit;
+  font-weight:700;
+  font-size:12px;
+  cursor:pointer;
+}
+
+.refresh-btn:hover{
+  background:#f8fbff;
+}
+
+/* =========================
+   Product grid
+========================= */
+
+.product-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+}
+
+.product-card{
+  position:relative;
+  overflow:hidden;
+  background:rgba(255,255,255,.92);
+  border:1px solid var(--border);
+  border-radius:24px;
+  box-shadow:0 10px 28px rgba(61,64,91,.08);
+  transition:transform .22s,box-shadow .22s;
+  cursor:pointer;
+}
+
+.product-card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 18px 38px rgba(61,64,91,.13);
+}
+
+.product-image-wrap{
+  position:relative;
+  width:100%;
+  aspect-ratio:1/1;
+  background:
+    linear-gradient(145deg,#f5f9ff,#f8fff6);
+  overflow:hidden;
+}
+
+.product-image{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.no-image{
+  width:100%;
+  height:100%;
+  display:grid;
+  place-items:center;
+  color:#a0a5b7;
+  font-size:45px;
+}
+
+.badges{
+  position:absolute;
+  top:12px;
+  left:12px;
+  right:12px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  padding:5px 9px;
+  border-radius:999px;
+  font-size:10px;
+  line-height:1;
+  font-weight:800;
+  background:rgba(255,255,255,.92);
+  box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.badge-new{
+  background:var(--yellow);
+}
+
+.badge-out{
+  background:#ffe1e3;
+  color:#a84d56;
+}
+
+.product-body{
+  padding:16px;
+}
+
+.category{
+  display:inline-block;
+  color:#6c7892;
+  background:var(--blue-soft);
+  padding:5px 9px;
+  border-radius:999px;
+  font-size:10px;
+  font-weight:700;
+  margin-bottom:8px;
+}
+
+.product-name{
+  margin:0;
+  font-size:17px;
+  font-weight:800;
+  line-height:1.35;
+}
+
+.product-description{
+  margin:7px 0 12px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.65;
+
+  display:-webkit-box;
+  -webkit-line-clamp:3;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+
+.price-box{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-bottom:12px;
+}
+
+.price-item{
+  background:#fafbff;
+  border:1px solid rgba(61,64,91,.07);
+  border-radius:13px;
+  padding:9px 10px;
+}
+
+.price-label{
+  font-size:9px;
+  color:#8a8fa2;
+  display:block;
+  margin-bottom:2px;
+}
+
+.price-value{
+  font-size:13px;
+  font-weight:800;
+}
+
+.price-value.distributor{
+  color:#4f8e69;
+}
+
+.product-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.copy-detail-btn{
+  flex:1;
+  min-width:0;
+  border:1px solid rgba(160,196,255,.55);
+  background:#f4f8ff;
+  color:#52698f;
+  border-radius:12px;
+  min-height:38px;
+  padding:7px 9px;
+  font-family:inherit;
+  font-size:11px;
+  font-weight:800;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.copy-detail-btn:hover{
+  background:#eaf2ff;
+  transform:translateY(-1px);
+}
+
+.card-arrow{
+  width:38px;
+  height:38px;
+  border-radius:12px;
+  background:#fff;
+  border:1px solid var(--border);
+  display:grid;
+  place-items:center;
+  font-size:22px;
+  color:#8d94a9;
+  flex-shrink:0;
+}
+
+/* =========================
+   Empty / Loading
+========================= */
+
+.state-box{
+  grid-column:1/-1;
+  background:rgba(255,255,255,.88);
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:55px 20px;
+  text-align:center;
+  box-shadow:var(--shadow);
+}
+
+.state-icon{
+  font-size:44px;
+  margin-bottom:10px;
+}
+
+.state-title{
+  margin:0 0 5px;
+  font-size:18px;
+  font-weight:800;
+}
+
+.state-text{
+  margin:0;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.spinner{
+  width:36px;
+  height:36px;
+  border:4px solid #e9eff9;
+  border-top-color:var(--blue);
+  border-radius:50%;
+  margin:0 auto 14px;
+  animation:spin .8s linear infinite;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg);}
+}
+
+/* =========================
+   Detail modal
+========================= */
+
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  background:rgba(61,64,91,.38);
+  backdrop-filter:blur(8px);
+}
+
+.modal.show{
+  display:flex;
+}
+
+.modal-card{
+  width:min(700px,100%);
+  max-height:calc(100vh - 36px);
+  overflow:auto;
+  background:#fff;
+  border-radius:28px;
+  box-shadow:0 30px 80px rgba(61,64,91,.25);
+  position:relative;
+  animation:modalIn .2s ease;
+}
+
+@keyframes modalIn{
+  from{
+    opacity:0;
+    transform:translateY(12px) scale(.98);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+.close-modal{
+  position:absolute;
+  z-index:5;
+  top:14px;
+  right:14px;
+  width:38px;
+  height:38px;
+  border:0;
+  border-radius:50%;
+  background:rgba(255,255,255,.94);
+  box-shadow:0 5px 15px rgba(0,0,0,.10);
+  cursor:pointer;
+  font-size:20px;
+  color:#62687c;
+}
+
+.detail-image{
+  width:100%;
+  aspect-ratio:16/9;
+  object-fit:cover;
+  display:block;
+  background:#f5f8fc;
+}
+
+.detail-no-image{
+  width:100%;
+  aspect-ratio:16/9;
+  display:grid;
+  place-items:center;
+  background:#f5f8fc;
+  font-size:60px;
+  color:#adb4c3;
+}
+
+.detail-content{
+  padding:24px;
+}
+
+.detail-badges{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin-bottom:10px;
+}
+
+.detail-content h2{
+  margin:0;
+  font-size:25px;
+  line-height:1.3;
+}
+
+.detail-category{
+  margin:8px 0 17px;
+  color:#778097;
+  font-size:12px;
+}
+
+.detail-description{
+  white-space:pre-wrap;
+  color:#62687b;
+  font-size:14px;
+  line-height:1.8;
+  background:#fafbfe;
+  border-radius:17px;
+  padding:15px;
+  margin-bottom:15px;
+}
+
+.detail-prices{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-bottom:16px;
+}
+
+.detail-price{
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:13px;
+  background:#fff;
+}
+
+.detail-price span{
+  display:block;
+  font-size:10px;
+  color:#888ea1;
+  margin-bottom:3px;
+}
+
+.detail-price strong{
+  font-size:18px;
+}
+
+.detail-price.distributor{
+  background:#f4fff7;
+  border-color:rgba(97,185,138,.20);
+}
+
+.detail-price.distributor strong{
+  color:#4f9a70;
+}
+
+.copy-detail-large{
+  width:100%;
+  min-height:48px;
+  border:0;
+  border-radius:15px;
+  background:linear-gradient(135deg,#a0c4ff,#c4d9ff);
+  color:#3d405b;
+  font-family:inherit;
+  font-size:14px;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow:0 8px 20px rgba(160,196,255,.25);
+  transition:.2s;
+}
+
+.copy-detail-large:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 25px rgba(160,196,255,.32);
+}
+
+/* =========================
+   Toast
+========================= */
+
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:24px;
+  z-index:200;
+  transform:translate(-50%,20px);
+  opacity:0;
+  pointer-events:none;
+  background:#3d405b;
+  color:white;
+  padding:11px 17px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:700;
+  box-shadow:0 12px 30px rgba(0,0,0,.18);
+  transition:.25s;
+  white-space:nowrap;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translate(-50%,0);
+}
+
+/* =========================
+   Login overlay
+========================= */
+
+.login-overlay{
+  position:fixed;
+  inset:0;
+  z-index:300;
+  background:var(--cream);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.login-overlay.hidden{
+  display:none;
+}
+
+.login-box{
+  width:min(420px,100%);
+  background:white;
+  border:1px solid var(--border);
+  border-radius:28px;
+  padding:30px 24px;
+  text-align:center;
+  box-shadow:var(--shadow);
+}
+
+.login-box-icon{
+  width:68px;
+  height:68px;
+  margin:0 auto 15px;
+  border-radius:22px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(145deg,var(--blue),var(--mint));
+  font-size:31px;
+}
+
+.login-box h2{
+  margin:0 0 7px;
+  font-size:22px;
+}
+
+.login-box p{
+  margin:0 0 18px;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.7;
+}
+
+.login-button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  min-height:46px;
+  border-radius:14px;
+  background:var(--blue);
+  color:var(--text);
+  text-decoration:none;
+  font-weight:800;
+  font-size:13px;
+}
+
+/* =========================
+   Responsive
+========================= */
+
+@media(max-width:900px){
+  .product-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .filter-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .filter-grid .search-field{
+    grid-column:1/-1;
+  }
+}
+
+@media(max-width:600px){
+  .header-inner{
+    width:min(100% - 20px,1180px);
+    min-height:64px;
+  }
+
+  .brand-icon{
+    width:40px;
+    height:40px;
+    border-radius:14px;
+    font-size:20px;
+  }
+
+  .brand-title{
+    font-size:15px;
+  }
+
+  .brand-sub{
+    font-size:10px;
+  }
+
+  .back-btn{
+    padding:8px 10px;
+    font-size:11px;
+  }
+
+  .main{
+    width:calc(100% - 20px);
+    padding-top:25px;
+  }
+
+  .page-head h1{
+    font-size:29px;
+  }
+
+  .page-head p{
+    font-size:12px;
+  }
+
+  .filter-card{
+    border-radius:19px;
+    padding:13px;
+  }
+
+  .filter-grid{
+    grid-template-columns:1fr;
+    gap:9px;
+  }
+
+  .filter-grid .search-field{
+    grid-column:auto;
+  }
+
+  .product-grid{
+    grid-template-columns:1fr;
+    gap:14px;
+  }
+
+  .product-card{
+    border-radius:21px;
+  }
+
+  .product-image-wrap{
+    aspect-ratio:1.12/1;
+  }
+
+  .product-body{
+    padding:14px;
+  }
+
+  .product-name{
+    font-size:16px;
+  }
+
+  .price-box{
+    gap:6px;
+  }
+
+  .price-item{
+    padding:8px;
+  }
+
+  .price-value{
+    font-size:12px;
+  }
+
+  .result-row{
+    margin-bottom:10px;
+  }
+
+  .modal{
+    padding:10px;
+  }
+
+  .modal-card{
+    border-radius:22px;
+    max-height:calc(100vh - 20px);
+  }
+
+  .detail-content{
+    padding:18px;
+  }
+
+  .detail-content h2{
+    font-size:22px;
+  }
+
+  .detail-prices{
+    grid-template-columns:1fr;
+  }
+
+  .toast{
+    max-width:calc(100% - 30px);
+    white-space:normal;
+    text-align:center;
+  }
+
+  .floating{
+    width:55px;
+    height:55px;
+  }
+}
+
+@media(max-width:370px){
+  .brand-sub{
+    display:none;
+  }
+
+  .back-btn{
+    padding:7px 8px;
+  }
+
+  .product-actions{
+    gap:5px;
+  }
+
+  .copy-detail-btn{
+    font-size:10px;
+    padding:6px;
+  }
+
+  .card-arrow{
+    width:35px;
+    height:35px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Decorative clouds -->
+<div class="cloud c1"></div>
+<div class="cloud c2"></div>
+<div class="cloud c3"></div>
+
+<!-- Decorative floating assets -->
+<img
+  class="floating f1"
+  src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
+  alt=""
+>
+
+<img
+  class="floating f2"
+  src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
+  alt=""
+>
+
+<img
+  class="floating f3"
+  src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
+  alt=""
+>
+
+<!-- =========================
+     Header
+========================= -->
+
+<header class="header">
+  <div class="header-inner">
+
+    <div class="brand">
+      <div class="brand-icon">🍫</div>
+
+      <div class="brand-text">
+        <h1 class="brand-title">Bennie Choco</h1>
+        <p class="brand-sub">Distributor Portal</p>
+      </div>
+    </div>
+
+    <a href="dashboard.html" class="back-btn">
+      ← กลับหน้าหลัก
+    </a>
+
+  </div>
+</header>
+
+<!-- =========================
+     Main
+========================= -->
+
+<main class="main">
+
+  <section class="page-head">
+    <span class="page-kicker">
+      ☁️ Distributor Catalog
+    </span>
+
+    <h1>สินค้า</h1>
+
+    <p>
+      ดูสินค้า ราคา และรายละเอียดสำหรับตัวแทน
+    </p>
+  </section>
+
+  <!-- Filters -->
+
+  <section class="filter-card">
+
+    <div class="filter-grid">
+
+      <div class="field search-field">
+        <label>ค้นหาสินค้า</label>
+
+        <div class="search-wrap">
+          <span class="search-icon">⌕</span>
+
+          <input
+            id="searchInput"
+            class="input"
+            type="search"
+            placeholder="ค้นหาชื่อสินค้า / หมวดหมู่ / รายละเอียด..."
+            autocomplete="off"
+          >
+        </div>
+      </div>
+
+      <div class="field">
+        <label>หมวดหมู่</label>
+
+        <select id="categoryFilter" class="select">
+          <option value="">ทุกหมวดหมู่</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>สถานะสินค้า</label>
+
+        <select id="statusFilter" class="select">
+          <option value="active">พร้อมจำหน่าย</option>
+          <option value="out_of_stock">สินค้าหมด</option>
+          <option value="all">สินค้าที่แสดงทั้งหมด</option>
+        </select>
+      </div>
+
+    </div>
+
+  </section>
+
+  <div class="result-row">
+
+    <div id="resultCount" class="result-count">
+      กำลังโหลดสินค้า...
+    </div>
+
+    <button
+      id="refreshBtn"
+      class="refresh-btn"
+      type="button"
+    >
+      ↻ รีเฟรช
+    </button>
+
+  </div>
+
+  <section id="productGrid" class="product-grid">
+
+    <div class="state-box">
+
+      <div class="spinner"></div>
+
+      <p class="state-title">
+        กำลังโหลดสินค้า
+      </p>
+
+      <p class="state-text">
+        กรุณารอสักครู่...
+      </p>
+
+    </div>
+
+  </section>
+
+</main>
+
+<!-- =========================
+     Detail Modal
+========================= -->
+
+<div
+  id="detailModal"
+  class="modal"
+  aria-hidden="true"
+>
+
+  <div class="modal-card">
+
+    <button
+      id="closeModalBtn"
+      class="close-modal"
+      type="button"
+      aria-label="ปิด"
+    >
+      ×
+    </button>
+
+    <div id="detailImageArea"></div>
+
+    <div class="detail-content">
+
+      <div id="detailBadges" class="detail-badges"></div>
+
+      <h2 id="detailName">
+        -
+      </h2>
+
+      <div id="detailCategory" class="detail-category">
+        -
+      </div>
+
+      <div id="detailDescription" class="detail-description">
+        -
+      </div>
+
+      <div class="detail-prices">
+
+        <div class="detail-price">
+
+          <span>
+            ราคาปลีก
+          </span>
+
+          <strong id="detailRetail">
+            -
+          </strong>
+
+        </div>
+
+        <div class="detail-price distributor">
+
+          <span>
+            ราคาตัวแทน
+          </span>
+
+          <strong id="detailDistributor">
+            -
+          </strong>
+
+        </div>
+
+      </div>
+
+      <button
+        id="copyDetailLargeBtn"
+        type="button"
+        class="copy-detail-large"
+      >
+        📋 คัดลอกรายละเอียดสินค้า
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- =========================
+     Toast
+========================= -->
+
+<div id="toast" class="toast"></div>
+
+<!-- =========================
+     Login Overlay
+========================= -->
+
+<div id="loginOverlay" class="login-overlay hidden">
+
+  <div class="login-box">
+
+    <div class="login-box-icon">
+      🔐
+    </div>
+
+    <h2>
+      กรุณาเข้าสู่ระบบ
+    </h2>
+
+    <p>
+      หน้าสินค้านี้สำหรับตัวแทน Bennie Choco
+      ที่ผ่านการเข้าสู่ระบบแล้วเท่านั้น
+    </p>
+
+    <a
+      href="login.html"
+      class="login-button"
+    >
+      ♡ เข้าสู่ระบบตัวแทน
+    </a>
+
+  </div>
+
+</div>
+
+<script>
+/* =========================================================
+   SUPABASE
+========================================================= */
+
+const SUPABASE_URL =
+  "https://arhvdvaugcjzkdbxesma.supabase.co";
+
+const SUPABASE_ANON_KEY =
+  "sb_publishable_Ctpm1h1NQKTdOPpY9yQ2qw_7kQg_57Z";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let products = [];
+
+let filteredProducts = [];
+
+let currentDetailProductId = null;
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const productGrid =
+  document.getElementById("productGrid");
+
+const searchInput =
+  document.getElementById("searchInput");
+
+const categoryFilter =
+  document.getElementById("categoryFilter");
+
+const statusFilter =
+  document.getElementById("statusFilter");
+
+const resultCount =
+  document.getElementById("resultCount");
+
+const refreshBtn =
+  document.getElementById("refreshBtn");
+
+const detailModal =
+  document.getElementById("detailModal");
+
+const closeModalBtn =
+  document.getElementById("closeModalBtn");
+
+const copyDetailLargeBtn =
+  document.getElementById("copyDetailLargeBtn");
+
+const toastEl =
+  document.getElementById("toast");
+
+const loginOverlay =
+  document.getElementById("loginOverlay");
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function esc(value){
+
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+function formatPrice(value){
+
+  if(
+    value === null ||
+    value === undefined ||
+    value === ""
+  ){
+    return "-";
+  }
+
+  const number =
+    Number(value);
+
+  if(
+    Number.isNaN(number)
+  ){
+    return esc(value);
+  }
+
+  return number.toLocaleString(
+    "th-TH",
+    {
+      minimumFractionDigits:0,
+      maximumFractionDigits:2
+    }
+  ) + " ฿";
+
+}
+
+
+function formatDate(value){
+
+  if(!value){
+    return "";
+  }
+
+  const date =
+    new Date(value);
+
+  if(
+    Number.isNaN(date.getTime())
+  ){
+    return "";
+  }
+
+  return date.toLocaleDateString(
+    "th-TH",
+    {
+      day:"numeric",
+      month:"short",
+      year:"numeric"
+    }
+  );
+
+}
+
+
+function isNewProduct(product){
+
+  if(!product.created_at){
+    return false;
+  }
+
+  const created =
+    new Date(product.created_at);
+
+  if(
+    Number.isNaN(created.getTime())
+  ){
+    return false;
+  }
+
+  const diff =
+    Date.now() - created.getTime();
+
+  const sevenDays =
+    7 * 24 * 60 * 60 * 1000;
+
+  return diff >= 0 && diff <= sevenDays;
+
+}
+
+
+function showToast(message){
+
+  toastEl.textContent =
+    message;
+
+  toastEl.classList.add("show");
+
+  clearTimeout(
+    showToast.timer
+  );
+
+  showToast.timer =
+    setTimeout(
+      ()=>{
+        toastEl.classList.remove("show");
+      },
+      2200
+    );
+
+}
+
+
+/* =========================================================
+   AUTH
+========================================================= */
+
+async function checkLogin(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient.auth.getSession();
+
+  if(error){
+
+    console.error(
+      "Session error:",
+      error
+    );
+
+    showLoginOverlay();
+
+    return false;
+  }
+
+  if(!data.session){
+
+    showLoginOverlay();
+
+    return false;
+  }
+
+  /*
+    ตรวจสอบ profile เพิ่มเติม
+    เพื่อไม่ให้ suspended / rejected
+    เข้าใช้งาน catalog
+  */
+
+  const {
+    data:profile,
+    error:profileError
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select(
+        "id,nickname,status"
+      )
+      .eq(
+        "id",
+        data.session.user.id
+      )
+      .maybeSingle();
+
+  if(profileError){
+
+    console.error(
+      "Profile error:",
+      profileError
+    );
+
+    /*
+      หากอ่าน profile ไม่ได้
+      ไม่เด้งออกทันทีจากหน้า catalog
+      เพราะ Auth ยังยืนยัน session แล้ว
+    */
+
+    hideLoginOverlay();
+
+    return true;
+  }
+
+  if(
+    profile &&
+    profile.status !== "active"
+  ){
+
+    showLoginOverlay();
+
+    return false;
+  }
+
+  hideLoginOverlay();
+
+  return true;
+
+}
+
+
+function showLoginOverlay(){
+
+  loginOverlay.classList.remove(
+    "hidden"
+  );
+
+}
+
+
+function hideLoginOverlay(){
+
+  loginOverlay.classList.add(
+    "hidden"
+  );
+
+}
+
+
+/* =========================================================
+   LOAD PRODUCTS
+========================================================= */
+
+async function loadProducts(){
+
+  productGrid.innerHTML = `
+    <div class="state-box">
+      <div class="spinner"></div>
+
+      <p class="state-title">
+        กำลังโหลดสินค้า
+      </p>
+
+      <p class="state-text">
+        กรุณารอสักครู่...
+      </p>
+    </div>
+  `;
+
+  resultCount.textContent =
+    "กำลังโหลดสินค้า...";
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("products")
+      .select(`
+        id,
+        name,
+        category,
+        description,
+        image_url,
+        retail_price,
+        distributor_price,
+        status,
+        sort_order,
+        created_at,
+        updated_at
+      `)
+      .order(
+        "sort_order",
+        {
+          ascending:true
+        }
+      )
+      .order(
+        "created_at",
+        {
+          ascending:false
+        }
+      );
+
+  if(error){
+
+    console.error(
+      "Load products error:",
+      error
+    );
+
+    products = [];
+
+    productGrid.innerHTML = `
+      <div class="state-box">
+
+        <div class="state-icon">
+          ⚠️
+        </div>
+
+        <p class="state-title">
+          โหลดสินค้าไม่สำเร็จ
+        </p>
+
+        <p class="state-text">
+          ${esc(error.message)}
+        </p>
+
+      </div>
+    `;
+
+    resultCount.textContent =
+      "เกิดข้อผิดพลาด";
+
+    return;
+  }
+
+  /*
+    เก็บเฉพาะข้อมูลจาก products
+    ไม่เดาข้อมูลจากตารางอื่น
+  */
+
+  products =
+    Array.isArray(data)
+      ? data
+      : [];
+
+  buildCategoryFilter();
+
+  applyFilters();
+
+}
+
+
+/* =========================================================
+   CATEGORY FILTER
+========================================================= */
+
+function buildCategoryFilter(){
+
+  const categories =
+    [
+      ...new Set(
+        products
+          .map(
+            product =>
+              String(
+                product.category ?? ""
+              ).trim()
+          )
+          .filter(Boolean)
+      )
+    ]
+    .sort(
+      (a,b)=>
+        a.localeCompare(
+          b,
+          "th"
+        )
+    );
+
+  categoryFilter.innerHTML = `
+    <option value="">
+      ทุกหมวดหมู่
+    </option>
+  `;
+
+  categories.forEach(
+    category => {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+      option.value =
+        category;
+
+      option.textContent =
+        category;
+
+      categoryFilter.appendChild(
+        option
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   FILTER
+========================================================= */
+
+function applyFilters(){
+
+  const search =
+    searchInput.value
+      .trim()
+      .toLowerCase();
+
+  const category =
+    categoryFilter.value;
+
+  const status =
+    statusFilter.value;
+
+  filteredProducts =
+    products.filter(
+      product => {
+
+        /*
+          hidden:
+          ไม่แสดงให้ตัวแทนเห็น
+        */
+
+        if(
+          product.status === "hidden"
+        ){
+          return false;
+        }
+
+        /*
+          status filter
+        */
+
+        if(
+          status === "active" &&
+          product.status !== "active"
+        ){
+          return false;
+        }
+
+        if(
+          status === "out_of_stock" &&
+          product.status !== "out_of_stock"
+        ){
+          return false;
+        }
+
+        /*
+          category
+        */
+
+        if(
+          category &&
+          String(
+            product.category ?? ""
+          ) !== category
+        ){
+          return false;
+        }
+
+        /*
+          search
+        */
+
+        if(search){
+
+          const text =
+            [
+              product.name,
+              product.category,
+              product.description
+            ]
+            .map(
+              value =>
+                String(
+                  value ?? ""
+                ).toLowerCase()
+            )
+            .join(" ");
+
+          if(
+            !text.includes(search)
+          ){
+            return false;
+          }
+
+        }
+
+        return true;
+
+      }
+    );
+
+  renderProducts();
+
+}
+
+
+/* =========================================================
+   RENDER PRODUCTS
+========================================================= */
+
+function renderProducts(){
+
+  resultCount.textContent =
+    `พบ ${filteredProducts.length.toLocaleString("th-TH")} สินค้า`;
+
+  if(!filteredProducts.length){
+
+    productGrid.innerHTML = `
+      <div class="state-box">
+
+        <div class="state-icon">
+          🍫
+        </div>
+
+        <p class="state-title">
+          ไม่พบสินค้า
+        </p>
+
+        <p class="state-text">
+          ลองเปลี่ยนคำค้นหา หมวดหมู่ หรือสถานะสินค้า
+        </p>
+
+      </div>
+    `;
+
+    return;
+  }
+
+  productGrid.innerHTML =
+    filteredProducts
+      .map(
+        product =>
+          renderProductCard(
+            product
+          )
+      )
+      .join("");
+
+}
+
+
+function renderProductCard(product){
+
+  const isNew =
+    isNewProduct(product);
+
+  const isOut =
+    product.status ===
+    "out_of_stock";
+
+  const image =
+    String(
+      product.image_url ?? ""
+    ).trim();
+
+  return `
+    <article
+      class="product-card"
+      onclick="openDetail('${esc(product.id)}')"
+    >
+
+      <div class="product-image-wrap">
+
+        ${
+          image
+            ? `
+              <img
+                class="product-image"
+                src="${esc(image)}"
+                alt="${esc(product.name)}"
+                loading="lazy"
+                onerror="this.style.display='none';this.nextElementSibling.style.display='grid';"
+              >
+
+              <div
+                class="no-image"
+                style="display:none;"
+              >
+                🍫
+              </div>
+            `
+            : `
+              <div class="no-image">
+                🍫
+              </div>
+            `
+        }
+
+        <div class="badges">
+
+          ${
+            isNew
+              ? `
+                <span class="badge badge-new">
+                  🆕 สินค้าใหม่
+                </span>
+              `
+              : ""
+          }
+
+          ${
+            isOut
+              ? `
+                <span class="badge badge-out">
+                  ⚠️ สินค้าหมด
+                </span>
+              `
+              : ""
+          }
+
+        </div>
+
+      </div>
+
+      <div class="product-body">
+
+        ${
+          product.category
+            ? `
+              <span class="category">
+                ${esc(product.category)}
+              </span>
+            `
+            : ""
+        }
+
+        <h2 class="product-name">
+          ${esc(product.name)}
+        </h2>
+
+        <p class="product-description">
+          ${
+            product.description
+              ? esc(product.description)
+              : "ยังไม่มีรายละเอียดสินค้า"
+          }
+        </p>
+
+        <div class="price-box">
+
+          <div class="price-item">
+
+            <span class="price-label">
+              ราคาปลีก
+            </span>
+
+            <strong class="price-value">
+              ${formatPrice(product.retail_price)}
+            </strong>
+
+          </div>
+
+          <div class="price-item">
+
+            <span class="price-label">
+              ราคาตัวแทน
+            </span>
+
+            <strong class="price-value distributor">
+              ${formatPrice(product.distributor_price)}
+            </strong>
+
+          </div>
+
+        </div>
+
+        <div class="product-actions">
+
+          <button
+            type="button"
+            class="copy-detail-btn"
+            onclick="
+              event.stopPropagation();
+              copyProductDetail('${esc(product.id)}');
+            "
+          >
+            📋 คัดลอกรายละเอียด
+          </button>
+
+          <div class="card-arrow">
+            ›
+          </div>
+
+        </div>
+
+      </div>
+
+    </article>
+  `;
+
+}
+
+
+/* =========================================================
+   PRODUCT DETAIL
+========================================================= */
+
+function openDetail(productId){
+
+  const product =
+    products.find(
+      item =>
+        String(item.id) ===
+        String(productId)
+    );
+
+  if(!product){
+    return;
+  }
+
+  currentDetailProductId =
+    product.id;
+
+  const image =
+    String(
+      product.image_url ?? ""
+    ).trim();
+
+  const isNew =
+    isNewProduct(product);
+
+  const isOut =
+    product.status ===
+    "out_of_stock";
+
+  /*
+    Image
+  */
+
+  if(image){
+
+    document.getElementById(
+      "detailImageArea"
+    ).innerHTML = `
+      <img
+        class="detail-image"
+        src="${esc(image)}"
+        alt="${esc(product.name)}"
+        onerror="
+          this.outerHTML=
+          '<div class=&quot;detail-no-image&quot;>🍫</div>';
+        "
+      >
+    `;
+
+  }else{
+
+    document.getElementById(
+      "detailImageArea"
+    ).innerHTML = `
+      <div class="detail-no-image">
+        🍫
+      </div>
+    `;
+
+  }
+
+  /*
+    Badges
+  */
+
+  const badges =
+    [];
+
+  if(isNew){
+
+    badges.push(`
+      <span class="badge badge-new">
+        🆕 สินค้าใหม่
+      </span>
+    `);
+
+  }
+
+  if(isOut){
+
+    badges.push(`
+      <span class="badge badge-out">
+        ⚠️ สินค้าหมด
+      </span>
+    `);
+
+  }
+
+  document.getElementById(
+    "detailBadges"
+  ).innerHTML =
+    badges.join("");
+
+  /*
+    Content
+  */
+
+  document.getElementById(
+    "detailName"
+  ).textContent =
+    product.name || "-";
+
+  document.getElementById(
+    "detailCategory"
+  ).textContent =
+    product.category
+      ? `หมวดหมู่: ${product.category}`
+      : "ไม่ระบุหมวดหมู่";
+
+  document.getElementById(
+    "detailDescription"
+  ).textContent =
+    product.description ||
+    "ยังไม่มีรายละเอียดสินค้า";
+
+  document.getElementById(
+    "detailRetail"
+  ).textContent =
+    formatPrice(
+      product.retail_price
+    );
+
+  document.getElementById(
+    "detailDistributor"
+  ).textContent =
+    formatPrice(
+      product.distributor_price
+    );
+
+  detailModal.classList.add(
+    "show"
+  );
+
+  detailModal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+  document.body.style.overflow =
+    "hidden";
+
+}
+
+
+/* =========================================================
+   CLOSE DETAIL
+========================================================= */
+
+function closeDetail(){
+
+  detailModal.classList.remove(
+    "show"
+  );
+
+  detailModal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+  document.body.style.overflow =
+    "";
+
+  currentDetailProductId =
+    null;
+
+}
+
+
+closeModalBtn.addEventListener(
+  "click",
+  closeDetail
+);
+
+
+detailModal.addEventListener(
+  "click",
+  event => {
+
+    if(
+      event.target ===
+      detailModal
+    ){
+      closeDetail();
+    }
+
+  }
+);
+
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if(
+      event.key === "Escape" &&
+      detailModal.classList.contains("show")
+    ){
+      closeDetail();
+    }
+
+  }
+);
+
+
+/* =========================================================
+   COPY PRODUCT DETAIL
+========================================================= */
+
+async function copyProductDetail(
+  productId
+){
+
+  const product =
+    products.find(
+      item =>
+        String(item.id) ===
+        String(productId)
+    );
+
+  if(!product){
+
+    showToast(
+      "ไม่พบข้อมูลสินค้า"
+    );
+
+    return;
+  }
+
+  const name =
+    product.name ||
+    "-";
+
+  const category =
+    product.category ||
+    "-";
+
+  const description =
+    product.description ||
+    "ไม่มีรายละเอียดสินค้า";
+
+  const retail =
+    formatPrice(
+      product.retail_price
+    );
+
+  const distributor =
+    formatPrice(
+      product.distributor_price
+    );
+
+  const outOfStock =
+    product.status ===
+    "out_of_stock";
+
+  /*
+    ข้อความที่ตัวแทนสามารถ
+    คัดลอกไปส่งต่อลูกค้าได้ทันที
+  */
+
+  let text = `
+🍫 Bennie Choco
+
+สินค้า: ${name}
+หมวดหมู่: ${category}
+
+รายละเอียด:
+${description}
+
+ราคาปลีก: ${retail}
+ราคาตัวแทน: ${distributor}
+`.trim();
+
+  if(outOfStock){
+
+    text +=
+      "\n\n⚠️ สินค้าหมด";
+
+  }
+
+  try{
+
+    /*
+      วิธีหลัก
+    */
+
+    if(
+      navigator.clipboard &&
+      window.isSecureContext
+    ){
+
+      await navigator.clipboard.writeText(
+        text
+      );
+
+      showToast(
+        "📋 คัดลอกรายละเอียดแล้ว"
+      );
+
+      return;
+
+    }
+
+    /*
+      Fallback สำหรับ browser
+      ที่ไม่รองรับ Clipboard API
+    */
+
+    const textarea =
+      document.createElement(
+        "textarea"
+      );
+
+    textarea.value =
+      text;
+
+    textarea.style.position =
+      "fixed";
+
+    textarea.style.left =
+      "-9999px";
+
+    textarea.style.top =
+      "0";
+
+    document.body.appendChild(
+      textarea
+    );
+
+    textarea.focus();
+    textarea.select();
+
+    const success =
+      document.execCommand(
+        "copy"
+      );
+
+    textarea.remove();
+
+    if(success){
+
+      showToast(
+        "📋 คัดลอกรายละเอียดแล้ว"
+      );
+
+    }else{
+
+      showToast(
+        "ไม่สามารถคัดลอกได้ กรุณาลองอีกครั้ง"
+      );
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Copy error:",
+      error
+    );
+
+    showToast(
+      "ไม่สามารถคัดลอกได้ กรุณาลองอีกครั้ง"
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   EVENTS
+========================================================= */
+
+searchInput.addEventListener(
+  "input",
+  applyFilters
+);
+
+categoryFilter.addEventListener(
+  "change",
+  applyFilters
+);
+
+statusFilter.addEventListener(
+  "change",
+  applyFilters
+);
+
+refreshBtn.addEventListener(
+  "click",
+  async ()=>{
+
+    refreshBtn.disabled =
+      true;
+
+    refreshBtn.textContent =
+      "กำลังโหลด...";
+
+    try{
+
+      const loggedIn =
+        await checkLogin();
+
+      if(loggedIn){
+
+        await loadProducts();
+
+      }
+
+    }finally{
+
+      refreshBtn.disabled =
+        false;
+
+      refreshBtn.textContent =
+        "↻ รีเฟรช";
+
+    }
+
+  }
+);
+
+
+copyDetailLargeBtn.addEventListener(
+  "click",
+  ()=>{
+
+    if(
+      currentDetailProductId
+    ){
+
+      copyProductDetail(
+        currentDetailProductId
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   AUTH STATE
+========================================================= */
+
+supabaseClient.auth.onAuthStateChange(
+  async (
+    event,
+    session
+  ) => {
+
+    if(
+      event === "SIGNED_OUT"
+    ){
+
+      showLoginOverlay();
+
+      return;
+
+    }
+
+    if(
+      session
+    ){
+
+      /*
+        ไม่โหลดทุก event ซ้ำ
+        แต่ตรวจสิทธิ์เมื่อมี session
+      */
+
+      const loggedIn =
+        await checkLogin();
+
+      if(
+        loggedIn &&
+        products.length === 0
+      ){
+
+        await loadProducts();
+
+      }
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   INIT
+========================================================= */
+
+async function init(){
+
+  const loggedIn =
+    await checkLogin();
+
+  if(!loggedIn){
+
+    return;
+
+  }
+
+  await loadProducts();
+
+}
+
+
+init();
+
+</script>
+
+</body>
+</html>
