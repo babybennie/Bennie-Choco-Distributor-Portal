@@ -249,14 +249,13 @@ body{
   margin-bottom:18px;
 }
 
+/*
+  เอาเมฆใหญ่ด้านหลังออก
+  เพื่อไม่ให้บังข้อความ
+*/
+
 .welcome::after{
-  content:"☁";
-  position:absolute;
-  right:18px;
-  bottom:-24px;
-  font-size:115px;
-  line-height:1;
-  color:rgba(160,196,255,.12);
+  display:none;
 }
 
 .welcome-label{
@@ -380,6 +379,10 @@ body{
   background:#f4edff;
 }
 
+.icon-pink{
+  background:#ffeaf1;
+}
+
 .menu-card h3{
   font-size:15px;
   margin-bottom:4px;
@@ -403,6 +406,51 @@ body{
   align-items:center;
   justify-content:center;
   font-size:13px;
+}
+
+/* =========================
+   ADMIN CONTACT
+========================= */
+
+.contact-box{
+  margin-top:18px;
+  padding:18px;
+  border-radius:22px;
+  background:linear-gradient(135deg,#f8f3ff,#fff);
+  border:1px solid rgba(196,168,240,.22);
+}
+
+.contact-title{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:14px;
+  font-weight:800;
+  margin-bottom:10px;
+}
+
+.contact-list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.contact-item{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:9px 12px;
+  border-radius:13px;
+  background:rgba(255,255,255,.9);
+  border:1px solid var(--border);
+  color:var(--text);
+  text-decoration:none;
+  font-size:11px;
+  font-weight:800;
+}
+
+.contact-item:hover{
+  transform:translateY(-1px);
 }
 
 /* =========================
@@ -458,6 +506,7 @@ body{
 .info-value{
   font-size:14px;
   font-weight:800;
+  overflow-wrap:anywhere;
 }
 
 /* =========================
@@ -586,7 +635,7 @@ body{
   }
 
   .menu-grid{
-    grid-template-columns:repeat(4,minmax(0,1fr));
+    grid-template-columns:repeat(3,minmax(0,1fr));
   }
 
   .welcome{
@@ -646,6 +695,14 @@ body{
   .info-card{
     padding:14px;
   }
+
+  .contact-list{
+    flex-direction:column;
+  }
+
+  .contact-item{
+    width:100%;
+  }
 }
 </style>
 </head>
@@ -678,11 +735,13 @@ body{
   src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
   alt=""
 >
+
 <img
   class="float-deco float-2"
   src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
   alt=""
 >
+
 <img
   class="float-deco float-3"
   src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
@@ -737,7 +796,7 @@ body{
     <p>
       พื้นที่สำหรับตัวแทนในการดูสินค้า
       ตรวจสอบข้อมูล อัปเดตข่าวสาร
-      และเข้าถึงไฟล์สำหรับใช้ในการขาย
+      และเข้าถึงช่องทางสำหรับการขาย
     </p>
 
     <div class="profile-row">
@@ -748,7 +807,7 @@ body{
       </div>
 
       <div class="profile-chip">
-        # 
+        #
         <span id="codeChip">กำลังโหลด...</span>
       </div>
 
@@ -770,6 +829,7 @@ body{
 
   <section class="menu-grid">
 
+    <!-- PRODUCTS -->
     <a
       href="products.html"
       class="menu-card"
@@ -794,30 +854,34 @@ body{
     </a>
 
 
+    <!-- SHOP ACCOUNT -->
     <a
-      href="orders.html"
+      href="https://happy-benny.netlify.app/"
       class="menu-card"
+      target="_blank"
+      rel="noopener noreferrer"
     >
 
       <div class="menu-icon icon-mint">
-        🧾
+        🏪
       </div>
 
       <div class="menu-arrow">
-        ›
+        ↗
       </div>
 
       <h3>
-        คำสั่งซื้อ
+        บัญชีร้าน
       </h3>
 
       <p>
-        ตรวจสอบรายการสั่งซื้อและสถานะคำสั่งซื้อ
+        เข้าสู่หน้าบัญชีร้าน Bennie Choco
       </p>
 
     </a>
 
 
+    <!-- ANNOUNCEMENTS -->
     <a
       href="announcements.html"
       class="menu-card"
@@ -842,28 +906,92 @@ body{
     </a>
 
 
+    <!-- ADMIN CONTACT -->
     <a
-      href="downloads.html"
+      href="#admin-contact"
       class="menu-card"
     >
 
       <div class="menu-icon icon-purple">
-        📁
+        💬
       </div>
 
       <div class="menu-arrow">
-        ›
+        ↓
       </div>
 
       <h3>
-        ไฟล์สำหรับตัวแทน
+        ติดต่อแอดมิน
       </h3>
 
       <p>
-        รูปสินค้า สื่อโปรโมต และไฟล์สำหรับนำไปใช้งาน
+        ช่องทางติดต่อแอดมินสำหรับสอบถามข้อมูล
       </p>
 
     </a>
+
+
+    <!-- ORDER CHANNEL -->
+    <a
+      href="https://line.me/ti/g/FyZW-swGc6"
+      class="menu-card"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+
+      <div class="menu-icon icon-pink">
+        🧾
+      </div>
+
+      <div class="menu-arrow">
+        ↗
+      </div>
+
+      <h3>
+        ช่องทางส่งออเดอร์ร้าน
+      </h3>
+
+      <p>
+        เข้ากลุ่มสำหรับส่งออเดอร์ร้าน
+      </p>
+
+    </a>
+
+  </section>
+
+
+  <!-- Admin Contact -->
+  <section
+    class="contact-box"
+    id="admin-contact"
+  >
+
+    <div class="contact-title">
+      ♡ ช่องทางติดต่อแอดมิน
+    </div>
+
+    <div class="contact-list">
+
+      <a
+        class="contact-item"
+        href="#"
+        onclick="return false;"
+      >
+        Facebook :
+        บ้อบเบ้บ
+      </a>
+
+      <a
+        class="contact-item"
+        href="https://line.me/ti/p/GKW1TDYvpB"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        LINE :
+        ติดต่อแอดมิน
+      </a>
+
+    </div>
 
   </section>
 
@@ -876,7 +1004,7 @@ body{
     </div>
 
     <p>
-      ข้อมูลสินค้า ราคา ประกาศ และไฟล์ต่าง ๆ
+      ข้อมูลสินค้า ราคา ประกาศ และข้อมูลต่าง ๆ
       จะมาจากระบบกลางของ Bennie Choco
       เพื่อให้ตัวแทนทุกคนได้รับข้อมูลชุดเดียวกัน
     </p>
@@ -894,6 +1022,7 @@ body{
   <section class="info-grid">
 
     <div class="info-card">
+
       <div class="info-label">
         ชื่อที่ใช้ในระบบ
       </div>
@@ -904,10 +1033,12 @@ body{
       >
         -
       </div>
+
     </div>
 
 
     <div class="info-card">
+
       <div class="info-label">
         รหัสตัวแทน
       </div>
@@ -918,10 +1049,12 @@ body{
       >
         -
       </div>
+
     </div>
 
 
     <div class="info-card">
+
       <div class="info-label">
         อีเมลเข้าสู่ระบบ
       </div>
@@ -932,10 +1065,12 @@ body{
       >
         -
       </div>
+
     </div>
 
 
     <div class="info-card">
+
       <div class="info-label">
         สถานะบัญชี
       </div>
@@ -946,6 +1081,7 @@ body{
       >
         -
       </div>
+
     </div>
 
   </section>
@@ -1066,11 +1202,15 @@ const modalButton =
 ========================================================= */
 
 function hideLoading(){
+
   loadingScreen.style.opacity = "0";
 
   setTimeout(() => {
+
     loadingScreen.style.display = "none";
-  }, 300);
+
+  },300);
+
 }
 
 
@@ -1079,22 +1219,36 @@ function showError(
   message,
   buttonText = "กลับไปเข้าสู่ระบบ",
   action = () => {
-    window.location.href = "login.html";
+
+    window.location.href =
+      "login.html";
+
   }
 ){
 
-  modalTitle.textContent = title;
-  modalMessage.textContent = message;
-  modalButton.textContent = buttonText;
+  modalTitle.textContent =
+    title;
 
-  modalButton.onclick = action;
+  modalMessage.textContent =
+    message;
+
+  modalButton.textContent =
+    buttonText;
+
+  modalButton.onclick =
+    action;
 
   errorModal.classList.add("show");
+
 }
 
 
 function escapeText(value){
-  return String(value ?? "").trim();
+
+  return String(
+    value ?? ""
+  ).trim();
+
 }
 
 
@@ -1106,21 +1260,29 @@ async function loadDashboard(){
 
   try{
 
-    /*
-      ตรวจสอบ session ก่อน
-    */
-
     const {
       data: sessionData,
       error: sessionError
-    } = await supabaseClient.auth.getSession();
+    } = await supabaseClient
+      .auth
+      .getSession();
+
 
     if(sessionError){
+
       throw sessionError;
+
     }
+
 
     const session =
       sessionData?.session;
+
+
+    /*
+      ไม่มี session
+      → กลับหน้า Login
+    */
 
     if(!session){
 
@@ -1130,6 +1292,7 @@ async function loadDashboard(){
       );
 
       return;
+
     }
 
 
@@ -1155,7 +1318,7 @@ async function loadDashboard(){
         request_no,
         approved_at
       `)
-      .eq("id", user.id)
+      .eq("id",user.id)
       .single();
 
 
@@ -1172,6 +1335,7 @@ async function loadDashboard(){
       );
 
       return;
+
     }
 
 
@@ -1188,33 +1352,44 @@ async function loadDashboard(){
           "บัญชีของคุณได้รับข้อมูลแล้ว แต่แอดมินยังไม่ได้อนุมัติการเข้าใช้งาน",
           "กลับไปหน้าหลัก",
           () => {
-            window.location.href = "index.html";
+
+            window.location.href =
+              "index.html";
+
           }
         );
 
-      }else if(profile.status === "rejected"){
+      }
+
+      else if(profile.status === "rejected"){
 
         showError(
           "คำขอไม่ผ่านการอนุมัติ",
           "บัญชีตัวแทนนี้ไม่ได้รับการอนุมัติ กรุณาติดต่อแอดมินหากต้องการสอบถามรายละเอียด"
         );
 
-      }else if(profile.status === "suspended"){
+      }
+
+      else if(profile.status === "suspended"){
 
         showError(
           "บัญชีถูกระงับ",
           "บัญชีตัวแทนนี้ถูกระงับการใช้งานชั่วคราว กรุณาติดต่อแอดมิน"
         );
 
-      }else{
+      }
+
+      else{
 
         showError(
           "ไม่สามารถเข้าใช้งานได้",
           "สถานะบัญชีไม่ถูกต้อง กรุณาติดต่อแอดมิน"
         );
+
       }
 
       return;
+
     }
 
 
@@ -1223,13 +1398,18 @@ async function loadDashboard(){
     */
 
     const nickname =
-      escapeText(profile.nickname) || "ตัวแทน";
+      escapeText(profile.nickname) ||
+      "ตัวแทน";
 
     const distributorCode =
-      escapeText(profile.distributor_code) || "-";
+      escapeText(profile.distributor_code) ||
+      "-";
 
     const email =
-      escapeText(profile.email || user.email) || "-";
+      escapeText(
+        profile.email ||
+        user.email
+      ) || "-";
 
 
     welcomeName.textContent =
@@ -1256,6 +1436,7 @@ async function loadDashboard(){
 
     hideLoading();
 
+
   }catch(error){
 
     console.error(error);
@@ -1278,12 +1459,18 @@ logoutBtn.addEventListener(
   "click",
   async () => {
 
-    logoutBtn.disabled = true;
-    logoutBtn.textContent = "กำลังออก...";
+    logoutBtn.disabled =
+      true;
+
+    logoutBtn.textContent =
+      "กำลังออก...";
+
 
     try{
 
-      await supabaseClient.auth.signOut();
+      await supabaseClient
+        .auth
+        .signOut();
 
     }catch(error){
 
@@ -1294,8 +1481,10 @@ logoutBtn.addEventListener(
 
     }
 
+
     window.location.href =
       "login.html";
+
   }
 );
 
@@ -1305,12 +1494,7 @@ logoutBtn.addEventListener(
 ========================================================= */
 
 supabaseClient.auth.onAuthStateChange(
-  (event, session) => {
-
-    /*
-      ถ้าถูก logout จากที่อื่น
-      ให้กลับหน้า Login
-    */
+  (event,session) => {
 
     if(
       event === "SIGNED_OUT" &&
@@ -1319,6 +1503,7 @@ supabaseClient.auth.onAuthStateChange(
 
       window.location.href =
         "login.html";
+
     }
 
   }
