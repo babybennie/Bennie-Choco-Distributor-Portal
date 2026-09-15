@@ -1,0 +1,3535 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bennie Choco — Distributor Portal</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Niramit:wght@300;400;500;600&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+/* =========================================================
+   RESET
+========================================================= */
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  width:100%;
+  min-height:100vh;
+  overflow-x:hidden;
+
+  font-family:
+    "Niramit",
+    "Quicksand",
+    sans-serif;
+
+  color:#3D405B;
+
+  background:
+    radial-gradient(
+      circle at 15% 10%,
+      rgba(255,255,255,.95),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 85% 35%,
+      rgba(202,255,191,.28),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 50% 90%,
+      rgba(160,196,255,.28),
+      transparent 35%
+    ),
+    linear-gradient(
+      180deg,
+      #F5F9FF 0%,
+      #FFFDF4 55%,
+      #F5FAFF 100%
+    );
+}
+
+button,
+a{
+  font-family:inherit;
+}
+
+a{
+  text-decoration:none;
+  color:inherit;
+}
+
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+:root{
+
+  --sky:#A0C4FF;
+  --sky-soft:#DDEBFF;
+  --sky-pale:#F1F7FF;
+
+  --mint:#CAFFBF;
+  --mint-soft:#EDFFE9;
+
+  --vanilla:#FDFFB6;
+  --vanilla-soft:#FFFEE0;
+
+  --cream:#FFFDF4;
+  --white:#FFFFFF;
+
+  --text:#3D405B;
+  --text-soft:#69708B;
+
+  --purple:#9A8CC2;
+
+  --border:rgba(61,64,91,.08);
+
+  --shadow:
+    0 18px 50px rgba(94,111,151,.12);
+
+}
+
+
+/* =========================================================
+   DECORATION LAYER
+========================================================= */
+
+.decorations{
+  position:fixed;
+  inset:0;
+  z-index:0;
+
+  pointer-events:none;
+
+  overflow:hidden;
+}
+
+
+/* =========================================================
+   CLOUDS
+========================================================= */
+
+.cloud{
+  position:absolute;
+
+  width:95px;
+  height:35px;
+
+  border-radius:999px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.98),
+      rgba(235,244,255,.92)
+    );
+
+  box-shadow:
+    0 10px 25px rgba(122,147,184,.10);
+}
+
+.cloud::before,
+.cloud::after{
+  content:"";
+  position:absolute;
+
+  border-radius:50%;
+
+  background:
+    linear-gradient(
+      180deg,
+      #FFFFFF,
+      #EAF2FF
+    );
+}
+
+.cloud::before{
+  width:48px;
+  height:48px;
+
+  left:13px;
+  bottom:10px;
+}
+
+.cloud::after{
+  width:58px;
+  height:58px;
+
+  right:10px;
+  bottom:8px;
+}
+
+.cloud-1{
+  top:15%;
+  left:-25px;
+  transform:scale(.8);
+  opacity:.72;
+}
+
+.cloud-2{
+  top:30%;
+  right:-30px;
+  transform:scale(.65);
+  opacity:.55;
+}
+
+.cloud-3{
+  top:63%;
+  left:-20px;
+  transform:scale(.55);
+  opacity:.5;
+}
+
+.cloud-4{
+  top:78%;
+  right:-20px;
+  transform:scale(.75);
+  opacity:.55;
+}
+
+.cloud-5{
+  top:47%;
+  left:50%;
+  transform:translateX(-50%) scale(.38);
+  opacity:.32;
+}
+
+
+/* =========================================================
+   FLOATING IMAGE
+========================================================= */
+
+.float-decor{
+  position:absolute;
+
+  width:72px;
+
+  opacity:.7;
+
+  filter:
+    drop-shadow(
+      0 10px 15px rgba(100,120,150,.10)
+    );
+
+  animation:
+    floatAround 5s ease-in-out infinite;
+}
+
+.float-1{
+  top:18%;
+  left:7%;
+  transform:rotate(-10deg);
+}
+
+.float-2{
+  top:43%;
+  right:6%;
+  transform:rotate(10deg);
+  animation-delay:1.5s;
+}
+
+.float-3{
+  top:70%;
+  left:5%;
+  transform:rotate(7deg);
+  animation-delay:2.4s;
+}
+
+.float-4{
+  top:82%;
+  right:8%;
+  transform:rotate(-8deg);
+  animation-delay:3.2s;
+}
+
+@keyframes floatAround{
+
+  0%,100%{
+    translate:0 0;
+  }
+
+  50%{
+    translate:0 -10px;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL SPARKLES
+========================================================= */
+
+.spark{
+  position:absolute;
+
+  font-family:Georgia,serif;
+
+  color:#D8C978;
+
+  opacity:.55;
+
+  animation:
+    sparkle 3s ease-in-out infinite;
+}
+
+.spark-1{
+  top:17%;
+  left:23%;
+}
+
+.spark-2{
+  top:36%;
+  right:22%;
+  animation-delay:1s;
+}
+
+.spark-3{
+  top:67%;
+  right:18%;
+  animation-delay:1.8s;
+}
+
+.spark-4{
+  top:75%;
+  left:20%;
+  animation-delay:2.3s;
+}
+
+@keyframes sparkle{
+
+  0%,100%{
+    opacity:.25;
+    transform:scale(.8) rotate(0deg);
+  }
+
+  50%{
+    opacity:.8;
+    transform:scale(1.15) rotate(12deg);
+  }
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header{
+
+  position:relative;
+  z-index:20;
+
+  width:100%;
+
+  padding:
+    16px
+    max(18px, env(safe-area-inset-right))
+    16px
+    max(18px, env(safe-area-inset-left));
+
+}
+
+.header-inner{
+
+  width:100%;
+  max-width:1100px;
+
+  margin:auto;
+
+  min-height:62px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:10px 16px;
+
+  border:
+    1px solid
+    rgba(160,196,255,.22);
+
+  border-radius:24px;
+
+  background:
+    rgba(255,255,255,.78);
+
+  backdrop-filter:
+    blur(18px);
+
+  box-shadow:
+    0 12px 35px rgba(93,113,150,.08);
+
+}
+
+.logo{
+
+  display:flex;
+  align-items:center;
+
+  gap:10px;
+
+  font-family:"Quicksand",sans-serif;
+
+  font-weight:700;
+
+  color:var(--text);
+
+}
+
+.logo-cloud{
+
+  width:38px;
+  height:38px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:14px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #FFFFFF,
+      #EAF3FF
+    );
+
+  box-shadow:
+    inset 0 0 0 1px rgba(160,196,255,.22),
+    0 6px 15px rgba(90,120,160,.08);
+
+  font-size:20px;
+
+}
+
+.logo-text small{
+
+  display:block;
+
+  font-size:8px;
+
+  letter-spacing:1.4px;
+
+  color:#9BA4BC;
+
+  margin-top:-2px;
+
+}
+
+.desktop-nav{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:6px;
+
+}
+
+.desktop-nav a{
+
+  padding:9px 13px;
+
+  border-radius:14px;
+
+  font-size:13px;
+
+  color:#68708A;
+
+  transition:.2s;
+
+}
+
+.desktop-nav a:hover{
+
+  background:var(--sky-pale);
+
+  color:#50658D;
+
+}
+
+.login-nav{
+
+  background:
+    var(--sky-soft);
+
+  color:#50658D !important;
+
+  font-weight:600;
+
+}
+
+.menu-button{
+
+  display:none;
+
+  width:42px;
+  height:42px;
+
+  border:0;
+
+  border-radius:14px;
+
+  background:#EEF5FF;
+
+  color:#607096;
+
+  font-size:20px;
+
+}
+
+
+/* =========================================================
+   MOBILE MENU
+========================================================= */
+
+.mobile-menu{
+
+  display:none;
+
+  position:relative;
+
+  z-index:19;
+
+  width:calc(100% - 36px);
+
+  max-width:1100px;
+
+  margin:-5px auto 0;
+
+  padding:10px;
+
+  border-radius:20px;
+
+  background:rgba(255,255,255,.94);
+
+  box-shadow:var(--shadow);
+
+}
+
+.mobile-menu.show{
+  display:block;
+}
+
+.mobile-menu a{
+
+  display:block;
+
+  padding:13px 15px;
+
+  border-radius:14px;
+
+  font-size:14px;
+
+}
+
+.mobile-menu a:hover{
+  background:#F3F7FF;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero{
+
+  position:relative;
+  z-index:5;
+
+  min-height:
+    calc(100vh - 94px);
+
+  display:flex;
+  align-items:center;
+
+  padding:
+    30px 18px 130px;
+
+}
+
+.hero-inner{
+
+  width:100%;
+  max-width:1050px;
+
+  margin:auto;
+
+  text-align:center;
+
+}
+
+
+/* =========================================================
+   HERO LABEL
+========================================================= */
+
+.eyebrow{
+
+  display:inline-flex;
+  align-items:center;
+
+  gap:7px;
+
+  padding:7px 13px;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,255,255,.78);
+
+  border:
+    1px solid
+    rgba(160,196,255,.22);
+
+  color:#77839F;
+
+  font-family:"Quicksand",sans-serif;
+
+  font-size:10px;
+
+  font-weight:600;
+
+  letter-spacing:.8px;
+
+  box-shadow:
+    0 8px 25px rgba(100,120,160,.06);
+
+}
+
+
+/* =========================================================
+   HERO TITLE
+========================================================= */
+
+.hero-title{
+
+  margin-top:17px;
+
+  font-family:"Quicksand",sans-serif;
+
+  font-size:
+    clamp(
+      34px,
+      7vw,
+      64px
+    );
+
+  line-height:1.03;
+
+  font-weight:700;
+
+  color:var(--text);
+
+}
+
+.hero-title span{
+
+  display:block;
+
+  margin-top:3px;
+
+  font-size:
+    clamp(
+      18px,
+      3vw,
+      29px
+    );
+
+  font-weight:500;
+
+  color:#7C88A5;
+
+}
+
+.hero-desc{
+
+  max-width:530px;
+
+  margin:15px auto 0;
+
+  font-size:14px;
+
+  line-height:1.8;
+
+  color:#788198;
+
+}
+
+
+/* =========================================================
+   BOOK AREA
+========================================================= */
+
+.book-wrap{
+
+  width:100%;
+
+  max-width:760px;
+
+  margin:28px auto 0;
+
+}
+
+
+/* =========================================================
+   BOOK STAGE
+========================================================= */
+
+.book-stage{
+
+  position:relative;
+
+  width:100%;
+
+  height:430px;
+
+  perspective:2200px;
+
+  touch-action:pan-y;
+
+}
+
+
+/* =========================================================
+   BOOK
+========================================================= */
+
+.book{
+
+  position:absolute;
+
+  width:94%;
+  max-width:700px;
+
+  height:78%;
+
+  left:50%;
+  top:50%;
+
+  transform:
+    translate(-50%,-50%);
+
+  transform-style:preserve-3d;
+
+}
+
+
+/* =========================================================
+   COVER / BACKING
+========================================================= */
+
+.book-cover{
+
+  position:absolute;
+
+  inset:-10px;
+
+  border-radius:
+    17px
+    21px
+    21px
+    17px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #BFD7FF,
+      #A9C8FF
+    );
+
+  box-shadow:
+    0 28px 55px rgba(77,99,139,.18);
+
+}
+
+
+/* =========================================================
+   INNER
+========================================================= */
+
+.book-inner{
+
+  position:absolute;
+
+  inset:0;
+
+  display:flex;
+
+  transform-style:preserve-3d;
+
+}
+
+
+/* =========================================================
+   BASE PAGE
+========================================================= */
+
+.base-page{
+
+  position:absolute;
+
+  top:0;
+
+  width:50%;
+  height:100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      #F0E9D9,
+      #FFFDF4 8%,
+      #FFFDF4 92%,
+      #ECE4D5
+    );
+
+  border:1px solid #DDD5C8;
+
+}
+
+.base-left{
+
+  left:0;
+
+  border-radius:
+    9px
+    2px
+    2px
+    9px;
+
+  box-shadow:
+    inset -14px 0 22px rgba(75,84,105,.055);
+
+}
+
+.base-right{
+
+  right:0;
+
+  border-radius:
+    2px
+    9px
+    9px
+    2px;
+
+  box-shadow:
+    inset 14px 0 22px rgba(75,84,105,.055);
+
+}
+
+
+/* =========================================================
+   STACK
+========================================================= */
+
+.stack{
+
+  position:absolute;
+
+  top:0;
+
+  width:50%;
+  height:100%;
+
+  pointer-events:none;
+
+}
+
+.stack-left{
+  left:0;
+}
+
+.stack-right{
+  right:0;
+}
+
+.stack-paper{
+
+  position:absolute;
+
+  width:100%;
+  height:100%;
+
+  background:#F8F1E5;
+
+  border:1px solid #DDD4C8;
+
+  border-radius:7px;
+
+}
+
+.stack-left .stack-paper:nth-child(1){
+  transform:translateX(-2px);
+}
+
+.stack-left .stack-paper:nth-child(2){
+  transform:translateX(-4px);
+}
+
+.stack-left .stack-paper:nth-child(3){
+  transform:translateX(-6px);
+}
+
+.stack-left .stack-paper:nth-child(4){
+  transform:translateX(-8px);
+}
+
+.stack-left .stack-paper:nth-child(5){
+  transform:translateX(-10px);
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.content{
+
+  position:absolute;
+
+  inset:22px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  justify-content:center;
+
+  align-items:center;
+
+  text-align:center;
+
+}
+
+.symbol{
+
+  font-family:Georgia,serif;
+
+  font-size:34px;
+
+  color:#A7BEE6;
+
+  margin-bottom:9px;
+
+}
+
+.heading{
+
+  font-family:
+    "Niramit",
+    sans-serif;
+
+  font-size:20px;
+
+  font-weight:500;
+
+  color:#65708B;
+
+}
+
+.text{
+
+  margin-top:10px;
+
+  font-size:11px;
+
+  line-height:1.9;
+
+  color:#8D93A4;
+
+}
+
+.page-no{
+
+  margin-top:13px;
+
+  font-family:"Quicksand",sans-serif;
+
+  font-size:9px;
+
+  letter-spacing:1.5px;
+
+  color:#A6AEC1;
+
+}
+
+
+/* =========================================================
+   FRAME
+========================================================= */
+
+.frame{
+
+  position:absolute;
+
+  inset:13px;
+
+  border:
+    1px solid
+    rgba(160,196,255,.28);
+
+  border-radius:6px;
+
+}
+
+.corner{
+
+  position:absolute;
+
+  width:14px;
+  height:14px;
+
+  border-color:#D2C47C;
+
+  border-style:solid;
+
+  opacity:.72;
+
+}
+
+.tl{
+  left:16px;
+  top:16px;
+  border-width:1px 0 0 1px;
+}
+
+.tr{
+  right:16px;
+  top:16px;
+  border-width:1px 1px 0 0;
+}
+
+.bl{
+  left:16px;
+  bottom:16px;
+  border-width:0 0 1px 1px;
+}
+
+.br{
+  right:16px;
+  bottom:16px;
+  border-width:0 1px 1px 0;
+}
+
+
+/* =========================================================
+   SHEETS
+========================================================= */
+
+.sheet{
+
+  position:absolute;
+
+  left:50%;
+  top:0;
+
+  width:50%;
+  height:100%;
+
+  transform-origin:left center;
+
+  transform-style:preserve-3d;
+
+  transition:
+    transform .9s cubic-bezier(.22,.61,.36,1);
+
+}
+
+
+/* =========================================================
+   FRONT / BACK
+========================================================= */
+
+.sheet-front,
+.sheet-back{
+
+  position:absolute;
+
+  inset:0;
+
+  backface-visibility:hidden;
+
+  overflow:hidden;
+
+  background:
+    linear-gradient(
+      90deg,
+      #F0E9DE,
+      #FFFDF5 7%,
+      #FFFDF5 93%,
+      #ECE4D8
+    );
+
+  border:1px solid #DDD3C8;
+
+}
+
+.sheet-front{
+
+  border-radius:
+    2px
+    9px
+    9px
+    2px;
+
+  box-shadow:
+    7px 0 18px rgba(72,83,104,.12);
+
+}
+
+.sheet-back{
+
+  transform:
+    rotateY(180deg);
+
+  border-radius:
+    9px
+    2px
+    2px
+    9px;
+
+  box-shadow:
+    -7px 0 18px rgba(72,83,104,.12);
+
+}
+
+
+/* =========================================================
+   PAGE SHADOW
+========================================================= */
+
+.sheet-front::after,
+.sheet-back::after{
+
+  content:"";
+
+  position:absolute;
+
+  top:0;
+
+  width:45px;
+  height:100%;
+
+  pointer-events:none;
+
+}
+
+.sheet-front::after{
+
+  left:0;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(75,80,95,.10),
+      transparent
+    );
+
+}
+
+.sheet-back::after{
+
+  right:0;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(75,80,95,.10)
+    );
+
+}
+
+
+/* =========================================================
+   FLIPPED
+========================================================= */
+
+.sheet.flipped{
+
+  transform:
+    rotateY(-180deg);
+
+}
+
+
+/* =========================================================
+   SPINE
+========================================================= */
+
+.spine{
+
+  position:absolute;
+
+  left:50%;
+  top:0;
+
+  width:5px;
+  height:100%;
+
+  transform:
+    translateX(-50%);
+
+  z-index:500;
+
+  pointer-events:none;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(91,100,120,.22),
+      rgba(255,255,255,.9),
+      rgba(91,100,120,.18)
+    );
+
+}
+
+
+/* =========================================================
+   INITIAL LEFT
+========================================================= */
+
+.initial-left{
+
+  position:absolute;
+
+  left:0;
+  top:0;
+
+  width:50%;
+  height:100%;
+
+  z-index:5;
+
+  overflow:hidden;
+
+}
+
+.initial-left .base-page{
+
+  position:absolute;
+
+  inset:0;
+
+  width:100%;
+  height:100%;
+
+}
+
+
+/* =========================================================
+   FINAL RIGHT
+========================================================= */
+
+.final-page{
+
+  position:absolute;
+
+  right:0;
+  top:0;
+
+  width:50%;
+  height:100%;
+
+  z-index:2;
+
+  background:
+    linear-gradient(
+      90deg,
+      #F0E9DE,
+      #FFFDF5 7%,
+      #FFFDF5 93%,
+      #ECE4D8
+    );
+
+  border:1px solid #DDD3C8;
+
+  border-radius:
+    2px
+    9px
+    9px
+    2px;
+
+}
+
+
+/* =========================================================
+   HINT
+========================================================= */
+
+.hint{
+
+  position:absolute;
+
+  left:50%;
+
+  bottom:-17px;
+
+  transform:
+    translateX(-50%);
+
+  display:flex;
+
+  align-items:center;
+
+  gap:7px;
+
+  white-space:nowrap;
+
+  padding:7px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,255,255,.72);
+
+  border:
+    1px solid
+    rgba(160,196,255,.16);
+
+  box-shadow:
+    0 7px 20px rgba(90,110,145,.07);
+
+  font-size:10px;
+
+  color:#9299AB;
+
+}
+
+.hint-arrow{
+
+  font-family:Arial,sans-serif;
+
+  font-size:18px;
+
+  animation:
+    moveArrow 1.4s ease-in-out infinite;
+
+}
+
+@keyframes moveArrow{
+
+  0%,100%{
+    transform:translateX(0);
+  }
+
+  50%{
+    transform:translateX(-6px);
+  }
+
+}
+
+
+/* =========================================================
+   COUNTER
+========================================================= */
+
+.counter{
+
+  margin-top:26px;
+
+  font-family:"Quicksand",sans-serif;
+
+  font-size:10px;
+
+  letter-spacing:1px;
+
+  color:#A1A8BA;
+
+}
+
+
+/* =========================================================
+   HERO BUTTONS
+========================================================= */
+
+.hero-actions{
+
+  margin-top:22px;
+
+  display:flex;
+
+  justify-content:center;
+
+  flex-wrap:wrap;
+
+  gap:9px;
+
+}
+
+.hero-button{
+
+  min-height:44px;
+
+  padding:10px 17px;
+
+  display:inline-flex;
+
+  align-items:center;
+  justify-content:center;
+
+  border-radius:15px;
+
+  font-size:13px;
+
+  transition:
+    transform .2s,
+    box-shadow .2s;
+
+}
+
+.hero-button:hover{
+
+  transform:translateY(-2px);
+
+}
+
+.button-primary{
+
+  background:
+    linear-gradient(
+      135deg,
+      #A0C4FF,
+      #B8D3FF
+    );
+
+  color:#405577;
+
+  box-shadow:
+    0 9px 22px rgba(125,160,210,.17);
+
+}
+
+.button-secondary{
+
+  background:
+    rgba(255,255,255,.85);
+
+  border:
+    1px solid
+    rgba(160,196,255,.24);
+
+  color:#66718B;
+
+}
+
+
+/* =========================================================
+   SECTIONS
+========================================================= */
+
+.section{
+
+  position:relative;
+
+  z-index:5;
+
+  width:100%;
+
+  max-width:1050px;
+
+  margin:auto;
+
+  padding:
+    70px 18px;
+
+}
+
+.section-title{
+
+  text-align:center;
+
+  font-family:"Quicksand",sans-serif;
+
+  font-size:27px;
+
+  font-weight:700;
+
+  color:#4B526D;
+
+}
+
+.section-subtitle{
+
+  margin:7px auto 0;
+
+  text-align:center;
+
+  max-width:500px;
+
+  font-size:13px;
+
+  line-height:1.8;
+
+  color:#858DA2;
+
+}
+
+
+/* =========================================================
+   FEATURE CARDS
+========================================================= */
+
+.features{
+
+  margin-top:30px;
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap:16px;
+
+}
+
+.feature-card{
+
+  padding:23px 19px;
+
+  border-radius:24px;
+
+  background:
+    rgba(255,255,255,.82);
+
+  border:
+    1px solid
+    rgba(160,196,255,.17);
+
+  box-shadow:
+    0 14px 35px rgba(90,110,145,.07);
+
+  text-align:center;
+
+  transition:
+    transform .2s;
+
+}
+
+.feature-card:hover{
+
+  transform:translateY(-4px);
+
+}
+
+.feature-icon{
+
+  width:52px;
+  height:52px;
+
+  margin:auto;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:18px;
+
+  font-size:24px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #F1F7FF,
+      #FFFEE0
+    );
+
+}
+
+.feature-card h3{
+
+  margin-top:13px;
+
+  font-size:16px;
+
+  font-weight:500;
+
+  color:#59627B;
+
+}
+
+.feature-card p{
+
+  margin-top:6px;
+
+  font-size:12px;
+
+  line-height:1.8;
+
+  color:#9299AA;
+
+}
+
+
+/* =========================================================
+   JOIN STEPS
+========================================================= */
+
+.steps{
+
+  margin-top:30px;
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap:15px;
+
+}
+
+.step{
+
+  position:relative;
+
+  padding:23px 19px;
+
+  border-radius:23px;
+
+  background:
+    rgba(255,255,255,.78);
+
+  border:
+    1px solid
+    rgba(202,255,191,.35);
+
+}
+
+.step-number{
+
+  font-family:"Quicksand",sans-serif;
+
+  font-size:12px;
+
+  font-weight:700;
+
+  color:#88A77D;
+
+}
+
+.step h3{
+
+  margin-top:8px;
+
+  font-size:16px;
+
+  color:#5A6379;
+
+}
+
+.step p{
+
+  margin-top:6px;
+
+  font-size:12px;
+
+  line-height:1.8;
+
+  color:#8C94A7;
+
+}
+
+
+/* =========================================================
+   CTA
+========================================================= */
+
+.cta{
+
+  position:relative;
+
+  z-index:5;
+
+  width:
+    calc(100% - 36px);
+
+  max-width:1000px;
+
+  margin:30px auto 0;
+
+  padding:
+    42px 22px 125px;
+
+  border-radius:30px;
+
+  overflow:hidden;
+
+  text-align:center;
+
+  background:
+    linear-gradient(
+      135deg,
+      #EEF6FF,
+      #F9FFF4
+    );
+
+  border:
+    1px solid
+    rgba(160,196,255,.18);
+
+}
+
+.cta::before{
+
+  content:"";
+
+  position:absolute;
+
+  width:180px;
+  height:180px;
+
+  border-radius:50%;
+
+  background:
+    rgba(253,255,182,.48);
+
+  top:-90px;
+  right:-40px;
+
+}
+
+.cta h2{
+
+  position:relative;
+
+  font-family:"Quicksand",sans-serif;
+
+  font-size:27px;
+
+  color:#4F5871;
+
+}
+
+.cta p{
+
+  position:relative;
+
+  margin-top:7px;
+
+  font-size:13px;
+
+  color:#858EA2;
+
+}
+
+
+/* =========================================================
+   FLOWER GROUND
+   ดอกไม้อยู่ "เฉพาะด้านล่างสุด"
+========================================================= */
+
+.flower-ground{
+
+  position:relative;
+
+  z-index:8;
+
+  width:100%;
+
+  margin-top:-5px;
+
+  overflow:hidden;
+
+  pointer-events:none;
+
+  line-height:0;
+
+}
+
+.flower-ground img{
+
+  display:block;
+
+  width:100%;
+
+  max-width:1200px;
+
+  height:auto;
+
+  margin:
+    0 auto;
+
+  object-fit:contain;
+
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer{
+
+  position:relative;
+
+  z-index:6;
+
+  padding:
+    25px 18px
+    calc(30px + env(safe-area-inset-bottom));
+
+  text-align:center;
+
+  background:
+    rgba(255,255,255,.7);
+
+  border-top:
+    1px solid
+    rgba(160,196,255,.12);
+
+}
+
+.footer-brand{
+
+  font-family:"Quicksand",sans-serif;
+
+  font-weight:700;
+
+  font-size:16px;
+
+  color:#5B637B;
+
+}
+
+.footer p{
+
+  margin-top:5px;
+
+  font-size:11px;
+
+  color:#9AA1B2;
+
+}
+
+
+/* =========================================================
+   MUSIC
+========================================================= */
+
+.music-button{
+
+  position:fixed;
+
+  right:
+    max(16px, env(safe-area-inset-right));
+
+  bottom:
+    max(16px, env(safe-area-inset-bottom));
+
+  z-index:100;
+
+  width:45px;
+  height:45px;
+
+  border:0;
+
+  border-radius:50%;
+
+  background:
+    rgba(255,255,255,.94);
+
+  color:#71809F;
+
+  box-shadow:
+    0 9px 28px rgba(80,100,140,.14);
+
+  cursor:pointer;
+
+  font-size:17px;
+
+}
+
+.music-button.playing{
+
+  animation:
+    musicPulse 1.8s ease-in-out infinite;
+
+}
+
+@keyframes musicPulse{
+
+  0%,100%{
+    transform:scale(1);
+  }
+
+  50%{
+    transform:scale(1.06);
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:700px){
+
+  .header{
+    padding-top:10px;
+  }
+
+  .header-inner{
+    min-height:58px;
+    border-radius:20px;
+  }
+
+  .desktop-nav{
+    display:none;
+  }
+
+  .menu-button{
+    display:block;
+  }
+
+  .hero{
+
+    min-height:auto;
+
+    padding:
+      25px 14px 95px;
+
+  }
+
+  .hero-title{
+    margin-top:14px;
+  }
+
+  .hero-desc{
+    font-size:13px;
+    line-height:1.75;
+  }
+
+  .book-wrap{
+    margin-top:20px;
+  }
+
+  .book-stage{
+    height:330px;
+  }
+
+  .book{
+    width:96%;
+    height:78%;
+  }
+
+  .content{
+    inset:15px 9px;
+  }
+
+  .symbol{
+    font-size:25px;
+    margin-bottom:6px;
+  }
+
+  .heading{
+    font-size:14px;
+  }
+
+  .text{
+    font-size:8.5px;
+    line-height:1.75;
+    margin-top:7px;
+  }
+
+  .page-no{
+    font-size:7px;
+    margin-top:8px;
+  }
+
+  .frame{
+    inset:9px;
+  }
+
+  .corner{
+    width:9px;
+    height:9px;
+  }
+
+  .tl,
+  .bl{
+    left:11px;
+  }
+
+  .tr,
+  .br{
+    right:11px;
+  }
+
+  .tl,
+  .tr{
+    top:11px;
+  }
+
+  .bl,
+  .br{
+    bottom:11px;
+  }
+
+  .hint{
+    bottom:-14px;
+    font-size:8.5px;
+    padding:6px 10px;
+  }
+
+  .counter{
+    margin-top:23px;
+  }
+
+  .hero-actions{
+    margin-top:18px;
+  }
+
+  .hero-button{
+    width:100%;
+    max-width:260px;
+  }
+
+  .features,
+  .steps{
+    grid-template-columns:1fr;
+  }
+
+  .section{
+    padding:
+      55px 18px;
+  }
+
+  .section-title{
+    font-size:23px;
+  }
+
+  .float-decor{
+    width:52px;
+    opacity:.48;
+  }
+
+  .cloud-5{
+    display:none;
+  }
+
+  .cta{
+    padding:
+      35px 18px 105px;
+  }
+
+  .cta h2{
+    font-size:23px;
+  }
+
+  .flower-ground img{
+    width:155%;
+    max-width:none;
+
+    margin-left:-27.5%;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONE
+========================================================= */
+
+@media(max-width:380px){
+
+  .hero{
+    padding-top:18px;
+  }
+
+  .book-stage{
+    height:295px;
+  }
+
+  .book{
+    height:78%;
+  }
+
+  .heading{
+    font-size:12px;
+  }
+
+  .text{
+    font-size:7.5px;
+  }
+
+  .hint{
+    font-size:8px;
+  }
+
+}
+
+
+/* =========================================================
+   REDUCE MOTION
+========================================================= */
+
+@media(prefers-reduced-motion:reduce){
+
+  *,
+  *::before,
+  *::after{
+
+    animation-duration:.01ms !important;
+
+    animation-iteration-count:1 !important;
+
+    scroll-behavior:auto !important;
+
+    transition-duration:.01ms !important;
+
+  }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =======================================================
+     DECORATIONS
+======================================================= -->
+
+<div class="decorations">
+
+  <div class="cloud cloud-1"></div>
+  <div class="cloud cloud-2"></div>
+  <div class="cloud cloud-3"></div>
+  <div class="cloud cloud-4"></div>
+  <div class="cloud cloud-5"></div>
+
+  <img
+    class="float-decor float-1"
+    src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
+    alt=""
+  >
+
+  <img
+    class="float-decor float-2"
+    src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
+    alt=""
+  >
+
+  <img
+    class="float-decor float-3"
+    src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
+    alt=""
+  >
+
+  <img
+    class="float-decor float-4"
+    src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
+    alt=""
+  >
+
+  <span class="spark spark-1">✦</span>
+  <span class="spark spark-2">✧</span>
+  <span class="spark spark-3">✦</span>
+  <span class="spark spark-4">✧</span>
+
+</div>
+
+
+
+<!-- =======================================================
+     HEADER
+======================================================= -->
+
+<header class="header">
+
+  <div class="header-inner">
+
+    <a
+      href="index.html"
+      class="logo"
+    >
+
+      <div class="logo-cloud">
+        ☁
+      </div>
+
+      <div class="logo-text">
+
+        Bennie Choco
+
+        <small>
+          DISTRIBUTOR PORTAL
+        </small>
+
+      </div>
+
+    </a>
+
+
+    <nav class="desktop-nav">
+
+      <a href="#home">
+        หน้าหลัก
+      </a>
+
+      <a href="#about">
+        เกี่ยวกับเรา
+      </a>
+
+      <a href="#how">
+        วิธีสมัคร
+      </a>
+
+      <a href="#contact">
+        ติดต่อเรา
+      </a>
+
+      <a
+        href="login.html"
+        class="login-nav"
+      >
+        เข้าสู่ระบบ
+      </a>
+
+    </nav>
+
+
+    <button
+      class="menu-button"
+      id="menuButton"
+      aria-label="เปิดเมนู"
+    >
+      ☰
+    </button>
+
+  </div>
+
+</header>
+
+
+<div
+  class="mobile-menu"
+  id="mobileMenu"
+>
+
+  <a href="#home">
+    หน้าหลัก
+  </a>
+
+  <a href="#about">
+    เกี่ยวกับเรา
+  </a>
+
+  <a href="#how">
+    วิธีสมัคร
+  </a>
+
+  <a href="#contact">
+    ติดต่อเรา
+  </a>
+
+  <a href="login.html">
+    เข้าสู่ระบบตัวแทน
+  </a>
+
+  <a href="register.html">
+    สมัครเป็นตัวแทน
+  </a>
+
+</div>
+
+
+
+<!-- =======================================================
+     HERO
+======================================================= -->
+
+<main id="home">
+
+<section class="hero">
+
+  <div class="hero-inner">
+
+
+    <div class="eyebrow">
+      ☁️ BENNIE CHOCO · DISTRIBUTOR
+    </div>
+
+
+    <h1 class="hero-title">
+
+      Bennie Choco
+
+      <span>
+        Sweet place for our distributors ♡
+      </span>
+
+    </h1>
+
+
+    <p class="hero-desc">
+
+      พื้นที่สำหรับตัวแทนของ Bennie Choco
+      รวมข้อมูลสินค้า ราคา สิทธิ์สำหรับตัวแทน
+      และรายละเอียดต่าง ๆ ไว้ในที่เดียว
+
+    </p>
+
+
+
+    <!-- =================================================
+         SINGLE NOTEBOOK
+    ================================================== -->
+
+    <div class="book-wrap">
+
+      <div
+        class="book-stage"
+        id="bookStage"
+      >
+
+
+        <div class="book">
+
+
+          <!-- COVER -->
+
+          <div class="book-cover"></div>
+
+
+          <div class="book-inner">
+
+
+            <!-- =========================================
+                 INITIAL LEFT
+            ========================================== -->
+
+            <div class="initial-left">
+
+              <div class="base-page">
+
+                <div class="frame"></div>
+
+                <span class="corner tl"></span>
+                <span class="corner bl"></span>
+
+
+                <div class="content">
+
+                  <div class="symbol">
+                    ♡
+                  </div>
+
+                  <div class="heading">
+                    Bennie Choco
+                  </div>
+
+                  <div class="text">
+
+                    ยินดีต้อนรับเข้าสู่<br>
+                    พื้นที่สำหรับตัวแทน
+
+                  </div>
+
+                  <div class="page-no">
+                    WELCOME
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- =========================================
+                 FINAL RIGHT
+            ========================================== -->
+
+            <div class="final-page">
+
+              <div class="frame"></div>
+
+              <span class="corner tr"></span>
+              <span class="corner br"></span>
+
+
+              <div class="content">
+
+                <div class="symbol">
+                  ✧
+                </div>
+
+                <div class="heading">
+                  เริ่มต้นกับเรา
+                </div>
+
+                <div class="text">
+
+                  หากพร้อมแล้ว<br>
+                  สามารถสมัครเป็นตัวแทนได้เลย ♡
+
+                </div>
+
+                <div class="page-no">
+                  START
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- LEFT STACK -->
+
+            <div class="stack stack-left">
+
+              <div class="stack-paper"></div>
+              <div class="stack-paper"></div>
+              <div class="stack-paper"></div>
+              <div class="stack-paper"></div>
+              <div class="stack-paper"></div>
+
+            </div>
+
+
+
+            <!-- RIGHT STACK -->
+
+            <div class="stack stack-right">
+
+              <div class="stack-paper"></div>
+              <div class="stack-paper"></div>
+              <div class="stack-paper"></div>
+
+            </div>
+
+
+
+            <!-- =========================================
+                 SHEET 1
+                 สมัครตัวแทน
+            ========================================== -->
+
+            <div
+              class="sheet"
+              data-index="0"
+            >
+
+              <div class="sheet-front">
+
+                <div class="frame"></div>
+
+                <span class="corner tr"></span>
+                <span class="corner br"></span>
+
+
+                <div class="content">
+
+                  <div class="symbol">
+                    ♡
+                  </div>
+
+                  <div class="heading">
+                    01 · สมัครเป็นตัวแทน
+                  </div>
+
+                  <div class="text">
+
+                    กรอกข้อมูลสมัครตัวแทน<br>
+                    พร้อมอีเมลและรหัสผ่าน<br>
+                    สำหรับใช้เข้าสู่ระบบ
+
+                  </div>
+
+                  <div class="page-no">
+                    APPLY
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <div class="sheet-back">
+
+                <div class="frame"></div>
+
+                <span class="corner tl"></span>
+                <span class="corner bl"></span>
+
+
+                <div class="content">
+
+                  <div class="symbol">
+                    ☁
+                  </div>
+
+                  <div class="heading">
+                    ส่งข้อมูลเรียบร้อย
+                  </div>
+
+                  <div class="text">
+
+                    หลังจากสมัครแล้ว<br>
+                    ระบบจะส่งข้อมูลให้เจ้าของร้าน<br>
+                    ตรวจสอบตัวตน
+
+                  </div>
+
+                  <div class="page-no">
+                    SUBMITTED
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- =========================================
+                 SHEET 2
+                 รอตรวจสอบ
+            ========================================== -->
+
+            <div
+              class="sheet"
+              data-index="1"
+            >
+
+              <div class="sheet-front">
+
+                <div class="frame"></div>
+
+                <span class="corner tr"></span>
+                <span class="corner br"></span>
+
+
+                <div class="content">
+
+                  <div class="symbol">
+                    ✦
+                  </div>
+
+                  <div class="heading">
+                    02 · รอการตรวจสอบ
+                  </div>
+
+                  <div class="text">
+
+                    เจ้าของร้านจะตรวจสอบข้อมูล<br>
+                    และยืนยันสถานะตัวแทน<br>
+                    ก่อนเข้าใช้งานระบบ
+
+                  </div>
+
+                  <div class="page-no">
+                    VERIFY
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <div class="sheet-back">
+
+                <div class="frame"></div>
+
+                <span class="corner tl"></span>
+                <span class="corner bl"></span>
+
+
+                <div class="content">
+
+                  <div class="symbol">
+                    ☾
+                  </div>
+
+                  <div class="heading">
+                    รอการอนุมัติ
+                  </div>
+
+                  <div class="text">
+
+                    ระหว่างรอสามารถติดตาม<br>
+                    สถานะการสมัครได้<br>
+                    เมื่อผ่านการตรวจสอบแล้วจึงเข้าใช้งาน
+
+                  </div>
+
+                  <div class="page-no">
+                    PENDING
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- =========================================
+                 SHEET 3
+                 เข้าสู่ระบบ
+            ========================================== -->
+
+            <div
+              class="sheet"
+              data-index="2"
+            >
+
+              <div class="sheet-front">
+
+                <div class="frame"></div>
+
+                <span class="corner tr"></span>
+                <span class="corner br"></span>
+
+
+                <div class="content">
+
+                  <div class="symbol">
+                    ✧
+                  </div>
+
+                  <div class="heading">
+                    03 · เข้าสู่ระบบ
+                  </div>
+
+                  <div class="text">
+
+                    เมื่อได้รับการอนุมัติแล้ว<br>
+                    ใช้อีเมลและรหัสผ่าน<br>
+                    ที่สมัครไว้เพื่อเข้าสู่ระบบ
+
+                  </div>
+
+                  <div class="page-no">
+                    LOGIN
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <div class="sheet-back">
+
+                <div class="frame"></div>
+
+                <span class="corner tl"></span>
+                <span class="corner bl"></span>
+
+
+                <div class="content">
+
+                  <div class="symbol">
+                    ♡
+                  </div>
+
+                  <div class="heading">
+                    ปลอดภัยและเป็นส่วนตัว
+                  </div>
+
+                  <div class="text">
+
+                    ข้อมูลสำหรับตัวแทน<br>
+                    จะแสดงเฉพาะบัญชีที่ได้รับอนุมัติ<br>
+                    เท่านั้น
+
+                  </div>
+
+                  <div class="page-no">
+                    SECURE
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- =========================================
+                 SHEET 4
+                 เริ่มใช้งาน
+            ========================================== -->
+
+            <div
+              class="sheet"
+              data-index="3"
+            >
+
+              <div class="sheet-front">
+
+                <div class="frame"></div>
+
+                <span class="corner tr"></span>
+                <span class="corner br"></span>
+
+
+                <div class="content">
+
+                  <div class="symbol">
+                    ☁
+                  </div>
+
+                  <div class="heading">
+                    04 · เริ่มใช้งาน
+                  </div>
+
+                  <div class="text">
+
+                    ดูสินค้าและราคาสำหรับตัวแทน<br>
+                    ตรวจสอบข้อมูลต่าง ๆ<br>
+                    และเริ่มต้นทำงานกับ Bennie Choco
+
+                  </div>
+
+                  <div class="page-no">
+                    WELCOME
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <div class="sheet-back">
+
+                <div class="frame"></div>
+
+                <span class="corner tl"></span>
+                <span class="corner bl"></span>
+
+
+                <div class="content">
+
+                  <div class="symbol">
+                    ♡
+                  </div>
+
+                  <div class="heading">
+                    ยินดีต้อนรับนะ
+                  </div>
+
+                  <div class="text">
+
+                    ขอบคุณที่มาเป็นส่วนหนึ่ง<br>
+                    ของ Bennie Choco<br>
+                    แล้วพบกันในระบบตัวแทน ♡
+
+                  </div>
+
+                  <div class="page-no">
+                    THANK YOU
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- SPINE -->
+
+            <div class="spine"></div>
+
+
+          </div>
+
+        </div>
+
+
+        <div class="hint">
+
+          <span>
+            ☝🏻
+          </span>
+
+          <span>
+            ปัดซ้ายเพื่อเปิดหน้าถัดไป
+          </span>
+
+          <span class="hint-arrow">
+            ←
+          </span>
+
+        </div>
+
+
+      </div>
+
+
+      <div
+        class="counter"
+        id="counter"
+      >
+        หน้าเริ่มต้น
+      </div>
+
+
+    </div>
+
+
+
+    <!-- ACTION BUTTONS -->
+
+    <div class="hero-actions">
+
+      <a
+        href="register.html"
+        class="hero-button button-primary"
+      >
+        ☁ สมัครเป็นตัวแทน
+      </a>
+
+      <a
+        href="login.html"
+        class="hero-button button-secondary"
+      >
+        ♡ เข้าสู่ระบบตัวแทน
+      </a>
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+<!-- =======================================================
+     ABOUT
+======================================================= -->
+
+<section
+  class="section"
+  id="about"
+>
+
+  <h2 class="section-title">
+    พื้นที่ของตัวแทน ♡
+  </h2>
+
+  <p class="section-subtitle">
+
+    ทุกสิ่งที่ตัวแทนต้องใช้
+    ค่อย ๆ เติบโตไปพร้อมกับ Bennie Choco
+
+  </p>
+
+
+  <div class="features">
+
+
+    <div class="feature-card">
+
+      <div class="feature-icon">
+        🍫
+      </div>
+
+      <h3>
+        ข้อมูลสินค้า
+      </h3>
+
+      <p>
+        ดูรายละเอียดสินค้า
+        และข้อมูลที่จำเป็นสำหรับตัวแทน
+      </p>
+
+    </div>
+
+
+    <div class="feature-card">
+
+      <div class="feature-icon">
+        ☁️
+      </div>
+
+      <h3>
+        ราคาสำหรับตัวแทน
+      </h3>
+
+      <p>
+        เข้าถึงข้อมูลราคาที่จัดไว้
+        สำหรับบัญชีตัวแทนโดยเฉพาะ
+      </p>
+
+    </div>
+
+
+    <div class="feature-card">
+
+      <div class="feature-icon">
+        📖
+      </div>
+
+      <h3>
+        ทุกอย่างในที่เดียว
+      </h3>
+
+      <p>
+        รวมข่าวสาร สินค้า ราคา
+        และข้อมูลต่าง ๆ ไว้ในระบบเดียว
+      </p>
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+<!-- =======================================================
+     HOW TO JOIN
+======================================================= -->
+
+<section
+  class="section"
+  id="how"
+>
+
+  <h2 class="section-title">
+    วิธีสมัครตัวแทน
+  </h2>
+
+  <p class="section-subtitle">
+
+    ขั้นตอนไม่ยุ่งยาก
+    สมัคร → ตรวจสอบ → อนุมัติ → เข้าใช้งาน
+
+  </p>
+
+
+  <div class="steps">
+
+
+    <div class="step">
+
+      <div class="step-number">
+        STEP 01
+      </div>
+
+      <h3>
+        สมัครเป็นตัวแทน
+      </h3>
+
+      <p>
+        กรอกข้อมูลและสร้างบัญชี
+        ด้วยอีเมลและรหัสผ่านของคุณ
+      </p>
+
+    </div>
+
+
+    <div class="step">
+
+      <div class="step-number">
+        STEP 02
+      </div>
+
+      <h3>
+        รอการตรวจสอบ
+      </h3>
+
+      <p>
+        เจ้าของร้านตรวจสอบข้อมูล
+        และยืนยันสถานะตัวแทน
+      </p>
+
+    </div>
+
+
+    <div class="step">
+
+      <div class="step-number">
+        STEP 03
+      </div>
+
+      <h3>
+        เข้าใช้งาน
+      </h3>
+
+      <p>
+        เมื่อได้รับอนุมัติ
+        จึงเข้าสู่ระบบตัวแทนได้
+      </p>
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+<!-- =======================================================
+     CTA
+======================================================= -->
+
+<section
+  class="cta"
+  id="contact"
+>
+
+  <h2>
+    พร้อมมาเป็นส่วนหนึ่งของเราไหม? ☁
+  </h2>
+
+  <p>
+    สมัครเป็นตัวแทน Bennie Choco ได้เลย
+  </p>
+
+
+  <div class="hero-actions">
+
+    <a
+      href="register.html"
+      class="hero-button button-primary"
+    >
+      สมัครเป็นตัวแทน ♡
+    </a>
+
+    <a
+      href="login.html"
+      class="hero-button button-secondary"
+    >
+      เข้าสู่ระบบ
+    </a>
+
+  </div>
+
+</section>
+
+
+
+<!-- =======================================================
+     FLOWER
+     มีตรงนี้ "ที่เดียว"
+======================================================= -->
+
+<div class="flower-ground">
+
+  <img
+    src="https://i.postimg.cc/fRjsbZCQ/Flower3.png"
+    alt=""
+  >
+
+</div>
+
+
+
+<!-- =======================================================
+     FOOTER
+======================================================= -->
+
+<footer class="footer">
+
+  <div class="footer-brand">
+    Bennie Choco
+  </div>
+
+  <p>
+    Sweet place for our distributors ♡
+  </p>
+
+</footer>
+
+
+
+<!-- =======================================================
+     MUSIC
+======================================================= -->
+
+<audio
+  id="bgMusic"
+  loop
+  preload="none"
+>
+  <!-- ใส่ไฟล์เพลง .mp3 ตรงนี้ภายหลัง -->
+</audio>
+
+
+<button
+  class="music-button"
+  id="musicButton"
+  aria-label="เปิดเพลง"
+>
+  ♫
+</button>
+
+
+
+<script>
+
+/* =========================================================
+   MOBILE MENU
+========================================================= */
+
+const menuButton =
+  document.getElementById("menuButton");
+
+const mobileMenu =
+  document.getElementById("mobileMenu");
+
+
+menuButton.addEventListener(
+  "click",
+  ()=>{
+
+    mobileMenu.classList.toggle("show");
+
+  }
+);
+
+
+mobileMenu
+  .querySelectorAll("a")
+  .forEach(link=>{
+
+    link.addEventListener(
+      "click",
+      ()=>{
+
+        mobileMenu.classList.remove("show");
+
+      }
+    );
+
+  });
+
+
+
+/* =========================================================
+   BOOK ENGINE
+========================================================= */
+
+const bookStage =
+  document.getElementById("bookStage");
+
+const sheets =
+  [
+    ...document.querySelectorAll(".sheet")
+  ];
+
+const counter =
+  document.getElementById("counter");
+
+
+let flippedCount = 0;
+
+let busy = false;
+
+
+
+/* =========================================================
+   LAYERS
+========================================================= */
+
+function updateLayers(){
+
+  sheets.forEach(
+    (sheet,index)=>{
+
+      if(index < flippedCount){
+
+        sheet.style.zIndex =
+          100 + index;
+
+      }
+      else{
+
+        sheet.style.zIndex =
+          50 - index;
+
+      }
+
+    }
+  );
+
+}
+
+
+
+/* =========================================================
+   COUNTER
+========================================================= */
+
+function updateCounter(){
+
+  if(flippedCount === 0){
+
+    counter.textContent =
+      "หน้าเริ่มต้น";
+
+    return;
+
+  }
+
+
+  const left =
+    flippedCount * 2;
+
+  const right =
+    left + 1;
+
+
+  counter.textContent =
+    `หน้า ${String(left).padStart(2,"0")} — ${String(right).padStart(2,"0")}`;
+
+}
+
+
+
+/* =========================================================
+   NEXT
+========================================================= */
+
+function nextPage(){
+
+  if(busy){
+    return;
+  }
+
+  if(flippedCount >= sheets.length){
+    return;
+  }
+
+
+  const sheet =
+    sheets[flippedCount];
+
+
+  busy = true;
+
+
+  sheet.style.zIndex =
+    1000;
+
+
+  requestAnimationFrame(
+    ()=>{
+
+      sheet.classList.add(
+        "flipped"
+      );
+
+    }
+  );
+
+
+  setTimeout(
+    ()=>{
+
+      flippedCount++;
+
+      updateLayers();
+
+      updateCounter();
+
+      busy = false;
+
+    },
+    900
+  );
+
+}
+
+
+
+/* =========================================================
+   PREVIOUS
+========================================================= */
+
+function previousPage(){
+
+  if(busy){
+    return;
+  }
+
+  if(flippedCount <= 0){
+    return;
+  }
+
+
+  const sheet =
+    sheets[flippedCount - 1];
+
+
+  busy = true;
+
+
+  sheet.style.zIndex =
+    1000;
+
+
+  requestAnimationFrame(
+    ()=>{
+
+      sheet.classList.remove(
+        "flipped"
+      );
+
+    }
+  );
+
+
+  setTimeout(
+    ()=>{
+
+      flippedCount--;
+
+      updateLayers();
+
+      updateCounter();
+
+      busy = false;
+
+    },
+    900
+  );
+
+}
+
+
+
+/* =========================================================
+   TOUCH
+========================================================= */
+
+let startX = 0;
+let startY = 0;
+
+let tracking = false;
+
+
+bookStage.addEventListener(
+  "touchstart",
+  event=>{
+
+    const touch =
+      event.touches[0];
+
+    startX =
+      touch.clientX;
+
+    startY =
+      touch.clientY;
+
+    tracking = true;
+
+  },
+  {
+    passive:true
+  }
+);
+
+
+bookStage.addEventListener(
+  "touchend",
+  event=>{
+
+    if(!tracking){
+      return;
+    }
+
+    tracking = false;
+
+
+    const touch =
+      event.changedTouches[0];
+
+    const endX =
+      touch.clientX;
+
+    const endY =
+      touch.clientY;
+
+
+    const dx =
+      startX - endX;
+
+    const dy =
+      startY - endY;
+
+
+    if(
+      Math.abs(dx) < 45 ||
+      Math.abs(dx) < Math.abs(dy)
+    ){
+
+      return;
+
+    }
+
+
+    if(dx > 0){
+
+      nextPage();
+
+    }
+    else{
+
+      previousPage();
+
+    }
+
+  },
+  {
+    passive:true
+  }
+);
+
+
+
+/* =========================================================
+   CLICK
+========================================================= */
+
+bookStage.addEventListener(
+  "click",
+  event=>{
+
+    const rect =
+      bookStage.getBoundingClientRect();
+
+
+    const x =
+      event.clientX -
+      rect.left;
+
+
+    if(
+      x >
+      rect.width / 2
+    ){
+
+      nextPage();
+
+    }
+    else{
+
+      previousPage();
+
+    }
+
+  }
+);
+
+
+
+/* =========================================================
+   MUSIC
+========================================================= */
+
+const bgMusic =
+  document.getElementById("bgMusic");
+
+const musicButton =
+  document.getElementById("musicButton");
+
+
+let musicPlaying = false;
+
+
+musicButton.addEventListener(
+  "click",
+  async ()=>{
+
+    /*
+      ตอนนี้ยังไม่มีไฟล์เพลงจริง
+      จึงป้องกันไม่ให้ปุ่มเกิด error
+    */
+
+    if(!bgMusic.src){
+
+      musicButton.textContent =
+        "♫";
+
+      return;
+
+    }
+
+
+    if(musicPlaying){
+
+      bgMusic.pause();
+
+      musicPlaying = false;
+
+      musicButton.classList.remove(
+        "playing"
+      );
+
+      musicButton.textContent =
+        "♫";
+
+    }
+    else{
+
+      try{
+
+        await bgMusic.play();
+
+        musicPlaying = true;
+
+        musicButton.classList.add(
+          "playing"
+        );
+
+        musicButton.textContent =
+          "♪";
+
+      }
+      catch(error){
+
+        musicPlaying = false;
+
+      }
+
+    }
+
+  }
+);
+
+
+
+/* =========================================================
+   INITIAL
+========================================================= */
+
+updateLayers();
+
+updateCounter();
+
+</script>
+
+</body>
+</html>
