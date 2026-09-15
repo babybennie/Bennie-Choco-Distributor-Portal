@@ -8,25 +8,11 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Noto+Sans+Thai:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-:root{
-  --blue:#A0C4FF;
-  --mint:#CAFFBF;
-  --yellow:#FDFFB6;
-  --cream:#FFFDF7;
-  --white:#ffffff;
-  --text:#3D405B;
-  --muted:#7D8299;
-  --danger:#ff8fa3;
-  --green:#79d99a;
-  --shadow:0 15px 40px rgba(61,64,91,.10);
-  --radius:24px;
-}
-
 *{
   box-sizing:border-box;
 }
@@ -38,28 +24,40 @@ html{
 body{
   margin:0;
   min-height:100vh;
-  font-family:"Nunito",sans-serif;
-  color:var(--text);
+  font-family:"Noto Sans Thai","Nunito",sans-serif;
+  color:#3d405b;
   background:
-    radial-gradient(circle at 10% 10%,rgba(160,196,255,.30),transparent 28%),
-    radial-gradient(circle at 90% 15%,rgba(202,255,191,.32),transparent 28%),
-    linear-gradient(180deg,#f8fbff 0%,#fffef8 55%,#f7fff5 100%);
+    radial-gradient(circle at 10% 5%,rgba(160,196,255,.45),transparent 28%),
+    radial-gradient(circle at 90% 10%,rgba(202,255,191,.42),transparent 25%),
+    radial-gradient(circle at 50% 100%,rgba(253,255,182,.38),transparent 35%),
+    #f8fbff;
   overflow-x:hidden;
 }
 
-/* =========================
-   CLOUDS
-========================= */
+button,
+input,
+textarea,
+select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
 
 .cloud{
   position:fixed;
-  width:120px;
-  height:45px;
-  background:rgba(255,255,255,.82);
   border-radius:999px;
+  background:rgba(255,255,255,.72);
   filter:blur(.2px);
-  z-index:0;
+  box-shadow:0 10px 30px rgba(100,130,170,.08);
   pointer-events:none;
+  z-index:0;
 }
 
 .cloud:before,
@@ -70,568 +68,316 @@ body{
   border-radius:50%;
 }
 
-.cloud:before{
-  width:55px;
+.cloud.c1{
+  width:190px;
   height:55px;
-  left:18px;
+  top:8%;
+  left:-40px;
+}
+
+.cloud.c1:before{
+  width:80px;
+  height:80px;
+  left:28px;
   bottom:10px;
 }
 
-.cloud:after{
-  width:70px;
-  height:70px;
-  right:15px;
+.cloud.c1:after{
+  width:65px;
+  height:65px;
+  left:90px;
+  bottom:8px;
+}
+
+.cloud.c2{
+  width:230px;
+  height:65px;
+  right:-55px;
+  top:24%;
+}
+
+.cloud.c2:before{
+  width:90px;
+  height:90px;
+  left:35px;
+  bottom:8px;
+}
+
+.cloud.c2:after{
+  width:75px;
+  height:75px;
+  left:115px;
+  bottom:7px;
+}
+
+.cloud.c3{
+  width:200px;
+  height:55px;
+  left:12%;
+  bottom:5%;
+  opacity:.65;
+}
+
+.cloud.c3:before{
+  width:75px;
+  height:75px;
+  left:35px;
+  bottom:7px;
+}
+
+.cloud.c3:after{
+  width:65px;
+  height:65px;
+  left:110px;
   bottom:5px;
 }
 
-.cloud-1{
-  top:110px;
-  left:-30px;
-  transform:scale(.9);
-}
-
-.cloud-2{
-  top:330px;
-  right:-35px;
-  transform:scale(1.15);
-}
-
-.cloud-3{
-  top:650px;
-  left:-50px;
-  transform:scale(.75);
-}
-
-.cloud-4{
-  top:900px;
-  right:-45px;
-  transform:scale(.9);
-}
-
-/* =========================
-   FLOATING DECOR
-========================= */
-
 .float-img{
   position:fixed;
-  width:62px;
-  opacity:.75;
-  z-index:0;
+  width:76px;
+  height:76px;
+  object-fit:contain;
+  opacity:.82;
   pointer-events:none;
+  z-index:1;
   animation:float 5s ease-in-out infinite;
 }
 
-.float-1{
-  top:170px;
-  right:8%;
+.float-img.f1{
+  left:2%;
+  top:36%;
 }
 
-.float-2{
-  top:510px;
-  left:5%;
-  animation-delay:1s;
+.float-img.f2{
+  right:2%;
+  top:62%;
+  animation-delay:1.4s;
 }
 
-.float-3{
-  top:760px;
-  right:6%;
-  animation-delay:2s;
+.float-img.f3{
+  right:7%;
+  top:9%;
+  width:62px;
+  height:62px;
+  animation-delay:2.2s;
 }
 
 @keyframes float{
   0%,100%{
-    transform:translateY(0) rotate(-4deg);
+    transform:translateY(0) rotate(-2deg);
   }
   50%{
-    transform:translateY(-12px) rotate(4deg);
+    transform:translateY(-13px) rotate(3deg);
   }
 }
 
-/* =========================
-   HEADER
-========================= */
+.loading{
+  position:fixed;
+  inset:0;
+  background:rgba(248,251,255,.97);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+  transition:.3s;
+}
+
+.loading.hide{
+  opacity:0;
+  visibility:hidden;
+}
+
+.loader-box{
+  text-align:center;
+}
+
+.spinner{
+  width:48px;
+  height:48px;
+  border:5px solid #e5edff;
+  border-top-color:#8fb8ff;
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+  margin:auto;
+}
+
+@keyframes spin{
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+.loader-text{
+  margin-top:13px;
+  font-weight:700;
+  color:#6c7898;
+}
+
+.page{
+  position:relative;
+  z-index:2;
+  width:min(1450px,calc(100% - 28px));
+  margin:auto;
+  padding:20px 0 50px;
+}
 
 .header{
   position:sticky;
-  top:0;
-  z-index:20;
-  padding:14px 18px;
-  background:rgba(255,255,255,.78);
-  backdrop-filter:blur(18px);
-  border-bottom:1px solid rgba(160,196,255,.20);
-}
-
-.header-inner{
-  max-width:1180px;
-  margin:auto;
+  top:12px;
+  z-index:100;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:12px;
+  gap:15px;
+  padding:14px 18px;
+  margin-bottom:20px;
+  border:1px solid rgba(255,255,255,.85);
+  border-radius:26px;
+  background:rgba(255,255,255,.82);
+  backdrop-filter:blur(20px);
+  box-shadow:0 18px 45px rgba(92,117,155,.12);
 }
 
 .brand{
   display:flex;
   align-items:center;
-  gap:11px;
-}
-
-.brand-icon{
-  width:46px;
-  height:46px;
-  border-radius:16px;
-  background:linear-gradient(135deg,var(--blue),#d9e8ff);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:23px;
-  box-shadow:0 8px 18px rgba(160,196,255,.25);
-}
-
-.brand-text strong{
-  display:block;
-  font-size:17px;
-  font-weight:900;
-}
-
-.brand-text span{
-  display:block;
-  font-size:12px;
-  color:var(--muted);
-  margin-top:-2px;
-}
-
-.logout-btn{
-  border:0;
-  background:#fff;
-  color:var(--text);
-  border:1px solid #e9edf5;
-  padding:10px 15px;
-  border-radius:14px;
-  font-family:inherit;
-  font-weight:800;
-  cursor:pointer;
-  transition:.2s;
-}
-
-.logout-btn:hover{
-  transform:translateY(-2px);
-  box-shadow:0 8px 18px rgba(61,64,91,.08);
-}
-
-/* =========================
-   MAIN
-========================= */
-
-main{
-  position:relative;
-  z-index:2;
-  width:min(1180px,calc(100% - 28px));
-  margin:30px auto 100px;
-}
-
-.page-title{
-  margin-bottom:22px;
-}
-
-.page-title .eyebrow{
-  display:inline-flex;
-  align-items:center;
-  gap:7px;
-  background:rgba(253,255,182,.75);
-  padding:7px 12px;
-  border-radius:999px;
-  font-size:12px;
-  font-weight:900;
-  margin-bottom:10px;
-}
-
-.page-title h1{
-  margin:0;
-  font-size:clamp(28px,5vw,42px);
-  line-height:1.1;
-  font-weight:900;
-}
-
-.page-title p{
-  margin:9px 0 0;
-  color:var(--muted);
-  font-size:14px;
-}
-
-/* =========================
-   STATS
-========================= */
-
-.stats{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:14px;
-  margin-bottom:22px;
-}
-
-.stat{
-  background:rgba(255,255,255,.90);
-  border:1px solid rgba(255,255,255,.9);
-  border-radius:20px;
-  padding:18px;
-  box-shadow:var(--shadow);
-}
-
-.stat-icon{
-  width:42px;
-  height:42px;
-  border-radius:14px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin-bottom:12px;
-  font-size:19px;
-}
-
-.stat.pending .stat-icon{
-  background:#fff4bd;
-}
-
-.stat.active .stat-icon{
-  background:#dff9e7;
-}
-
-.stat.rejected .stat-icon{
-  background:#ffe4ea;
-}
-
-.stat.suspended .stat-icon{
-  background:#ececf3;
-}
-
-.stat-number{
-  font-size:28px;
-  font-weight:900;
-  line-height:1;
-}
-
-.stat-label{
-  color:var(--muted);
-  font-size:13px;
-  margin-top:5px;
-  font-weight:700;
-}
-
-/* =========================
-   TOOLBAR
-========================= */
-
-.toolbar{
-  background:rgba(255,255,255,.9);
-  border-radius:22px;
-  padding:15px;
-  box-shadow:var(--shadow);
-  margin-bottom:18px;
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-}
-
-.search{
-  flex:1;
-  min-width:220px;
-  position:relative;
-}
-
-.search input{
-  width:100%;
-  height:46px;
-  border:1px solid #e7ebf3;
-  border-radius:15px;
-  padding:0 16px 0 43px;
-  outline:none;
-  font-family:inherit;
-  color:var(--text);
-  background:#fbfcff;
-}
-
-.search input:focus{
-  border-color:var(--blue);
-  box-shadow:0 0 0 4px rgba(160,196,255,.15);
-}
-
-.search-icon{
-  position:absolute;
-  left:15px;
-  top:12px;
-  font-size:18px;
-}
-
-.filter{
-  height:46px;
-  border:1px solid #e7ebf3;
-  background:#fbfcff;
-  border-radius:15px;
-  padding:0 14px;
-  font-family:inherit;
-  font-weight:700;
-  color:var(--text);
-  outline:none;
-}
-
-.refresh-btn{
-  height:46px;
-  border:0;
-  border-radius:15px;
-  background:var(--blue);
-  color:var(--text);
-  padding:0 18px;
-  font-family:inherit;
-  font-weight:900;
-  cursor:pointer;
-}
-
-/* =========================
-   APPLICATION LIST
-========================= */
-
-.application-list{
-  display:grid;
-  gap:14px;
-}
-
-.application{
-  background:rgba(255,255,255,.94);
-  border-radius:24px;
-  padding:20px;
-  box-shadow:var(--shadow);
-  border:1px solid rgba(255,255,255,.9);
-}
-
-.application-top{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:14px;
-}
-
-.app-person{
-  display:flex;
-  gap:13px;
-  align-items:center;
+  gap:12px;
   min-width:0;
 }
 
-.avatar{
-  width:52px;
-  height:52px;
+.brand-icon{
+  width:48px;
+  height:48px;
   flex:none;
-  border-radius:18px;
-  background:linear-gradient(135deg,var(--blue),var(--mint));
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  display:grid;
+  place-items:center;
+  border-radius:17px;
+  background:linear-gradient(135deg,#a0c4ff,#caffbf);
+  box-shadow:0 8px 20px rgba(108,142,205,.15);
   font-size:23px;
 }
 
-.app-name{
+.brand-title{
   font-size:18px;
   font-weight:900;
+  color:#4d5878;
+  line-height:1.2;
 }
 
-.app-code{
-  color:var(--muted);
-  font-size:13px;
+.brand-sub{
   margin-top:2px;
-}
-
-.status{
-  display:inline-flex;
-  align-items:center;
-  gap:5px;
-  padding:7px 11px;
-  border-radius:999px;
-  font-size:12px;
-  font-weight:900;
-  white-space:nowrap;
-}
-
-.status.pending{
-  background:#fff4bd;
-  color:#8a7210;
-}
-
-.status.active{
-  background:#dff9e7;
-  color:#25834b;
-}
-
-.status.rejected{
-  background:#ffe4ea;
-  color:#b94c65;
-}
-
-.status.suspended{
-  background:#ededf3;
-  color:#66697b;
-}
-
-.app-info{
-  margin:18px 0;
-  padding:15px;
-  border-radius:17px;
-  background:#fafcff;
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:13px;
-}
-
-.info-label{
-  color:var(--muted);
   font-size:11px;
-  font-weight:800;
-  margin-bottom:3px;
+  color:#8a94ad;
 }
 
-.info-value{
-  font-size:13px;
-  font-weight:800;
-  overflow-wrap:anywhere;
-}
-
-.app-actions{
+.header-actions{
   display:flex;
-  gap:9px;
-  flex-wrap:wrap;
+  align-items:center;
+  gap:8px;
 }
 
-.action-btn{
+.icon-btn{
+  min-height:42px;
   border:0;
-  min-height:43px;
-  padding:0 17px;
-  border-radius:14px;
-  font-family:inherit;
-  font-weight:900;
-  cursor:pointer;
+  border-radius:15px;
+  padding:0 14px;
+  background:#f3f7ff;
+  color:#66718e;
+  font-weight:700;
   transition:.2s;
 }
 
-.action-btn:hover{
+.icon-btn:hover{
   transform:translateY(-2px);
+  background:#e8f0ff;
 }
 
-.btn-approve{
-  background:var(--green);
-  color:#205b38;
+.logout-btn{
+  background:#fff0f0;
+  color:#c56d76;
 }
 
-.btn-reject{
-  background:#ffe0e7;
-  color:#a63c55;
+.layout{
+  display:grid;
+  grid-template-columns:260px minmax(0,1fr);
+  gap:18px;
+  align-items:start;
 }
 
-.btn-suspend{
-  background:#ececf3;
-  color:#5e6070;
+.sidebar{
+  position:sticky;
+  top:98px;
+  padding:14px;
+  border:1px solid rgba(255,255,255,.9);
+  border-radius:28px;
+  background:rgba(255,255,255,.78);
+  backdrop-filter:blur(20px);
+  box-shadow:0 18px 45px rgba(92,117,155,.10);
 }
 
-.btn-reactivate{
-  background:#dff9e7;
-  color:#25834b;
+.nav-title{
+  padding:7px 10px 10px;
+  color:#a0a8bb;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.08em;
 }
 
-.btn-pending{
-  background:#fff4bd;
-  color:#7b6916;
-}
-
-.empty{
-  background:rgba(255,255,255,.9);
-  border-radius:24px;
-  padding:50px 20px;
-  text-align:center;
-  box-shadow:var(--shadow);
-}
-
-.empty-icon{
-  font-size:42px;
-  margin-bottom:8px;
-}
-
-.empty strong{
-  display:block;
-  font-size:18px;
-}
-
-.empty span{
-  display:block;
-  color:var(--muted);
-  font-size:13px;
-  margin-top:5px;
-}
-
-/* =========================
-   LOADING
-========================= */
-
-.loading{
-  position:fixed;
-  inset:0;
-  z-index:100;
-  background:#f8fbff;
+.nav-btn{
+  width:100%;
   display:flex;
   align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  gap:13px;
+  gap:11px;
+  padding:12px 13px;
+  margin-bottom:5px;
+  border:0;
+  border-radius:16px;
+  background:transparent;
+  color:#68738f;
+  text-align:left;
+  font-weight:800;
+  transition:.2s;
 }
 
-.loading.hide{
+.nav-btn:hover{
+  background:#f4f8ff;
+  transform:translateX(2px);
+}
+
+.nav-btn.active{
+  color:#4f689b;
+  background:linear-gradient(135deg,#eaf2ff,#f2fff0);
+  box-shadow:inset 0 0 0 1px rgba(160,196,255,.28);
+}
+
+.nav-icon{
+  width:30px;
+  height:30px;
+  display:grid;
+  place-items:center;
+  border-radius:11px;
+  background:rgba(255,255,255,.78);
+  font-size:16px;
+  flex:none;
+}
+
+.main{
+  min-width:0;
+}
+
+.section{
   display:none;
 }
 
-.spinner{
-  width:42px;
-  height:42px;
-  border:4px solid #e8eef8;
-  border-top-color:var(--blue);
-  border-radius:50%;
-  animation:spin .8s linear infinite;
+.section.active{
+  display:block;
+  animation:fadeIn .25s ease;
 }
 
-@keyframes spin{
-  to{transform:rotate(360deg)}
-}
-
-/* =========================
-   MODAL
-========================= */
-
-.modal-wrap{
-  position:fixed;
-  inset:0;
-  z-index:90;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:18px;
-  background:rgba(61,64,91,.25);
-  backdrop-filter:blur(8px);
-}
-
-.modal-wrap.show{
-  display:flex;
-}
-
-.modal{
-  width:min(450px,100%);
-  background:#fff;
-  border-radius:27px;
-  padding:25px;
-  box-shadow:0 30px 80px rgba(61,64,91,.20);
-  animation:modalIn .2s ease;
-}
-
-@keyframes modalIn{
+@keyframes fadeIn{
   from{
     opacity:0;
-    transform:translateY(10px) scale(.98);
+    transform:translateY(6px);
   }
   to{
     opacity:1;
@@ -639,62 +385,491 @@ main{
   }
 }
 
-.modal h2{
-  margin:0 0 8px;
+.section-head{
+  margin-bottom:16px;
+}
+
+.section-title{
+  margin:0;
+  font-size:25px;
+  font-weight:900;
+  color:#4d5878;
+}
+
+.section-desc{
+  margin:5px 0 0;
+  color:#929bb0;
+  font-size:13px;
+}
+
+.card{
+  background:rgba(255,255,255,.84);
+  border:1px solid rgba(255,255,255,.92);
+  border-radius:27px;
+  padding:18px;
+  box-shadow:0 18px 45px rgba(92,117,155,.09);
+  backdrop-filter:blur(16px);
+}
+
+.card + .card{
+  margin-top:16px;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+  margin-bottom:16px;
+}
+
+.stat{
+  position:relative;
+  overflow:hidden;
+  padding:17px;
+  border-radius:22px;
+  background:rgba(255,255,255,.86);
+  border:1px solid rgba(255,255,255,.95);
+  box-shadow:0 12px 32px rgba(92,117,155,.08);
+}
+
+.stat:after{
+  content:"";
+  position:absolute;
+  width:85px;
+  height:85px;
+  border-radius:50%;
+  right:-30px;
+  top:-30px;
+  background:#edf4ff;
+}
+
+.stat-icon{
   font-size:21px;
 }
 
-.modal p{
+.stat-label{
+  margin-top:8px;
+  color:#9099ad;
+  font-size:11px;
+  font-weight:800;
+}
+
+.stat-value{
+  margin-top:1px;
+  font-size:25px;
+  font-weight:900;
+  color:#55617e;
+}
+
+.toolbar{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  flex-wrap:wrap;
+}
+
+.input,
+.textarea,
+.select{
+  width:100%;
+  border:1px solid #e2e9f5;
+  border-radius:15px;
+  background:#fff;
+  color:#46516d;
+  outline:none;
+  transition:.2s;
+}
+
+.input{
+  height:45px;
+  padding:0 13px;
+}
+
+.textarea{
+  min-height:105px;
+  padding:12px 13px;
+  resize:vertical;
+}
+
+.select{
+  height:45px;
+  padding:0 12px;
+}
+
+.input:focus,
+.textarea:focus,
+.select:focus{
+  border-color:#a0c4ff;
+  box-shadow:0 0 0 4px rgba(160,196,255,.14);
+}
+
+.search-box{
+  flex:1 1 300px;
+}
+
+.filter-box{
+  width:190px;
+}
+
+.primary{
+  border:0;
+  border-radius:15px;
+  min-height:45px;
+  padding:0 17px;
+  color:#40516f;
+  background:linear-gradient(135deg,#a0c4ff,#caffbf);
+  font-weight:900;
+  box-shadow:0 9px 22px rgba(116,157,213,.15);
+}
+
+.secondary{
+  border:1px solid #e3eaf5;
+  border-radius:15px;
+  min-height:45px;
+  padding:0 16px;
+  background:#fff;
+  color:#69748f;
+  font-weight:800;
+}
+
+.danger{
+  border:0;
+  border-radius:13px;
+  min-height:39px;
+  padding:0 13px;
+  background:#fff0f1;
+  color:#c36c76;
+  font-weight:800;
+}
+
+.success{
+  border:0;
+  border-radius:13px;
+  min-height:39px;
+  padding:0 13px;
+  background:#effff0;
+  color:#648c61;
+  font-weight:800;
+}
+
+.warning{
+  border:0;
+  border-radius:13px;
+  min-height:39px;
+  padding:0 13px;
+  background:#fffce8;
+  color:#9a8950;
+  font-weight:800;
+}
+
+.agent-list{
+  display:grid;
+  gap:11px;
+  margin-top:15px;
+}
+
+.agent{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:15px;
+  align-items:center;
+  padding:15px;
+  border:1px solid #edf1f8;
+  border-radius:21px;
+  background:rgba(255,255,255,.78);
+}
+
+.agent-main{
+  min-width:0;
+}
+
+.agent-top{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  flex-wrap:wrap;
+}
+
+.agent-name{
+  font-weight:900;
+  color:#525d79;
+}
+
+.code{
+  display:inline-flex;
+  align-items:center;
+  padding:4px 8px;
+  border-radius:9px;
+  background:#f1f5ff;
+  color:#7184ac;
+  font-size:11px;
+  font-weight:900;
+}
+
+.email{
+  margin-top:4px;
+  color:#9099ad;
+  font-size:12px;
+  overflow-wrap:anywhere;
+}
+
+.meta{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  margin-top:7px;
+  color:#a0a8b8;
+  font-size:10px;
+}
+
+.status{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  padding:5px 9px;
+  border-radius:999px;
+  font-size:10px;
+  font-weight:900;
+}
+
+.status.pending{
+  color:#9b8a50;
+  background:#fffbe8;
+}
+
+.status.active{
+  color:#5c8c63;
+  background:#effff1;
+}
+
+.status.rejected{
+  color:#b66c76;
+  background:#fff0f1;
+}
+
+.status.suspended{
+  color:#777c8d;
+  background:#f0f2f6;
+}
+
+.agent-actions{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.empty{
+  padding:45px 15px;
+  text-align:center;
+  color:#a2a9b8;
+}
+
+.empty-icon{
+  font-size:36px;
+  margin-bottom:8px;
+}
+
+.editor-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:13px;
+}
+
+.field{
+  min-width:0;
+}
+
+.field.full{
+  grid-column:1/-1;
+}
+
+.label{
+  display:block;
+  margin-bottom:6px;
+  font-size:11px;
+  color:#7c879f;
+  font-weight:900;
+}
+
+.help{
+  margin-top:4px;
+  font-size:10px;
+  color:#a5adbd;
+}
+
+.image-preview{
+  width:100%;
+  max-width:180px;
+  height:120px;
+  object-fit:cover;
+  border-radius:17px;
+  border:1px solid #edf1f7;
+  background:#f8faff;
+}
+
+.quick-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+
+.quick-card{
+  border:1px solid #edf1f7;
+  border-radius:21px;
+  padding:17px;
+  background:rgba(255,255,255,.72);
+}
+
+.quick-icon{
+  width:43px;
+  height:43px;
+  display:grid;
+  place-items:center;
+  border-radius:15px;
+  background:#f1f6ff;
+  font-size:20px;
+}
+
+.quick-title{
+  margin-top:10px;
+  font-weight:900;
+  color:#56617c;
+}
+
+.quick-desc{
+  margin-top:4px;
+  color:#9ca4b5;
+  font-size:11px;
+  line-height:1.6;
+}
+
+.table-wrap{
+  overflow:auto;
+  border:1px solid #edf1f7;
+  border-radius:20px;
+}
+
+table{
+  width:100%;
+  min-width:720px;
+  border-collapse:collapse;
+}
+
+th,
+td{
+  padding:12px;
+  border-bottom:1px solid #edf1f7;
+  text-align:left;
+  font-size:12px;
+}
+
+th{
+  background:#f8faff;
+  color:#7d879d;
+  font-weight:900;
+}
+
+td{
+  color:#68738d;
+}
+
+tr:last-child td{
+  border-bottom:0;
+}
+
+.notice{
+  padding:13px 15px;
+  border-radius:16px;
+  background:#f3f8ff;
+  color:#74809a;
+  font-size:12px;
+  line-height:1.7;
+  margin-bottom:15px;
+}
+
+.warning-box{
+  background:#fffbe9;
+  color:#958650;
+}
+
+.danger-box{
+  background:#fff1f2;
+  color:#a76d74;
+}
+
+.save-row{
+  display:flex;
+  gap:8px;
+  justify-content:flex-end;
+  margin-top:16px;
+}
+
+.small{
+  font-size:11px;
+}
+
+.modal-bg{
+  position:fixed;
+  inset:0;
+  background:rgba(44,55,78,.35);
+  backdrop-filter:blur(8px);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  z-index:5000;
+}
+
+.modal-bg.show{
+  display:flex;
+}
+
+.modal{
+  width:min(500px,100%);
+  max-height:90vh;
+  overflow:auto;
+  background:#fff;
+  border-radius:27px;
+  padding:22px;
+  box-shadow:0 30px 80px rgba(44,55,78,.2);
+}
+
+.modal-title{
   margin:0;
-  color:var(--muted);
-  font-size:14px;
+  color:#505b77;
+  font-size:20px;
+  font-weight:900;
+}
+
+.modal-text{
+  margin:8px 0 18px;
+  color:#858fa4;
+  font-size:13px;
   line-height:1.7;
 }
 
-.modal-buttons{
+.modal-actions{
   display:flex;
-  gap:9px;
-  margin-top:20px;
+  gap:8px;
+  justify-content:flex-end;
 }
-
-.modal-buttons button{
-  flex:1;
-  min-height:45px;
-  border:0;
-  border-radius:14px;
-  font-family:inherit;
-  font-weight:900;
-  cursor:pointer;
-}
-
-.modal-cancel{
-  background:#f0f1f5;
-  color:var(--text);
-}
-
-.modal-confirm{
-  background:var(--blue);
-  color:var(--text);
-}
-
-/* =========================
-   TOAST
-========================= */
 
 .toast{
   position:fixed;
   left:50%;
-  bottom:25px;
+  bottom:22px;
   transform:translate(-50%,20px);
-  background:#3D405B;
-  color:#fff;
-  padding:12px 18px;
-  border-radius:14px;
-  font-size:13px;
-  font-weight:800;
-  z-index:200;
   opacity:0;
-  pointer-events:none;
+  visibility:hidden;
+  z-index:8000;
+  padding:12px 18px;
+  border-radius:999px;
+  background:#4e5b79;
+  color:#fff;
+  box-shadow:0 15px 40px rgba(50,65,95,.25);
+  font-size:12px;
+  font-weight:800;
   transition:.25s;
   max-width:calc(100% - 30px);
   text-align:center;
@@ -702,297 +877,668 @@ main{
 
 .toast.show{
   opacity:1;
+  visibility:visible;
   transform:translate(-50%,0);
 }
 
-/* =========================
-   MOBILE
-========================= */
+.row-actions{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+}
+
+.pill{
+  display:inline-flex;
+  align-items:center;
+  padding:5px 9px;
+  border-radius:999px;
+  background:#f2f5fa;
+  color:#7d879b;
+  font-size:10px;
+  font-weight:900;
+}
+
+.content-card{
+  padding:18px;
+  border-radius:23px;
+  border:1px solid #edf1f7;
+  background:#fff;
+}
+
+.content-card + .content-card{
+  margin-top:12px;
+}
+
+.content-card-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  margin-bottom:14px;
+}
+
+.content-card-title{
+  font-weight:900;
+  color:#56617d;
+}
+
+.content-card-sub{
+  margin-top:3px;
+  color:#a0a8b8;
+  font-size:10px;
+}
+
+.dynamic-fields{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:11px;
+}
+
+.dynamic-field.full{
+  grid-column:1/-1;
+}
+
+.json-box{
+  width:100%;
+  min-height:180px;
+  border:1px solid #e4eaf3;
+  border-radius:15px;
+  padding:12px;
+  resize:vertical;
+  outline:none;
+  font-family:monospace;
+  font-size:11px;
+  color:#58627b;
+}
+
+@media(max-width:1050px){
+  .layout{
+    grid-template-columns:210px minmax(0,1fr);
+  }
+
+  .stats{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
 
 @media(max-width:760px){
+  .page{
+    width:min(100% - 18px,700px);
+    padding-top:9px;
+  }
 
   .header{
-    padding:11px 13px;
+    top:7px;
+    padding:11px;
+    border-radius:21px;
+  }
+
+  .brand-title{
+    font-size:15px;
+  }
+
+  .brand-sub{
+    font-size:9px;
   }
 
   .brand-icon{
     width:42px;
     height:42px;
+    border-radius:14px;
   }
 
-  .brand-text strong{
-    font-size:15px;
+  .header-actions .icon-btn{
+    font-size:11px;
+    padding:0 10px;
   }
 
-  .brand-text span{
+  .layout{
+    display:block;
+  }
+
+  .sidebar{
+    position:static;
+    margin-bottom:15px;
+    padding:8px;
+    display:flex;
+    gap:5px;
+    overflow-x:auto;
+    border-radius:20px;
+  }
+
+  .nav-title{
+    display:none;
+  }
+
+  .nav-btn{
+    width:auto;
+    min-width:max-content;
+    margin:0;
+    padding:9px 11px;
     font-size:11px;
   }
 
-  .logout-btn{
-    padding:9px 12px;
-    font-size:12px;
-  }
-
-  main{
-    width:min(100% - 20px,1180px);
-    margin-top:22px;
+  .nav-icon{
+    width:25px;
+    height:25px;
   }
 
   .stats{
-    grid-template-columns:repeat(2,1fr);
+    gap:8px;
   }
 
   .stat{
-    padding:15px;
+    padding:13px;
+    border-radius:19px;
   }
 
-  .stat-number{
-    font-size:24px;
+  .stat-value{
+    font-size:21px;
   }
 
-  .toolbar{
-    padding:12px;
-  }
-
-  .search{
-    min-width:100%;
-  }
-
-  .filter{
-    flex:1;
-    min-width:0;
-  }
-
-  .refresh-btn{
-    flex:none;
-  }
-
-  .application{
-    padding:16px;
+  .card{
+    padding:13px;
     border-radius:21px;
   }
 
-  .application-top{
-    align-items:flex-start;
+  .section-title{
+    font-size:21px;
   }
 
-  .app-person{
-    min-width:0;
-  }
-
-  .avatar{
-    width:46px;
-    height:46px;
-    border-radius:15px;
-  }
-
-  .app-name{
-    font-size:16px;
-  }
-
-  .status{
-    font-size:10px;
-    padding:6px 8px;
-  }
-
-  .app-info{
+  .editor-grid,
+  .dynamic-fields,
+  .quick-grid{
     grid-template-columns:1fr;
-    gap:10px;
-    margin:14px 0;
   }
 
-  .app-actions{
-    display:grid;
-    grid-template-columns:1fr 1fr;
+  .field.full,
+  .dynamic-field.full{
+    grid-column:auto;
   }
 
-  .action-btn{
+  .agent{
+    grid-template-columns:1fr;
+  }
+
+  .agent-actions{
+    justify-content:flex-start;
+  }
+
+  .filter-box{
     width:100%;
-    padding:0 8px;
-    font-size:12px;
+  }
+
+  .toolbar > button{
+    flex:1;
+  }
+
+  .save-row{
+    justify-content:stretch;
+  }
+
+  .save-row button{
+    flex:1;
   }
 
   .float-img{
-    width:48px;
+    opacity:.45;
   }
-
 }
 
-@media(max-width:390px){
-
-  .application-top{
-    flex-direction:column;
-  }
-
-  .app-actions{
-    grid-template-columns:1fr;
-  }
-
+@media(max-width:420px){
   .stats{
-    gap:9px;
+    grid-template-columns:1fr 1fr;
   }
 
+  .header-actions .back-btn{
+    display:none;
+  }
+
+  .agent-actions button{
+    flex:1;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<!-- DECOR -->
-<div class="cloud cloud-1"></div>
-<div class="cloud cloud-2"></div>
-<div class="cloud cloud-3"></div>
-<div class="cloud cloud-4"></div>
+<div class="cloud c1"></div>
+<div class="cloud c2"></div>
+<div class="cloud c3"></div>
 
-<img class="float-img float-1"
-     src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
-     alt="">
+<img class="float-img f1" src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png" alt="">
+<img class="float-img f2" src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png" alt="">
+<img class="float-img f3" src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png" alt="">
 
-<img class="float-img float-2"
-     src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
-     alt="">
-
-<img class="float-img float-3"
-     src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
-     alt="">
-
-<!-- LOADING -->
-<div class="loading" id="loading">
-  <div class="spinner"></div>
-  <strong>กำลังเปิดระบบแอดมิน...</strong>
-  <span style="color:#7D8299;font-size:13px;">
-    กรุณารอสักครู่
-  </span>
+<div id="loading" class="loading">
+  <div class="loader-box">
+    <div class="spinner"></div>
+    <div class="loader-text">กำลังตรวจสอบสิทธิ์ Admin...</div>
+  </div>
 </div>
 
-<!-- HEADER -->
-<header class="header">
-  <div class="header-inner">
+<div class="page">
 
+  <header class="header">
     <div class="brand">
-      <div class="brand-icon">☁️</div>
-
-      <div class="brand-text">
-        <strong>Bennie Choco</strong>
-        <span>Distributor Admin</span>
+      <div class="brand-icon">🍫</div>
+      <div>
+        <div class="brand-title">Bennie Choco — Admin</div>
+        <div class="brand-sub">ระบบจัดการ Distributor Portal</div>
       </div>
     </div>
 
-    <button class="logout-btn" id="logoutBtn">
-      ออกจากระบบ
-    </button>
+    <div class="header-actions">
+      <a class="icon-btn back-btn" href="index.html">🏠 ดูเว็บไซต์</a>
+      <button class="icon-btn logout-btn" id="logoutBtn">ออกจากระบบ</button>
+    </div>
+  </header>
 
+  <div class="layout">
+
+    <aside class="sidebar">
+
+      <div class="nav-title">ADMIN MENU</div>
+
+      <button class="nav-btn active" data-section="website">
+        <span class="nav-icon">🏠</span>
+        <span>จัดการเว็บไซต์</span>
+      </button>
+
+      <button class="nav-btn" data-section="agents">
+        <span class="nav-icon">👥</span>
+        <span>จัดการตัวแทน</span>
+      </button>
+
+      <button class="nav-btn" data-section="products">
+        <span class="nav-icon">📦</span>
+        <span>สินค้า</span>
+      </button>
+
+      <button class="nav-btn" data-section="announcements">
+        <span class="nav-icon">📢</span>
+        <span>ประกาศ</span>
+      </button>
+
+      <button class="nav-btn" data-section="settings">
+        <span class="nav-icon">⚙️</span>
+        <span>ตั้งค่าระบบ</span>
+      </button>
+
+    </aside>
+
+    <main class="main">
+
+      <!-- =========================
+           WEBSITE
+      ========================== -->
+      <section id="section-website" class="section active">
+
+        <div class="section-head">
+          <h1 class="section-title">🏠 จัดการเว็บไซต์</h1>
+          <p class="section-desc">
+            แก้ไขข้อความ รูปภาพ ปุ่ม ลิงก์ และส่วนต่าง ๆ ของหน้าเว็บไซต์
+          </p>
+        </div>
+
+        <div class="card">
+
+          <div class="notice">
+            ส่วนนี้เชื่อมกับตาราง <b>site_content</b> ของ Supabase โปรเจกต์ใหม่
+            โดยจะอ่านข้อมูลที่มีอยู่จริงก่อน เพื่อไม่สร้างโครงสร้างใหม่ทับของเดิม
+          </div>
+
+          <div class="quick-grid">
+
+            <div class="quick-card">
+              <div class="quick-icon">✏️</div>
+              <div class="quick-title">แก้ไขข้อความ / รายละเอียด</div>
+              <div class="quick-desc">
+                แก้ชื่อร้าน คำโปรย ข้อความหน้า Home รายละเอียดต่าง ๆ
+                จากข้อมูลที่มีอยู่ใน site_content
+              </div>
+              <button class="secondary" style="margin-top:12px;width:100%" onclick="loadSiteContent()">
+                เปิดตัวแก้ไข
+              </button>
+            </div>
+
+            <div class="quick-card">
+              <div class="quick-icon">🖼️</div>
+              <div class="quick-title">แก้ไขรูปภาพ</div>
+              <div class="quick-desc">
+                แก้ URL รูป Logo, Banner, ภาพประกอบ หรือรูปส่วนต่าง ๆ
+              </div>
+              <button class="secondary" style="margin-top:12px;width:100%" onclick="loadSiteContent()">
+                จัดการรูปภาพ
+              </button>
+            </div>
+
+            <div class="quick-card">
+              <div class="quick-icon">🔗</div>
+              <div class="quick-title">แก้ไขปุ่ม / ลิงก์</div>
+              <div class="quick-desc">
+                แก้ข้อความบนปุ่มและ URL ที่หน้าเว็บไซต์ใช้
+              </div>
+              <button class="secondary" style="margin-top:12px;width:100%" onclick="loadSiteContent()">
+                จัดการลิงก์
+              </button>
+            </div>
+
+            <div class="quick-card">
+              <div class="quick-icon">🎵</div>
+              <div class="quick-title">เพลง / ส่วนแสดงผล</div>
+              <div class="quick-desc">
+                จัดการข้อมูลเพลงและค่าที่เกี่ยวข้อง หากมีอยู่ใน site_content
+              </div>
+              <button class="secondary" style="margin-top:12px;width:100%" onclick="loadSiteContent()">
+                เปิดตัวแก้ไข
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="card" id="siteContentEditor">
+
+          <div class="content-card-head">
+            <div>
+              <div class="content-card-title">ข้อมูลเว็บไซต์</div>
+              <div class="content-card-sub">
+                ข้อมูลจากตาราง site_content
+              </div>
+            </div>
+
+            <button class="secondary" onclick="loadSiteContent()">
+              ↻ โหลดใหม่
+            </button>
+          </div>
+
+          <div id="siteContentArea">
+            <div class="empty">
+              <div class="empty-icon">🏠</div>
+              กด “เปิดตัวแก้ไข” เพื่อโหลดข้อมูลเว็บไซต์
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =========================
+           AGENTS
+      ========================== -->
+      <section id="section-agents" class="section">
+
+        <div class="section-head">
+          <h1 class="section-title">👥 จัดการตัวแทน</h1>
+          <p class="section-desc">
+            ตรวจสอบผู้สมัคร อนุมัติ ปฏิเสธ ระงับ และค้นหาข้อมูลตัวแทน
+          </p>
+        </div>
+
+        <div class="stats">
+
+          <div class="stat">
+            <div class="stat-icon">⏳</div>
+            <div class="stat-label">รอตรวจสอบ</div>
+            <div class="stat-value" id="statPending">0</div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-icon">💚</div>
+            <div class="stat-label">ใช้งานอยู่</div>
+            <div class="stat-value" id="statActive">0</div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-icon">🚫</div>
+            <div class="stat-label">ปฏิเสธ</div>
+            <div class="stat-value" id="statRejected">0</div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-icon">🔒</div>
+            <div class="stat-label">ระงับ</div>
+            <div class="stat-value" id="statSuspended">0</div>
+          </div>
+
+        </div>
+
+        <div class="card">
+
+          <div class="toolbar">
+
+            <div class="search-box">
+              <input
+                id="agentSearch"
+                class="input"
+                placeholder="ค้นหาชื่อ / รหัสตัวแทน / Email / เลขคำขอ..."
+              >
+            </div>
+
+            <div class="filter-box">
+              <select id="agentStatus" class="select">
+                <option value="all">ทุกสถานะ</option>
+                <option value="pending">รอตรวจสอบ</option>
+                <option value="active">ใช้งานอยู่</option>
+                <option value="rejected">ปฏิเสธ</option>
+                <option value="suspended">ระงับ</option>
+              </select>
+            </div>
+
+            <button class="secondary" id="refreshAgents">
+              ↻ รีเฟรช
+            </button>
+
+          </div>
+
+          <div id="agentList" class="agent-list">
+            <div class="empty">
+              <div class="empty-icon">👥</div>
+              กำลังโหลดข้อมูลตัวแทน...
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =========================
+           PRODUCTS
+      ========================== -->
+      <section id="section-products" class="section">
+
+        <div class="section-head">
+          <h1 class="section-title">📦 จัดการสินค้า</h1>
+          <p class="section-desc">
+            เพิ่ม แก้ไข ซ่อน และจัดการรายละเอียดสินค้าสำหรับตัวแทน
+          </p>
+        </div>
+
+        <div class="card">
+
+          <div class="toolbar">
+
+            <div class="search-box">
+              <input
+                id="productSearch"
+                class="input"
+                placeholder="ค้นหาสินค้า / รหัสสินค้า..."
+              >
+            </div>
+
+            <button class="secondary" onclick="loadProducts()">
+              ↻ รีเฟรช
+            </button>
+
+          </div>
+
+          <div class="notice" style="margin-top:14px">
+            ระบบจะแสดงคอลัมน์ที่มีอยู่จริงในตาราง <b>products</b>
+            เพื่อป้องกันการเขียนข้อมูลผิดโครงสร้าง
+          </div>
+
+          <div id="productsArea">
+            <div class="empty">
+              <div class="empty-icon">📦</div>
+              กำลังโหลดสินค้า...
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =========================
+           ANNOUNCEMENTS
+      ========================== -->
+      <section id="section-announcements" class="section">
+
+        <div class="section-head">
+          <h1 class="section-title">📢 จัดการประกาศ</h1>
+          <p class="section-desc">
+            เพิ่ม แก้ไข ซ่อน และจัดการประกาศสำหรับตัวแทน
+          </p>
+        </div>
+
+        <div class="card">
+
+          <div class="notice">
+            ประกาศที่เปิดใช้งานสามารถนำไปแสดงในหน้า Dashboard
+            ของตัวแทนได้ ส่วนประกาศสำคัญสามารถนำไปใช้เป็น Popup ได้
+          </div>
+
+          <div id="announcementsArea">
+            <div class="empty">
+              <div class="empty-icon">📢</div>
+              กำลังโหลดประกาศ...
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =========================
+           SETTINGS
+      ========================== -->
+      <section id="section-settings" class="section">
+
+        <div class="section-head">
+          <h1 class="section-title">⚙️ ตั้งค่าระบบ</h1>
+          <p class="section-desc">
+            การตั้งค่าหลักของ Distributor Portal
+          </p>
+        </div>
+
+        <div class="card">
+
+          <div class="notice">
+            <b>Supabase Project ใหม่</b><br>
+            https://arhvdvaugcjzkdbxesma.supabase.co
+            <br><br>
+            หน้า Admin นี้ใช้ Publishable Key ของโปรเจกต์ใหม่เท่านั้น
+            และไม่มีการเชื่อมต่อ Supabase โปรเจกต์เก่า
+          </div>
+
+          <div class="editor-grid">
+
+            <div class="field">
+              <label class="label">ชื่อระบบ</label>
+              <input
+                id="systemName"
+                class="input"
+                value="Bennie Choco Distributor Portal"
+              >
+            </div>
+
+            <div class="field">
+              <label class="label">คำโปรย</label>
+              <input
+                id="systemTagline"
+                class="input"
+                value="Sweet Together • Grow Together"
+              >
+            </div>
+
+            <div class="field">
+              <label class="label">ชื่อ Admin</label>
+              <input
+                id="adminLabel"
+                class="input"
+                value="Bennie Choco Admin"
+              >
+            </div>
+
+            <div class="field">
+              <label class="label">ช่องทางติดต่อ</label>
+              <input
+                id="contactText"
+                class="input"
+                placeholder="LINE / Facebook / ช่องทางอื่น"
+              >
+            </div>
+
+          </div>
+
+          <div class="save-row">
+            <button class="primary" onclick="saveLocalSettings()">
+              ✓ บันทึกการตั้งค่า
+            </button>
+          </div>
+
+        </div>
+
+        <div class="card">
+
+          <div class="content-card-title">🔐 ความปลอดภัย</div>
+
+          <div class="notice warning-box" style="margin-top:12px">
+            หน้า Admin ตรวจสิทธิ์ผ่าน <b>admin_users</b> และ RPC
+            <b>is_admin()</b> ของ Supabase โปรเจกต์ใหม่
+          </div>
+
+          <div class="notice danger-box">
+            ห้ามนำ Service Role Key มาใส่ใน HTML
+            หน้านี้ใช้ Publishable Key เท่านั้น
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
   </div>
-</header>
+</div>
 
-<!-- MAIN -->
-<main>
 
-  <section class="page-title">
+<!-- =========================
+     STATUS MODAL
+========================== -->
 
-    <div class="eyebrow">
-      ♡ ADMIN CONTROL
-    </div>
-
-    <h1>จัดการตัวแทน</h1>
-
-    <p>
-      ตรวจสอบคำขอและจัดการสิทธิ์การเข้าใช้งาน Distributor Portal
-    </p>
-
-  </section>
-
-  <!-- STATS -->
-  <section class="stats">
-
-    <div class="stat pending">
-      <div class="stat-icon">⏳</div>
-      <div class="stat-number" id="pendingCount">0</div>
-      <div class="stat-label">รอตรวจสอบ</div>
-    </div>
-
-    <div class="stat active">
-      <div class="stat-icon">✓</div>
-      <div class="stat-number" id="activeCount">0</div>
-      <div class="stat-label">อนุมัติแล้ว</div>
-    </div>
-
-    <div class="stat rejected">
-      <div class="stat-icon">×</div>
-      <div class="stat-number" id="rejectedCount">0</div>
-      <div class="stat-label">ปฏิเสธ</div>
-    </div>
-
-    <div class="stat suspended">
-      <div class="stat-icon">Ⅱ</div>
-      <div class="stat-number" id="suspendedCount">0</div>
-      <div class="stat-label">ระงับ</div>
-    </div>
-
-  </section>
-
-  <!-- TOOLBAR -->
-  <section class="toolbar">
-
-    <div class="search">
-      <span class="search-icon">⌕</span>
-
-      <input
-        id="searchInput"
-        type="search"
-        placeholder="ค้นหาชื่อเล่น / รหัสตัวแทน / Email / เลขคำขอ..."
-      >
-    </div>
-
-    <select class="filter" id="statusFilter">
-      <option value="all">ทุกสถานะ</option>
-      <option value="pending">รอตรวจสอบ</option>
-      <option value="active">อนุมัติแล้ว</option>
-      <option value="rejected">ปฏิเสธ</option>
-      <option value="suspended">ระงับ</option>
-    </select>
-
-    <button class="refresh-btn" id="refreshBtn">
-      ↻ รีเฟรช
-    </button>
-
-  </section>
-
-  <!-- APPLICATION LIST -->
-  <section class="application-list" id="applicationList">
-
-    <div class="empty">
-      <div class="empty-icon">☁️</div>
-      <strong>กำลังโหลดข้อมูล...</strong>
-      <span>กำลังดึงข้อมูลจาก Supabase</span>
-    </div>
-
-  </section>
-
-</main>
-
-<!-- MODAL -->
-<div class="modal-wrap" id="modalWrap">
+<div id="statusModal" class="modal-bg">
 
   <div class="modal">
 
-    <h2 id="modalTitle">ยืนยันการเปลี่ยนสถานะ</h2>
+    <h2 class="modal-title" id="modalTitle">
+      เปลี่ยนสถานะตัวแทน
+    </h2>
 
-    <p id="modalText">
-      คุณต้องการเปลี่ยนสถานะตัวแทนหรือไม่
-    </p>
+    <div class="modal-text" id="modalText"></div>
 
-    <div class="modal-buttons">
+    <div class="modal-actions">
 
-      <button
-        class="modal-cancel"
-        id="modalCancel">
+      <button class="secondary" onclick="closeModal()">
         ยกเลิก
       </button>
 
-      <button
-        class="modal-confirm"
-        id="modalConfirm">
+      <button class="primary" id="confirmStatusBtn">
         ยืนยัน
       </button>
 
@@ -1002,12 +1548,46 @@ main{
 
 </div>
 
-<div class="toast" id="toast"></div>
+
+<!-- =========================
+     EDIT MODAL
+========================== -->
+
+<div id="editModal" class="modal-bg">
+
+  <div class="modal">
+
+    <h2 class="modal-title" id="editModalTitle">
+      แก้ไขข้อมูล
+    </h2>
+
+    <div id="editModalBody"></div>
+
+    <div class="modal-actions" style="margin-top:18px">
+
+      <button class="secondary" onclick="closeEditModal()">
+        ยกเลิก
+      </button>
+
+      <button class="primary" id="saveEditBtn">
+        บันทึก
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<div id="toast" class="toast"></div>
+
 
 <script>
-/* =====================================================
-   SUPABASE CONFIG
-===================================================== */
+
+/* =========================================================
+   SUPABASE — NEW PROJECT ONLY
+========================================================= */
 
 const SUPABASE_URL =
   "https://arhvdvaugcjzkdbxesma.supabase.co";
@@ -1022,139 +1602,119 @@ const supabaseClient =
   );
 
 
-/* =====================================================
-   ELEMENTS
-===================================================== */
-
-const loading =
-  document.getElementById("loading");
-
-const applicationList =
-  document.getElementById("applicationList");
-
-const searchInput =
-  document.getElementById("searchInput");
-
-const statusFilter =
-  document.getElementById("statusFilter");
-
-const refreshBtn =
-  document.getElementById("refreshBtn");
-
-const logoutBtn =
-  document.getElementById("logoutBtn");
-
-const pendingCount =
-  document.getElementById("pendingCount");
-
-const activeCount =
-  document.getElementById("activeCount");
-
-const rejectedCount =
-  document.getElementById("rejectedCount");
-
-const suspendedCount =
-  document.getElementById("suspendedCount");
-
-const modalWrap =
-  document.getElementById("modalWrap");
-
-const modalTitle =
-  document.getElementById("modalTitle");
-
-const modalText =
-  document.getElementById("modalText");
-
-const modalCancel =
-  document.getElementById("modalCancel");
-
-const modalConfirm =
-  document.getElementById("modalConfirm");
-
-const toast =
-  document.getElementById("toast");
-
-
-/* =====================================================
+/* =========================================================
    STATE
-===================================================== */
+========================================================= */
 
 let currentUser = null;
-let profiles = [];
-let pendingAction = null;
+let agents = [];
+let products = [];
+let announcements = [];
+
+let pendingStatusChange = null;
+let pendingEdit = null;
 
 
-/* =====================================================
-   HELPERS
-===================================================== */
+/* =========================================================
+   BASIC HELPERS
+========================================================= */
 
-function hideLoading(){
-  loading.classList.add("hide");
+function esc(value){
+
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
 }
 
 
-function showToast(message){
-  toast.textContent = message;
-  toast.classList.add("show");
+function toast(message){
+
+  const el =
+    document.getElementById("toast");
+
+  el.textContent = message;
+
+  el.classList.add("show");
 
   clearTimeout(window.toastTimer);
 
-  window.toastTimer = setTimeout(()=>{
-    toast.classList.remove("show");
-  },2600);
+  window.toastTimer =
+    setTimeout(
+      () => el.classList.remove("show"),
+      2300
+    );
+
 }
 
 
-function escapeHTML(value){
-  return String(value ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+function formatDate(value){
+
+  if(!value) return "-";
+
+  try{
+
+    return new Intl.DateTimeFormat(
+      "th-TH",
+      {
+        dateStyle:"medium",
+        timeStyle:"short"
+      }
+    ).format(new Date(value));
+
+  }catch{
+
+    return value;
+
+  }
+
 }
 
 
-function statusText(status){
+function statusLabel(status){
 
   const map = {
-    pending:"🟡 รอตรวจสอบ",
-    active:"🟢 อนุมัติแล้ว",
-    rejected:"🔴 ปฏิเสธ",
-    suspended:"⚫ ระงับ"
+
+    pending:"รอตรวจสอบ",
+
+    active:"ใช้งานอยู่",
+
+    rejected:"ปฏิเสธ",
+
+    suspended:"ระงับ"
+
   };
 
-  return map[status] || status;
+  return map[status] || status || "-";
+
 }
 
 
-/* =====================================================
-   CHECK ADMIN
-===================================================== */
+/* =========================================================
+   ADMIN AUTH
+========================================================= */
 
 async function checkAdmin(userId){
 
-  const {
-    data,
-    error
-  } = await supabaseClient
-    .from("admin_users")
-    .select("user_id")
-    .eq("user_id",userId)
-    .maybeSingle();
+  const {data,error} =
+    await supabaseClient
+      .rpc("is_admin");
 
   if(error){
+
     console.error(error);
+
     return false;
+
   }
 
-  return !!data;
+  return data === true;
+
 }
 
-
-/* =====================================================
-   AUTH CHECK
-===================================================== */
 
 async function init(){
 
@@ -1164,564 +1724,2108 @@ async function init(){
       data:{
         session
       }
-    } = await supabaseClient
-      .auth
-      .getSession();
+    } =
+      await supabaseClient
+        .auth
+        .getSession();
 
     if(!session){
 
-      window.location.href =
-        "admin-login.html";
+      location.replace(
+        "admin-login.html?next=admin.html"
+      );
 
       return;
+
     }
 
-    currentUser = session.user;
+    currentUser =
+      session.user;
 
-    const admin =
-      await checkAdmin(currentUser.id);
+    const isAdmin =
+      await checkAdmin(
+        session.user.id
+      );
 
-    if(!admin){
+    if(!isAdmin){
 
-      await supabaseClient.auth.signOut();
+      await supabaseClient
+        .auth
+        .signOut();
 
-      alert("บัญชีนี้ไม่มีสิทธิ์เข้าระบบแอดมิน");
+      alert(
+        "บัญชีนี้ไม่มีสิทธิ์เข้า Admin"
+      );
 
-      window.location.href =
-        "admin-login.html";
+      location.replace(
+        "admin-login.html?next=admin.html"
+      );
 
       return;
+
     }
 
-    await loadProfiles();
+    document
+      .getElementById("loading")
+      .classList.add("hide");
 
-    hideLoading();
+    loadAgents();
 
   }catch(error){
 
     console.error(error);
 
-    hideLoading();
-
-    showToast(
-      "เกิดข้อผิดพลาดในการเปิดระบบ"
+    alert(
+      "ไม่สามารถตรวจสอบสิทธิ์ Admin ได้"
     );
+
+    location.replace(
+      "admin-login.html?next=admin.html"
+    );
+
   }
+
 }
 
 
-/* =====================================================
-   LOAD PROFILES
-===================================================== */
+/* =========================================================
+   NAVIGATION
+========================================================= */
 
-async function loadProfiles(){
+document
+  .querySelectorAll(".nav-btn")
+  .forEach(button => {
 
-  applicationList.innerHTML = `
+    button.addEventListener(
+      "click",
+      () => {
+
+        const section =
+          button.dataset.section;
+
+        document
+          .querySelectorAll(".nav-btn")
+          .forEach(x =>
+            x.classList.remove("active")
+          );
+
+        button.classList.add("active");
+
+        document
+          .querySelectorAll(".section")
+          .forEach(x =>
+            x.classList.remove("active")
+          );
+
+        document
+          .getElementById(
+            "section-" + section
+          )
+          .classList.add("active");
+
+        if(section === "agents"){
+          loadAgents();
+        }
+
+        if(section === "products"){
+          loadProducts();
+        }
+
+        if(section === "announcements"){
+          loadAnnouncements();
+        }
+
+        if(section === "website"){
+          loadSiteContent();
+        }
+
+      }
+    );
+
+  });
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+document
+  .getElementById("logoutBtn")
+  .addEventListener(
+    "click",
+    async () => {
+
+      await supabaseClient
+        .auth
+        .signOut();
+
+      location.replace(
+        "admin-login.html"
+      );
+
+    }
+  );
+
+
+/* =========================================================
+   AGENTS
+========================================================= */
+
+async function loadAgents(){
+
+  const area =
+    document.getElementById(
+      "agentList"
+    );
+
+  area.innerHTML = `
     <div class="empty">
-      <div class="empty-icon">☁️</div>
-      <strong>กำลังโหลดข้อมูล...</strong>
-      <span>กำลังดึงข้อมูลตัวแทน</span>
+      <div class="empty-icon">⏳</div>
+      กำลังโหลดข้อมูลตัวแทน...
     </div>
   `;
 
   const {
     data,
     error
-  } = await supabaseClient
-    .from("profiles")
-    .select(`
-      id,
-      email,
-      nickname,
-      distributor_code,
-      status,
-      request_no,
-      approved_at,
-      approved_by,
-      created_at,
-      updated_at
-    `)
-    .order("created_at",{
-      ascending:false
-    });
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select(`
+        id,
+        email,
+        nickname,
+        distributor_code,
+        status,
+        request_no,
+        approved_at,
+        approved_by,
+        created_at,
+        updated_at
+      `)
+      .order(
+        "created_at",
+        {
+          ascending:false
+        }
+      );
 
   if(error){
 
     console.error(error);
 
-    applicationList.innerHTML = `
+    area.innerHTML = `
       <div class="empty">
         <div class="empty-icon">⚠️</div>
-        <strong>โหลดข้อมูลไม่สำเร็จ</strong>
-        <span>${escapeHTML(error.message)}</span>
+        โหลดข้อมูลตัวแทนไม่สำเร็จ
+        <div class="small" style="margin-top:8px">
+          ${esc(error.message)}
+        </div>
       </div>
     `;
 
     return;
+
   }
 
-  profiles = data || [];
+  agents =
+    data || [];
 
-  updateStats();
-  renderProfiles();
+  updateAgentStats();
+
+  renderAgents();
+
 }
 
 
-/* =====================================================
-   UPDATE STATS
-===================================================== */
+function updateAgentStats(){
 
-function updateStats(){
+  const count =
+    status =>
+      agents.filter(
+        x => x.status === status
+      ).length;
 
-  pendingCount.textContent =
-    profiles.filter(
-      x => x.status === "pending"
-    ).length;
+  document
+    .getElementById("statPending")
+    .textContent =
+      count("pending");
 
-  activeCount.textContent =
-    profiles.filter(
-      x => x.status === "active"
-    ).length;
+  document
+    .getElementById("statActive")
+    .textContent =
+      count("active");
 
-  rejectedCount.textContent =
-    profiles.filter(
-      x => x.status === "rejected"
-    ).length;
+  document
+    .getElementById("statRejected")
+    .textContent =
+      count("rejected");
 
-  suspendedCount.textContent =
-    profiles.filter(
-      x => x.status === "suspended"
-    ).length;
+  document
+    .getElementById("statSuspended")
+    .textContent =
+      count("suspended");
+
 }
 
 
-/* =====================================================
-   RENDER
-===================================================== */
+function renderAgents(){
 
-function renderProfiles(){
+  const area =
+    document.getElementById(
+      "agentList"
+    );
 
   const search =
-    searchInput.value
+    document
+      .getElementById("agentSearch")
+      .value
       .trim()
       .toLowerCase();
 
-  const filter =
-    statusFilter.value;
+  const status =
+    document
+      .getElementById("agentStatus")
+      .value;
 
-  let list =
-    profiles.filter(profile => {
+  const filtered =
+    agents.filter(agent => {
 
-      const matchesSearch =
+      const text =
+        [
+          agent.nickname,
+          agent.distributor_code,
+          agent.email,
+          agent.request_no
+        ]
+        .join(" ")
+        .toLowerCase();
+
+      const searchOK =
         !search ||
-        String(profile.nickname || "")
-          .toLowerCase()
-          .includes(search) ||
-        String(profile.distributor_code || "")
-          .toLowerCase()
-          .includes(search) ||
-        String(profile.email || "")
-          .toLowerCase()
-          .includes(search) ||
-        String(profile.request_no || "")
-          .toLowerCase()
-          .includes(search);
+        text.includes(search);
 
-      const matchesStatus =
-        filter === "all" ||
-        profile.status === filter;
+      const statusOK =
+        status === "all" ||
+        agent.status === status;
 
-      return matchesSearch &&
-             matchesStatus;
+      return searchOK &&
+             statusOK;
+
     });
 
+  if(!filtered.length){
 
-  if(!list.length){
-
-    applicationList.innerHTML = `
+    area.innerHTML = `
       <div class="empty">
         <div class="empty-icon">☁️</div>
-        <strong>ไม่พบข้อมูล</strong>
-        <span>ยังไม่มีรายการที่ตรงกับการค้นหา</span>
+        ไม่พบข้อมูลตัวแทน
       </div>
     `;
 
     return;
+
   }
 
+  area.innerHTML =
+    filtered
+      .map(agent => {
 
-  applicationList.innerHTML =
-    list.map(profile => {
+        const status =
+          agent.status || "pending";
 
-      return `
-        <article class="application">
+        let actions = "";
 
-          <div class="application-top">
+        if(status === "pending"){
 
-            <div class="app-person">
+          actions = `
+            <button
+              class="success"
+              onclick="askStatusChange(
+                '${agent.id}',
+                'active'
+              )"
+            >
+              ✓ อนุมัติ
+            </button>
 
-              <div class="avatar">
-                ♡
-              </div>
+            <button
+              class="danger"
+              onclick="askStatusChange(
+                '${agent.id}',
+                'rejected'
+              )"
+            >
+              ✕ ปฏิเสธ
+            </button>
+          `;
 
-              <div>
+        }
 
-                <div class="app-name">
-                  ${escapeHTML(profile.nickname)}
+        if(status === "active"){
+
+          actions = `
+            <button
+              class="warning"
+              onclick="askStatusChange(
+                '${agent.id}',
+                'suspended'
+              )"
+            >
+              🔒 ระงับ
+            </button>
+          `;
+
+        }
+
+        if(
+          status === "suspended" ||
+          status === "rejected"
+        ){
+
+          actions = `
+            <button
+              class="success"
+              onclick="askStatusChange(
+                '${agent.id}',
+                'active'
+              )"
+            >
+              ✓ เปิดใช้งาน
+            </button>
+          `;
+
+        }
+
+        return `
+          <div class="agent">
+
+            <div class="agent-main">
+
+              <div class="agent-top">
+
+                <div class="agent-name">
+                  ${esc(agent.nickname)}
                 </div>
 
-                <div class="app-code">
-                  รหัสตัวแทน:
-                  ${escapeHTML(profile.distributor_code)}
+                <div class="code">
+                  ${esc(agent.distributor_code)}
+                </div>
+
+                <div class="status ${esc(status)}">
+                  ${statusLabel(status)}
                 </div>
 
               </div>
 
+              <div class="email">
+                ${esc(agent.email)}
+              </div>
+
+              <div class="meta">
+
+                <span>
+                  🧾 ${esc(agent.request_no || "-")}
+                </span>
+
+                <span>
+                  สมัคร ${formatDate(agent.created_at)}
+                </span>
+
+                ${
+                  agent.approved_at
+                  ? `
+                    <span>
+                      อนุมัติ ${formatDate(agent.approved_at)}
+                    </span>
+                  `
+                  : ""
+                }
+
+              </div>
+
             </div>
 
-            <div class="status ${escapeHTML(profile.status)}">
-              ${statusText(profile.status)}
+            <div class="agent-actions">
+
+              ${actions}
+
+              <button
+                class="secondary"
+                onclick="viewAgent('${agent.id}')"
+              >
+                ดูข้อมูล
+              </button>
+
             </div>
 
           </div>
+        `;
 
+      })
+      .join("");
 
-          <div class="app-info">
-
-            <div>
-              <div class="info-label">
-                เลขคำขอ
-              </div>
-
-              <div class="info-value">
-                ${escapeHTML(profile.request_no || "-")}
-              </div>
-            </div>
-
-
-            <div>
-              <div class="info-label">
-                Email
-              </div>
-
-              <div class="info-value">
-                ${escapeHTML(profile.email)}
-              </div>
-            </div>
-
-
-            <div>
-              <div class="info-label">
-                สมัครเมื่อ
-              </div>
-
-              <div class="info-value">
-                ${formatDate(profile.created_at)}
-              </div>
-            </div>
-
-          </div>
-
-
-          <div class="app-actions">
-
-            ${profile.status === "pending" ? `
-
-              <button
-                class="action-btn btn-approve"
-                onclick="askStatusChange('${profile.id}','active')">
-                ✓ อนุมัติ
-              </button>
-
-              <button
-                class="action-btn btn-reject"
-                onclick="askStatusChange('${profile.id}','rejected')">
-                × ปฏิเสธ
-              </button>
-
-            ` : ""}
-
-
-            ${profile.status === "active" ? `
-
-              <button
-                class="action-btn btn-suspend"
-                onclick="askStatusChange('${profile.id}','suspended')">
-                ⏸ ระงับบัญชี
-              </button>
-
-            ` : ""}
-
-
-            ${profile.status === "suspended" ? `
-
-              <button
-                class="action-btn btn-reactivate"
-                onclick="askStatusChange('${profile.id}','active')">
-                ✓ เปิดใช้งานอีกครั้ง
-              </button>
-
-            ` : ""}
-
-
-            ${profile.status === "rejected" ? `
-
-              <button
-                class="action-btn btn-pending"
-                onclick="askStatusChange('${profile.id}','pending')">
-                ↺ ให้ตรวจสอบใหม่
-              </button>
-
-            ` : ""}
-
-          </div>
-
-        </article>
-      `;
-
-    }).join("");
 }
 
 
-/* =====================================================
-   DATE
-===================================================== */
-
-function formatDate(value){
-
-  if(!value) return "-";
-
-  const date =
-    new Date(value);
-
-  return date.toLocaleString(
-    "th-TH",
-    {
-      year:"numeric",
-      month:"short",
-      day:"numeric",
-      hour:"2-digit",
-      minute:"2-digit"
-    }
+document
+  .getElementById("agentSearch")
+  .addEventListener(
+    "input",
+    renderAgents
   );
+
+
+document
+  .getElementById("agentStatus")
+  .addEventListener(
+    "change",
+    renderAgents
+  );
+
+
+document
+  .getElementById("refreshAgents")
+  .addEventListener(
+    "click",
+    loadAgents
+  );
+
+
+function viewAgent(id){
+
+  const agent =
+    agents.find(
+      x => x.id === id
+    );
+
+  if(!agent) return;
+
+  document
+    .getElementById("editModalTitle")
+    .textContent =
+      "👤 ข้อมูลตัวแทน";
+
+  document
+    .getElementById("editModalBody")
+    .innerHTML = `
+
+      <div class="content-card" style="margin-top:14px">
+
+        <div class="dynamic-fields">
+
+          <div class="field">
+            <label class="label">
+              ชื่อ / Nickname
+            </label>
+            <input
+              class="input"
+              value="${esc(agent.nickname)}"
+              disabled
+            >
+          </div>
+
+          <div class="field">
+            <label class="label">
+              รหัสตัวแทน
+            </label>
+            <input
+              class="input"
+              value="${esc(agent.distributor_code)}"
+              disabled
+            >
+          </div>
+
+          <div class="field full">
+            <label class="label">
+              Email
+            </label>
+            <input
+              class="input"
+              value="${esc(agent.email)}"
+              disabled
+            >
+          </div>
+
+          <div class="field">
+            <label class="label">
+              เลขคำขอ
+            </label>
+            <input
+              class="input"
+              value="${esc(agent.request_no)}"
+              disabled
+            >
+          </div>
+
+          <div class="field">
+            <label class="label">
+              สถานะ
+            </label>
+            <input
+              class="input"
+              value="${esc(statusLabel(agent.status))}"
+              disabled
+            >
+          </div>
+
+          <div class="field full">
+            <label class="label">
+              สมัครเมื่อ
+            </label>
+            <input
+              class="input"
+              value="${esc(formatDate(agent.created_at))}"
+              disabled
+            >
+          </div>
+
+        </div>
+
+      </div>
+  `;
+
+  document
+    .getElementById("saveEditBtn")
+    .style.display =
+      "none";
+
+  document
+    .getElementById("editModal")
+    .classList.add("show");
+
 }
 
-
-/* =====================================================
-   CONFIRM MODAL
-===================================================== */
 
 function askStatusChange(
-  profileId,
+  id,
   newStatus
 ){
 
-  const profile =
-    profiles.find(
-      x => x.id === profileId
+  const agent =
+    agents.find(
+      x => x.id === id
     );
 
-  if(!profile) return;
+  if(!agent) return;
 
-  pendingAction = {
-    profileId,
+  pendingStatusChange = {
+    id,
     newStatus
   };
 
-  const labels = {
-    active:"อนุมัติ",
-    rejected:"ปฏิเสธ",
-    suspended:"ระงับบัญชี",
-    pending:"ส่งกลับไปรอตรวจสอบ"
-  };
+  document
+    .getElementById("modalTitle")
+    .textContent =
+      newStatus === "active"
+      ? "✓ อนุมัติตัวแทน"
+      : newStatus === "rejected"
+      ? "✕ ปฏิเสธตัวแทน"
+      : "🔒 ระงับตัวแทน";
 
-  modalTitle.textContent =
-    `${labels[newStatus]}ตัวแทน`;
+  document
+    .getElementById("modalText")
+    .innerHTML = `
+      ต้องการเปลี่ยนสถานะของ
+      <b>${esc(agent.nickname)}</b>
+      (${esc(agent.distributor_code)})
+      เป็น
+      <b>${statusLabel(newStatus)}</b>
+      ใช่หรือไม่?
+    `;
 
-  modalText.innerHTML =
-    `คุณต้องการ <strong>${labels[newStatus]}</strong>
-     <strong>${escapeHTML(profile.nickname)}</strong>
-     (${escapeHTML(profile.distributor_code)}) ใช่หรือไม่`;
+  document
+    .getElementById("statusModal")
+    .classList.add("show");
 
-  modalConfirm.textContent =
-    labels[newStatus];
-
-  modalWrap.classList.add("show");
 }
 
 
-modalCancel.addEventListener(
-  "click",
-  ()=>{
-    pendingAction = null;
-    modalWrap.classList.remove("show");
-  }
-);
+function closeModal(){
+
+  pendingStatusChange =
+    null;
+
+  document
+    .getElementById("statusModal")
+    .classList.remove("show");
+
+}
 
 
-modalWrap.addEventListener(
-  "click",
-  event=>{
-    if(event.target === modalWrap){
-      pendingAction = null;
-      modalWrap.classList.remove("show");
+document
+  .getElementById("confirmStatusBtn")
+  .addEventListener(
+    "click",
+    async () => {
+
+      if(!pendingStatusChange)
+        return;
+
+      const {
+        id,
+        newStatus
+      } =
+        pendingStatusChange;
+
+      const button =
+        document.getElementById(
+          "confirmStatusBtn"
+        );
+
+      button.disabled = true;
+
+      button.textContent =
+        "กำลังบันทึก...";
+
+      try{
+
+        const payload = {
+          status:newStatus
+        };
+
+        if(newStatus === "active"){
+
+          payload.approved_at =
+            new Date().toISOString();
+
+          payload.approved_by =
+            currentUser.id;
+
+        }
+
+        const {
+          error
+        } =
+          await supabaseClient
+            .from("profiles")
+            .update(payload)
+            .eq("id",id);
+
+        if(error)
+          throw error;
+
+        closeModal();
+
+        toast(
+          "เปลี่ยนสถานะเรียบร้อยแล้ว ✓"
+        );
+
+        await loadAgents();
+
+      }catch(error){
+
+        console.error(error);
+
+        toast(
+          "บันทึกไม่สำเร็จ: " +
+          error.message
+        );
+
+      }finally{
+
+        button.disabled =
+          false;
+
+        button.textContent =
+          "ยืนยัน";
+
+      }
+
     }
-  }
-);
+  );
 
 
-/* =====================================================
-   UPDATE STATUS
-===================================================== */
+/* =========================================================
+   SITE CONTENT
+   Schema-safe reader/editor
+========================================================= */
 
-modalConfirm.addEventListener(
-  "click",
-  async ()=>{
+async function loadSiteContent(){
 
-    if(!pendingAction) return;
-
-    const {
-      profileId,
-      newStatus
-    } = pendingAction;
-
-    modalConfirm.disabled = true;
-    modalConfirm.textContent =
-      "กำลังบันทึก...";
-
-    const updateData = {
-      status:newStatus
-    };
-
-    /*
-      ถ้าอนุมัติ:
-      บันทึกเวลาและ admin ที่อนุมัติ
-    */
-
-    if(newStatus === "active"){
-
-      updateData.approved_at =
-        new Date().toISOString();
-
-      updateData.approved_by =
-        currentUser.id;
-
-    }
-
-    const {
-      error
-    } = await supabaseClient
-      .from("profiles")
-      .update(updateData)
-      .eq("id",profileId);
-
-    if(error){
-
-      console.error(error);
-
-      modalConfirm.disabled = false;
-      modalConfirm.textContent =
-        "ลองอีกครั้ง";
-
-      showToast(
-        "บันทึกไม่สำเร็จ: " +
-        error.message
-      );
-
-      return;
-    }
-
-    modalWrap.classList.remove("show");
-
-    pendingAction = null;
-
-    showToast(
-      newStatus === "active"
-        ? "✓ อนุมัติตัวแทนเรียบร้อยแล้ว"
-        : "บันทึกสถานะเรียบร้อยแล้ว"
+  const area =
+    document.getElementById(
+      "siteContentArea"
     );
 
-    await loadProfiles();
+  area.innerHTML = `
+    <div class="empty">
+      <div class="empty-icon">⏳</div>
+      กำลังอ่านข้อมูลเว็บไซต์...
+    </div>
+  `;
 
-    modalConfirm.disabled = false;
-    modalConfirm.textContent =
-      "ยืนยัน";
-  }
-);
-
-
-/* =====================================================
-   SEARCH
-===================================================== */
-
-searchInput.addEventListener(
-  "input",
-  renderProfiles
-);
-
-statusFilter.addEventListener(
-  "change",
-  renderProfiles
-);
-
-refreshBtn.addEventListener(
-  "click",
-  async ()=>{
-
-    refreshBtn.disabled = true;
-    refreshBtn.textContent =
-      "กำลังโหลด...";
-
-    await loadProfiles();
-
-    refreshBtn.disabled = false;
-    refreshBtn.textContent =
-      "↻ รีเฟรช";
-  }
-);
-
-
-/* =====================================================
-   LOGOUT
-===================================================== */
-
-logoutBtn.addEventListener(
-  "click",
-  async ()=>{
-
+  const {
+    data,
+    error
+  } =
     await supabaseClient
-      .auth
-      .signOut();
+      .from("site_content")
+      .select("*")
+      .limit(100);
 
-    window.location.href =
-      "admin-login.html";
+  if(error){
+
+    console.error(error);
+
+    area.innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">⚠️</div>
+        อ่าน site_content ไม่สำเร็จ
+        <div class="small" style="margin-top:8px">
+          ${esc(error.message)}
+        </div>
+      </div>
+    `;
+
+    return;
+
   }
-);
+
+  if(!data || !data.length){
+
+    area.innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">🏠</div>
+        ยังไม่มีข้อมูลใน site_content
+      </div>
+    `;
+
+    return;
+
+  }
+
+  area.innerHTML =
+    data.map(
+      (row,index) =>
+        renderDynamicRow(
+          "site_content",
+          row,
+          index
+        )
+    ).join("");
+
+}
 
 
-/* =====================================================
-   AUTH STATE
-===================================================== */
+function renderDynamicRow(
+  table,
+  row,
+  index
+){
 
-supabaseClient.auth.onAuthStateChange(
-  (event,session)=>{
+  const idField =
+    getPrimaryLikeField(row);
+
+  const rowId =
+    idField
+    ? row[idField]
+    : index;
+
+  const fields =
+    Object.keys(row)
+      .filter(
+        key =>
+          ![
+            "created_at",
+            "updated_at"
+          ].includes(key)
+      );
+
+  return `
+
+    <div
+      class="content-card"
+      data-table="${esc(table)}"
+      data-row-index="${index}"
+    >
+
+      <div class="content-card-head">
+
+        <div>
+          <div class="content-card-title">
+            ${table === "site_content"
+              ? "เว็บไซต์ #" + (index + 1)
+              : table === "products"
+              ? "สินค้า #" + (index + 1)
+              : "ประกาศ #" + (index + 1)
+            }
+          </div>
+
+          <div class="content-card-sub">
+            ${idField
+              ? esc(String(row[idField]))
+              : "ข้อมูลรายการ"
+            }
+          </div>
+        </div>
+
+        <div class="row-actions">
+
+          <button
+            class="secondary"
+            onclick="editDynamicRow(
+              '${esc(table)}',
+              ${index}
+            )"
+          >
+            ✏️ แก้ไข
+          </button>
+
+          ${
+            table === "products" ||
+            table === "announcements"
+            ? `
+              <button
+                class="danger"
+                onclick="deleteDynamicRow(
+                  '${esc(table)}',
+                  ${index}
+                )"
+              >
+                ลบ
+              </button>
+            `
+            : ""
+          }
+
+        </div>
+
+      </div>
+
+      <div class="dynamic-fields">
+
+        ${
+          fields
+            .slice(0,8)
+            .map(
+              key => {
+
+                const value =
+                  row[key];
+
+                const isLong =
+                  String(value ?? "")
+                    .length > 100 ||
+                  key
+                    .toLowerCase()
+                    .includes("description") ||
+                  key
+                    .toLowerCase()
+                    .includes("detail") ||
+                  key
+                    .toLowerCase()
+                    .includes("content") ||
+                  key
+                    .toLowerCase()
+                    .includes("text");
+
+                return `
+
+                  <div
+                    class="dynamic-field ${
+                      isLong
+                      ? "full"
+                      : ""
+                    }"
+                  >
+
+                    <label class="label">
+                      ${esc(key)}
+                    </label>
+
+                    ${
+                      isLong
+                      ? `
+                        <textarea
+                          class="textarea"
+                          disabled
+                        >${esc(
+                          typeof value === "object"
+                          ? JSON.stringify(
+                              value,
+                              null,
+                              2
+                            )
+                          : value ?? ""
+                        )}</textarea>
+                      `
+                      : `
+                        <input
+                          class="input"
+                          value="${esc(
+                            typeof value === "object"
+                            ? JSON.stringify(value)
+                            : value ?? ""
+                          )}"
+                          disabled
+                        >
+                      `
+                    }
+
+                  </div>
+                `;
+
+              }
+            )
+            .join("")
+        }
+
+      </div>
+
+    </div>
+  `;
+
+}
+
+
+function getPrimaryLikeField(row){
+
+  const possible =
+    [
+      "id",
+      "key",
+      "slug",
+      "code",
+      "product_id",
+      "announcement_id"
+    ];
+
+  return possible.find(
+    x =>
+      Object.prototype
+        .hasOwnProperty
+        .call(row,x)
+  );
+
+}
+
+
+async function editDynamicRow(
+  table,
+  index
+){
+
+  let source;
+
+  if(table === "site_content")
+    source =
+      await getTableRow(
+        "site_content",
+        index
+      );
+
+  if(table === "products")
+    source =
+      products[index];
+
+  if(table === "announcements")
+    source =
+      announcements[index];
+
+  if(!source) return;
+
+  pendingEdit = {
+    table,
+    index,
+    row:source
+  };
+
+  document
+    .getElementById("editModalTitle")
+    .textContent =
+      table === "site_content"
+      ? "✏️ แก้ไขเว็บไซต์"
+      : table === "products"
+      ? "📦 แก้ไขสินค้า"
+      : "📢 แก้ไขประกาศ";
+
+  document
+    .getElementById("editModalBody")
+    .innerHTML =
+      renderEditForm(source);
+
+  document
+    .getElementById("saveEditBtn")
+    .style.display =
+      "";
+
+  document
+    .getElementById("editModal")
+    .classList.add("show");
+
+}
+
+
+async function getTableRow(
+  table,
+  index
+){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(table)
+      .select("*")
+      .limit(100);
+
+  if(error){
+
+    toast(
+      "โหลดข้อมูลไม่สำเร็จ"
+    );
+
+    return null;
+
+  }
+
+  return data?.[index] || null;
+
+}
+
+
+function renderEditForm(row){
+
+  const keys =
+    Object.keys(row)
+      .filter(
+        key =>
+          ![
+            "id",
+            "created_at",
+            "updated_at"
+          ].includes(key)
+      );
+
+  return `
+
+    <div class="dynamic-fields"
+         style="margin-top:15px">
+
+      ${
+        keys
+          .map(
+            key => {
+
+              const value =
+                row[key];
+
+              const isLong =
+                String(value ?? "")
+                  .length > 100 ||
+                [
+                  "description",
+                  "detail",
+                  "content",
+                  "text",
+                  "body"
+                ]
+                .some(
+                  x =>
+                    key
+                      .toLowerCase()
+                      .includes(x)
+                );
+
+              const isBoolean =
+                typeof value === "boolean";
+
+              if(isBoolean){
+
+                return `
+
+                  <div class="dynamic-field">
+
+                    <label class="label">
+                      ${esc(key)}
+                    </label>
+
+                    <select
+                      class="select edit-field"
+                      data-key="${esc(key)}"
+                    >
+
+                      <option
+                        value="true"
+                        ${value ? "selected" : ""}
+                      >
+                        เปิด / ใช้งาน
+                      </option>
+
+                      <option
+                        value="false"
+                        ${!value ? "selected" : ""}
+                      >
+                        ปิด / ซ่อน
+                      </option>
+
+                    </select>
+
+                  </div>
+
+                `;
+
+              }
+
+              return `
+
+                <div
+                  class="dynamic-field ${
+                    isLong
+                    ? "full"
+                    : ""
+                  }"
+                >
+
+                  <label class="label">
+                    ${esc(key)}
+                  </label>
+
+                  ${
+                    isLong
+                    ? `
+                      <textarea
+                        class="textarea edit-field"
+                        data-key="${esc(key)}"
+                      >${esc(
+                        typeof value === "object"
+                        ? JSON.stringify(
+                            value,
+                            null,
+                            2
+                          )
+                        : value ?? ""
+                      )}</textarea>
+                    `
+                    : `
+                      <input
+                        class="input edit-field"
+                        data-key="${esc(key)}"
+                        value="${esc(
+                          typeof value === "object"
+                          ? JSON.stringify(value)
+                          : value ?? ""
+                        )}"
+                      >
+                    `
+                  }
+
+                </div>
+              `;
+
+            }
+          )
+          .join("")
+      }
+
+    </div>
+
+  `;
+
+}
+
+
+function closeEditModal(){
+
+  pendingEdit =
+    null;
+
+  document
+    .getElementById("editModal")
+    .classList.remove("show");
+
+}
+
+
+document
+  .getElementById("saveEditBtn")
+  .addEventListener(
+    "click",
+    async () => {
+
+      if(!pendingEdit)
+        return;
+
+      const button =
+        document.getElementById(
+          "saveEditBtn"
+        );
+
+      button.disabled =
+        true;
+
+      button.textContent =
+        "กำลังบันทึก...";
+
+      try{
+
+        const {
+          table,
+          row
+        } =
+          pendingEdit;
+
+        const payload = {};
+
+        document
+          .querySelectorAll(
+            "#editModalBody .edit-field"
+          )
+          .forEach(
+            field => {
+
+              const key =
+                field.dataset.key;
+
+              let value =
+                field.value;
+
+              if(
+                row[key] === true ||
+                row[key] === false
+              ){
+
+                value =
+                  value === "true";
+
+              }else if(
+                typeof row[key] === "number"
+              ){
+
+                value =
+                  value === ""
+                  ? null
+                  : Number(value);
+
+              }else if(
+                typeof row[key] === "object" &&
+                row[key] !== null
+              ){
+
+                try{
+
+                  value =
+                    JSON.parse(value);
+
+                }catch{
+
+                  throw new Error(
+                    "ข้อมูล " +
+                    key +
+                    " ต้องเป็น JSON ที่ถูกต้อง"
+                  );
+
+                }
+
+              }
+
+              payload[key] =
+                value;
+
+            }
+          );
+
+        const idField =
+          getPrimaryLikeField(row);
+
+        if(!idField){
+
+          throw new Error(
+            "ไม่พบ ID ของรายการนี้"
+          );
+
+        }
+
+        const {
+          error
+        } =
+          await supabaseClient
+            .from(table)
+            .update(payload)
+            .eq(
+              idField,
+              row[idField]
+            );
+
+        if(error)
+          throw error;
+
+        closeEditModal();
+
+        toast(
+          "บันทึกข้อมูลเรียบร้อยแล้ว ✓"
+        );
+
+        if(table === "site_content")
+          await loadSiteContent();
+
+        if(table === "products")
+          await loadProducts();
+
+        if(table === "announcements")
+          await loadAnnouncements();
+
+      }catch(error){
+
+        console.error(error);
+
+        toast(
+          "บันทึกไม่สำเร็จ: " +
+          error.message
+        );
+
+      }finally{
+
+        button.disabled =
+          false;
+
+        button.textContent =
+          "บันทึก";
+
+      }
+
+    }
+  );
+
+
+/* =========================================================
+   PRODUCTS
+========================================================= */
+
+async function loadProducts(){
+
+  const area =
+    document.getElementById(
+      "productsArea"
+    );
+
+  area.innerHTML = `
+    <div class="empty">
+      <div class="empty-icon">⏳</div>
+      กำลังโหลดสินค้า...
+    </div>
+  `;
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("products")
+      .select("*")
+      .limit(200);
+
+  if(error){
+
+    console.error(error);
+
+    area.innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">⚠️</div>
+        โหลดสินค้าไม่สำเร็จ
+        <div class="small" style="margin-top:8px">
+          ${esc(error.message)}
+        </div>
+      </div>
+    `;
+
+    return;
+
+  }
+
+  products =
+    data || [];
+
+  renderProducts();
+
+}
+
+
+function renderProducts(){
+
+  const area =
+    document.getElementById(
+      "productsArea"
+    );
+
+  const search =
+    document
+      .getElementById("productSearch")
+      .value
+      .trim()
+      .toLowerCase();
+
+  const filtered =
+    products.filter(
+      product =>
+        JSON.stringify(product)
+          .toLowerCase()
+          .includes(search)
+    );
+
+  if(!filtered.length){
+
+    area.innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">📦</div>
+        ไม่พบสินค้า
+      </div>
+    `;
+
+    return;
+
+  }
+
+  area.innerHTML =
+    filtered
+      .map(
+        (product) => {
+
+          const image =
+            findValue(
+              product,
+              [
+                "image",
+                "image_url",
+                "product_image",
+                "thumbnail",
+                "cover"
+              ]
+            );
+
+          const name =
+            findValue(
+              product,
+              [
+                "name",
+                "product_name",
+                "title"
+              ]
+            ) || "สินค้า";
+
+          const code =
+            findValue(
+              product,
+              [
+                "code",
+                "product_code",
+                "sku"
+              ]
+            );
+
+          const price =
+            findValue(
+              product,
+              [
+                "price",
+                "distributor_price",
+                "agent_price"
+              ]
+            );
+
+          const index =
+            products.indexOf(
+              product
+            );
+
+          return `
+
+            <div class="content-card">
+
+              <div
+                class="content-card-head"
+              >
+
+                <div
+                  style="
+                    display:flex;
+                    gap:12px;
+                    align-items:center
+                  "
+                >
+
+                  ${
+                    image
+                    ? `
+                      <img
+                        src="${esc(image)}"
+                        class="image-preview"
+                        style="
+                          width:82px;
+                          height:70px;
+                          flex:none
+                        "
+                        onerror="
+                          this.style.display='none'
+                        "
+                      >
+                    `
+                    : `
+                      <div
+                        style="
+                          width:82px;
+                          height:70px;
+                          border-radius:17px;
+                          background:#f3f6fb;
+                          display:grid;
+                          place-items:center;
+                          font-size:25px;
+                          flex:none
+                        "
+                      >
+                        🍫
+                      </div>
+                    `
+                  }
+
+                  <div>
+
+                    <div
+                      class="content-card-title"
+                    >
+                      ${esc(name)}
+                    </div>
+
+                    ${
+                      code
+                      ? `
+                        <div
+                          class="content-card-sub"
+                        >
+                          ${esc(code)}
+                        </div>
+                      `
+                      : ""
+                    }
+
+                    ${
+                      price !== undefined
+                      ? `
+                        <div
+                          class="pill"
+                          style="margin-top:6px"
+                        >
+                          ฿${esc(price)}
+                        </div>
+                      `
+                      : ""
+                    }
+
+                  </div>
+
+                </div>
+
+                <div class="row-actions">
+
+                  <button
+                    class="secondary"
+                    onclick="
+                      editDynamicRow(
+                        'products',
+                        ${index}
+                      )
+                    "
+                  >
+                    ✏️ แก้ไข
+                  </button>
+
+                  <button
+                    class="danger"
+                    onclick="
+                      deleteDynamicRow(
+                        'products',
+                        ${index}
+                      )
+                    "
+                  >
+                    🗑️ ลบ
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          `;
+
+        }
+      )
+      .join("");
+
+}
+
+
+document
+  .getElementById("productSearch")
+  .addEventListener(
+    "input",
+    renderProducts
+  );
+
+
+/* =========================================================
+   ANNOUNCEMENTS
+========================================================= */
+
+async function loadAnnouncements(){
+
+  const area =
+    document.getElementById(
+      "announcementsArea"
+    );
+
+  area.innerHTML = `
+    <div class="empty">
+      <div class="empty-icon">⏳</div>
+      กำลังโหลดประกาศ...
+    </div>
+  `;
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("announcements")
+      .select("*")
+      .limit(200);
+
+  if(error){
+
+    console.error(error);
+
+    area.innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">⚠️</div>
+        โหลดประกาศไม่สำเร็จ
+        <div class="small" style="margin-top:8px">
+          ${esc(error.message)}
+        </div>
+      </div>
+    `;
+
+    return;
+
+  }
+
+  announcements =
+    data || [];
+
+  renderAnnouncements();
+
+}
+
+
+function renderAnnouncements(){
+
+  const area =
+    document.getElementById(
+      "announcementsArea"
+    );
+
+  if(!announcements.length){
+
+    area.innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">📢</div>
+        ยังไม่มีประกาศ
+      </div>
+    `;
+
+    return;
+
+  }
+
+  area.innerHTML =
+    announcements
+      .map(
+        announcement => {
+
+          const index =
+            announcements.indexOf(
+              announcement
+            );
+
+          const title =
+            findValue(
+              announcement,
+              [
+                "title",
+                "name",
+                "headline"
+              ]
+            ) || "ประกาศ";
+
+          const content =
+            findValue(
+              announcement,
+              [
+                "content",
+                "detail",
+                "description",
+                "body",
+                "text"
+              ]
+            );
+
+          const important =
+            findValue(
+              announcement,
+              [
+                "important",
+                "is_important",
+                "pinned"
+              ]
+            );
+
+          const visible =
+            findValue(
+              announcement,
+              [
+                "visible",
+                "is_visible",
+                "active",
+                "published"
+              ]
+            );
+
+          return `
+
+            <div class="content-card">
+
+              <div class="content-card-head">
+
+                <div>
+
+                  <div class="content-card-title">
+
+                    ${esc(title)}
+
+                    ${
+                      important
+                      ? `
+                        <span class="status pending">
+                          สำคัญ
+                        </span>
+                      `
+                      : ""
+                    }
+
+                  </div>
+
+                  <div
+                    class="content-card-sub"
+                  >
+                    ${
+                      visible === false
+                      ? "ซ่อนอยู่"
+                      : "แสดงอยู่"
+                    }
+                  </div>
+
+                </div>
+
+                <div class="row-actions">
+
+                  <button
+                    class="secondary"
+                    onclick="
+                      editDynamicRow(
+                        'announcements',
+                        ${index}
+                      )
+                    "
+                  >
+                    ✏️ แก้ไข
+                  </button>
+
+                  <button
+                    class="danger"
+                    onclick="
+                      deleteDynamicRow(
+                        'announcements',
+                        ${index}
+                      )
+                    "
+                  >
+                    🗑️ ลบ
+                  </button>
+
+                </div>
+
+              </div>
+
+              ${
+                content
+                ? `
+                  <div
+                    style="
+                      color:#7e889e;
+                      font-size:12px;
+                      line-height:1.8;
+                      white-space:pre-wrap
+                    "
+                  >
+                    ${esc(
+                      String(content)
+                        .slice(0,500)
+                    )}
+                  </div>
+                `
+                : ""
+              }
+
+            </div>
+
+          `;
+
+        }
+      )
+      .join("");
+
+}
+
+
+/* =========================================================
+   DELETE DYNAMIC ROW
+========================================================= */
+
+async function deleteDynamicRow(
+  table,
+  index
+){
+
+  const row =
+    table === "products"
+    ? products[index]
+    : announcements[index];
+
+  if(!row)
+    return;
+
+  const idField =
+    getPrimaryLikeField(row);
+
+  if(!idField){
+
+    toast(
+      "ไม่พบ ID ของรายการนี้"
+    );
+
+    return;
+
+  }
+
+  if(
+    !confirm(
+      "ต้องการลบรายการนี้ใช่หรือไม่?"
+    )
+  )
+    return;
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from(table)
+      .delete()
+      .eq(
+        idField,
+        row[idField]
+      );
+
+  if(error){
+
+    console.error(error);
+
+    toast(
+      "ลบไม่สำเร็จ: " +
+      error.message
+    );
+
+    return;
+
+  }
+
+  toast(
+    "ลบรายการเรียบร้อยแล้ว ✓"
+  );
+
+  if(table === "products")
+    await loadProducts();
+
+  if(table === "announcements")
+    await loadAnnouncements();
+
+}
+
+
+/* =========================================================
+   FIND COMMON FIELD
+========================================================= */
+
+function findValue(
+  object,
+  keys
+){
+
+  for(
+    const key of keys
+  ){
 
     if(
-      event === "SIGNED_OUT" &&
-      location.pathname.endsWith("admin.html")
+      Object.prototype
+        .hasOwnProperty
+        .call(object,key)
     ){
 
-      window.location.href =
-        "admin-login.html";
+      return object[key];
+
     }
 
   }
-);
+
+  return undefined;
+
+}
 
 
-/* =====================================================
+/* =========================================================
+   LOCAL ADMIN SETTINGS
+========================================================= */
+
+function saveLocalSettings(){
+
+  const settings = {
+
+    systemName:
+      document
+        .getElementById("systemName")
+        .value,
+
+    systemTagline:
+      document
+        .getElementById("systemTagline")
+        .value,
+
+    adminLabel:
+      document
+        .getElementById("adminLabel")
+        .value,
+
+    contactText:
+      document
+        .getElementById("contactText")
+        .value
+
+  };
+
+  localStorage.setItem(
+    "bennieChocoAdminSettings",
+    JSON.stringify(settings)
+  );
+
+  toast(
+    "บันทึกการตั้งค่าแล้ว ✓"
+  );
+
+}
+
+
+function loadLocalSettings(){
+
+  try{
+
+    const data =
+      JSON.parse(
+        localStorage.getItem(
+          "bennieChocoAdminSettings"
+        ) || "{}"
+      );
+
+    if(data.systemName)
+      document
+        .getElementById("systemName")
+        .value =
+        data.systemName;
+
+    if(data.systemTagline)
+      document
+        .getElementById("systemTagline")
+        .value =
+        data.systemTagline;
+
+    if(data.adminLabel)
+      document
+        .getElementById("adminLabel")
+        .value =
+        data.adminLabel;
+
+    if(data.contactText)
+      document
+        .getElementById("contactText")
+        .value =
+        data.contactText;
+
+  }catch(error){
+
+    console.error(error);
+
+  }
+
+}
+
+
+/* =========================================================
+   MODAL CLOSE BY BACKDROP
+========================================================= */
+
+document
+  .getElementById("statusModal")
+  .addEventListener(
+    "click",
+    event => {
+
+      if(
+        event.target ===
+        event.currentTarget
+      ){
+
+        closeModal();
+
+      }
+
+    }
+  );
+
+
+document
+  .getElementById("editModal")
+  .addEventListener(
+    "click",
+    event => {
+
+      if(
+        event.target ===
+        event.currentTarget
+      ){
+
+        closeEditModal();
+
+      }
+
+    }
+  );
+
+
+/* =========================================================
    START
-===================================================== */
+========================================================= */
+
+loadLocalSettings();
 
 init();
 
