@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ประกาศ | Bennie Choco</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --blue:#A0C4FF;
+  --mint:#CAFFBF;
+  --yellow:#FDFFB6;
+  --cream:#fffdf7;
+  --white:#ffffff;
+  --text:#3D405B;
+  --muted:#7d8299;
+  --border:rgba(61,64,91,.10);
+  --shadow:0 12px 35px rgba(61,64,91,.10);
+}
+
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+  margin:0;
+  min-height:100%;
+}
+
+body{
+  font-family:"Prompt",sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 10% 10%,rgba(160,196,255,.42),transparent 28%),
+    radial-gradient(circle at 90% 20%,rgba(202,255,191,.42),transparent 28%),
+    radial-gradient(circle at 50% 100%,rgba(253,255,182,.35),transparent 32%),
+    var(--cream);
+  overflow-x:hidden;
+}
+
+/* clouds */
+.cloud{
+  position:fixed;
+  z-index:0;
+  pointer-events:none;
+  opacity:.65;
+  filter:blur(.2px);
+}
+
+.cloud::before,
+.cloud::after{
+  content:"";
+  position:absolute;
+  background:rgba(255,255,255,.9);
+  border-radius:50%;
+}
+
+.cloud.one{
+  width:150px;
+  height:45px;
+  top:80px;
+  left:-35px;
+  border-radius:50px;
+  background:rgba(255,255,255,.9);
+}
+
+.cloud.one::before{
+  width:60px;
+  height:60px;
+  left:25px;
+  bottom:5px;
+}
+
+.cloud.one::after{
+  width:75px;
+  height:75px;
+  left:65px;
+  bottom:3px;
+}
+
+.cloud.two{
+  width:170px;
+  height:50px;
+  top:280px;
+  right:-55px;
+  border-radius:50px;
+  background:rgba(255,255,255,.75);
+}
+
+.cloud.two::before{
+  width:70px;
+  height:70px;
+  left:35px;
+  bottom:2px;
+}
+
+.cloud.two::after{
+  width:55px;
+  height:55px;
+  left:95px;
+  bottom:3px;
+}
+
+.cloud.three{
+  width:130px;
+  height:42px;
+  bottom:100px;
+  left:-45px;
+  border-radius:50px;
+  background:rgba(255,255,255,.7);
+}
+
+.cloud.three::before{
+  width:55px;
+  height:55px;
+  left:20px;
+  bottom:3px;
+}
+
+.cloud.three::after{
+  width:65px;
+  height:65px;
+  left:55px;
+  bottom:0;
+}
+
+/* floating decoration */
+.float{
+  position:fixed;
+  z-index:1;
+  pointer-events:none;
+  width:70px;
+  opacity:.85;
+}
+
+.float.f1{
+  top:150px;
+  right:10px;
+  transform:rotate(8deg);
+}
+
+.float.f2{
+  bottom:150px;
+  left:8px;
+  width:60px;
+  transform:rotate(-8deg);
+}
+
+.wrapper{
+  position:relative;
+  z-index:2;
+  width:min(100%,760px);
+  margin:0 auto;
+  padding:22px 16px 40px;
+}
+
+/* header */
+.topbar{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:18px;
+}
+
+.back-btn{
+  width:44px;
+  height:44px;
+  flex:0 0 44px;
+  border:none;
+  border-radius:15px;
+  background:rgba(255,255,255,.88);
+  box-shadow:0 7px 20px rgba(61,64,91,.08);
+  color:var(--text);
+  font-size:20px;
+  cursor:pointer;
+}
+
+.back-btn:active{
+  transform:scale(.96);
+}
+
+.title-area{
+  min-width:0;
+}
+
+.title{
+  margin:0;
+  font-size:25px;
+  line-height:1.2;
+  font-weight:700;
+}
+
+.subtitle{
+  margin:4px 0 0;
+  color:var(--muted);
+  font-size:13px;
+}
+
+/* profile strip */
+.profile-strip{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:rgba(255,255,255,.82);
+  border:1px solid rgba(255,255,255,.95);
+  border-radius:20px;
+  padding:12px 14px;
+  margin-bottom:18px;
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(12px);
+}
+
+.profile-icon{
+  width:40px;
+  height:40px;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,var(--blue),var(--mint));
+  font-size:20px;
+  flex:0 0 40px;
+}
+
+.profile-info{
+  min-width:0;
+}
+
+.profile-name{
+  font-size:14px;
+  font-weight:600;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.profile-code{
+  font-size:12px;
+  color:var(--muted);
+}
+
+/* tools */
+.tools{
+  display:flex;
+  gap:8px;
+  margin-bottom:18px;
+}
+
+.tool-btn{
+  border:none;
+  background:rgba(255,255,255,.85);
+  color:var(--text);
+  border-radius:14px;
+  padding:9px 13px;
+  font-family:inherit;
+  font-size:12px;
+  cursor:pointer;
+  box-shadow:0 6px 18px rgba(61,64,91,.06);
+}
+
+.tool-btn.active{
+  background:var(--blue);
+  font-weight:600;
+}
+
+/* section heading */
+.section-head{
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  gap:10px;
+  margin:4px 2px 12px;
+}
+
+.section-head h2{
+  margin:0;
+  font-size:18px;
+}
+
+.count{
+  color:var(--muted);
+  font-size:12px;
+}
+
+/* loading */
+.loading{
+  text-align:center;
+  padding:50px 20px;
+  color:var(--muted);
+}
+
+.spinner{
+  width:34px;
+  height:34px;
+  margin:0 auto 12px;
+  border:3px solid rgba(160,196,255,.35);
+  border-top-color:var(--blue);
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+
+/* empty */
+.empty{
+  background:rgba(255,255,255,.84);
+  border-radius:24px;
+  padding:42px 20px;
+  text-align:center;
+  box-shadow:var(--shadow);
+}
+
+.empty-icon{
+  font-size:42px;
+  margin-bottom:10px;
+}
+
+.empty-title{
+  font-weight:600;
+  font-size:16px;
+}
+
+.empty-text{
+  color:var(--muted);
+  font-size:13px;
+  margin-top:5px;
+}
+
+/* announcement list */
+.list{
+  display:grid;
+  gap:13px;
+}
+
+.announcement{
+  position:relative;
+  overflow:hidden;
+  background:rgba(255,255,255,.9);
+  border:1px solid rgba(255,255,255,.95);
+  border-radius:23px;
+  box-shadow:var(--shadow);
+  cursor:pointer;
+  transition:.18s ease;
+}
+
+.announcement:active{
+  transform:scale(.985);
+}
+
+.announcement.pinned{
+  border:1px solid rgba(253,221,100,.45);
+}
+
+.announcement-image{
+  width:100%;
+  max-height:240px;
+  object-fit:cover;
+  display:block;
+  background:#f5f6fb;
+}
+
+.announcement-body{
+  padding:15px 16px 16px;
+}
+
+.badges{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-bottom:8px;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  padding:4px 9px;
+  border-radius:999px;
+  font-size:10px;
+  font-weight:600;
+}
+
+.badge.pin{
+  background:#fff4b0;
+  color:#746718;
+}
+
+.badge.new{
+  background:#dfffd7;
+  color:#41743a;
+}
+
+.badge.info{
+  background:#e8f0ff;
+  color:#58709d;
+}
+
+.announcement-title{
+  margin:0;
+  font-size:17px;
+  line-height:1.4;
+  font-weight:600;
+}
+
+.announcement-date{
+  margin-top:6px;
+  font-size:11px;
+  color:var(--muted);
+}
+
+.announcement-preview{
+  margin:10px 0 0;
+  color:#666b80;
+  font-size:13px;
+  line-height:1.65;
+  display:-webkit-box;
+  -webkit-line-clamp:3;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+
+.read-more{
+  margin-top:11px;
+  color:#6384bf;
+  font-size:12px;
+  font-weight:500;
+}
+
+/* modal */
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:50;
+  display:none;
+  align-items:flex-end;
+  justify-content:center;
+  background:rgba(35,39,57,.38);
+  backdrop-filter:blur(4px);
+}
+
+.modal.show{
+  display:flex;
+}
+
+.modal-box{
+  width:min(100%,760px);
+  max-height:90vh;
+  overflow:auto;
+  background:#fffefa;
+  border-radius:28px 28px 0 0;
+  box-shadow:0 -15px 50px rgba(0,0,0,.16);
+  animation:slideUp .22s ease;
+}
+
+@keyframes slideUp{
+  from{
+    transform:translateY(30px);
+    opacity:0;
+  }
+  to{
+    transform:translateY(0);
+    opacity:1;
+  }
+}
+
+.modal-top{
+  position:sticky;
+  top:0;
+  z-index:2;
+  display:flex;
+  justify-content:flex-end;
+  padding:12px 14px 0;
+  background:#fffefa;
+}
+
+.close-btn{
+  width:40px;
+  height:40px;
+  border:none;
+  border-radius:13px;
+  background:#f1f3f8;
+  color:var(--text);
+  font-size:20px;
+  cursor:pointer;
+}
+
+.modal-content{
+  padding:4px 18px 28px;
+}
+
+.modal-image{
+  width:100%;
+  max-height:320px;
+  object-fit:cover;
+  border-radius:20px;
+  margin-bottom:16px;
+}
+
+.modal-title{
+  margin:0;
+  font-size:23px;
+  line-height:1.35;
+}
+
+.modal-date{
+  margin-top:7px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.modal-text{
+  margin-top:18px;
+  font-size:14px;
+  line-height:1.9;
+  white-space:pre-wrap;
+  word-break:break-word;
+}
+
+.modal-badges{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  margin:0 0 12px;
+}
+
+/* error */
+.error-box{
+  display:none;
+  background:#fff0f0;
+  color:#a04d4d;
+  border-radius:20px;
+  padding:18px;
+  margin-bottom:15px;
+  font-size:13px;
+  line-height:1.6;
+}
+
+/* footer */
+.footer{
+  text-align:center;
+  color:var(--muted);
+  font-size:11px;
+  padding:28px 0 5px;
+}
+
+@media(min-width:700px){
+  .wrapper{
+    padding-top:35px;
+  }
+
+  .modal{
+    align-items:center;
+    padding:20px;
+  }
+
+  .modal-box{
+    border-radius:28px;
+    max-height:88vh;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="cloud one"></div>
+<div class="cloud two"></div>
+<div class="cloud three"></div>
+
+<img
+  class="float f1"
+  src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
+  alt=""
+>
+
+<img
+  class="float f2"
+  src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
+  alt=""
+>
+
+<div class="wrapper">
+
+  <div class="topbar">
+    <button class="back-btn" id="backBtn" aria-label="กลับ">
+      ‹
+    </button>
+
+    <div class="title-area">
+      <h1 class="title">📢 ประกาศ</h1>
+      <p class="subtitle">ข่าวสารและประกาศสำหรับตัวแทน Bennie Choco</p>
+    </div>
+  </div>
+
+  <div class="profile-strip">
+    <div class="profile-icon">🍫</div>
+
+    <div class="profile-info">
+      <div class="profile-name" id="profileName">
+        กำลังโหลด...
+      </div>
+
+      <div class="profile-code" id="profileCode">
+        —
+      </div>
+    </div>
+  </div>
+
+  <div class="tools">
+    <button class="tool-btn active" id="allBtn">
+      ทั้งหมด
+    </button>
+
+    <button class="tool-btn" id="pinnedBtn">
+      📌 ปักหมุด
+    </button>
+
+    <button class="tool-btn" id="refreshBtn">
+      ↻ รีเฟรช
+    </button>
+  </div>
+
+  <div class="error-box" id="errorBox"></div>
+
+  <div class="section-head">
+    <h2>ประวัติประกาศ</h2>
+    <span class="count" id="countText">กำลังโหลด...</span>
+  </div>
+
+  <div id="loading" class="loading">
+    <div class="spinner"></div>
+    กำลังโหลดประกาศ...
+  </div>
+
+  <div id="empty" class="empty" style="display:none;">
+    <div class="empty-icon">☁️</div>
+    <div class="empty-title">ยังไม่มีประกาศ</div>
+    <div class="empty-text">
+      ตอนนี้ยังไม่มีประกาศที่เผยแพร่ให้ตัวแทน
+    </div>
+  </div>
+
+  <div id="announcementList" class="list"></div>
+
+  <div class="footer">
+    Bennie Choco Distributor Portal ♡
+  </div>
+
+</div>
+
+<!-- detail modal -->
+<div class="modal" id="detailModal">
+
+  <div class="modal-box">
+
+    <div class="modal-top">
+      <button class="close-btn" id="closeModal">
+        ×
+      </button>
+    </div>
+
+    <div class="modal-content" id="modalContent"></div>
+
+  </div>
+
+</div>
+
+<script>
+/* =========================================================
+   SUPABASE
+========================================================= */
+
+const SUPABASE_URL =
+  "https://arhvdvaugcjzkdbxesma.supabase.co";
+
+const SUPABASE_ANON_KEY =
+  "sb_publishable_Ctpm1hNQKTdOPpY9yQ2qw_7kQg_57Z";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const backBtn =
+  document.getElementById("backBtn");
+
+const profileName =
+  document.getElementById("profileName");
+
+const profileCode =
+  document.getElementById("profileCode");
+
+const loading =
+  document.getElementById("loading");
+
+const empty =
+  document.getElementById("empty");
+
+const announcementList =
+  document.getElementById("announcementList");
+
+const countText =
+  document.getElementById("countText");
+
+const errorBox =
+  document.getElementById("errorBox");
+
+const allBtn =
+  document.getElementById("allBtn");
+
+const pinnedBtn =
+  document.getElementById("pinnedBtn");
+
+const refreshBtn =
+  document.getElementById("refreshBtn");
+
+const detailModal =
+  document.getElementById("detailModal");
+
+const closeModal =
+  document.getElementById("closeModal");
+
+const modalContent =
+  document.getElementById("modalContent");
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let announcements = [];
+let currentFilter = "all";
+
+
+/* =========================================================
+   BACK
+========================================================= */
+
+backBtn.addEventListener("click", () => {
+
+  if (document.referrer) {
+    history.back();
+  } else {
+    window.location.href = "dashboard.html";
+  }
+
+});
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHtml(value){
+
+  if (value === null || value === undefined) {
+    return "";
+  }
+
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+
+/* =========================================================
+   DATE
+========================================================= */
+
+function formatDate(dateString){
+
+  if (!dateString) return "ไม่ระบุวันที่";
+
+  const date = new Date(dateString);
+
+  if (Number.isNaN(date.getTime())) {
+    return "ไม่ระบุวันที่";
+  }
+
+  return date.toLocaleDateString("th-TH", {
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  });
+}
+
+
+/* =========================================================
+   NEW CHECK
+========================================================= */
+
+function isNew(dateString){
+
+  if (!dateString) return false;
+
+  const created =
+    new Date(dateString).getTime();
+
+  const now =
+    Date.now();
+
+  const sevenDays =
+    7 * 24 * 60 * 60 * 1000;
+
+  return (
+    now - created <= sevenDays &&
+    now - created >= 0
+  );
+}
+
+
+/* =========================================================
+   LOAD USER
+========================================================= */
+
+async function loadUser(){
+
+  const {
+    data: { user },
+    error
+  } = await supabaseClient.auth.getUser();
+
+  if (error || !user){
+
+    window.location.href = "login.html";
+    return null;
+  }
+
+  const {
+    data: profile,
+    error: profileError
+  } = await supabaseClient
+    .from("profiles")
+    .select("nickname,distributor_code,status")
+    .eq("id", user.id)
+    .single();
+
+  if (profileError){
+
+    console.error(profileError);
+
+    profileName.textContent =
+      user.email || "ตัวแทน";
+
+    profileCode.textContent = "—";
+
+    return user;
+  }
+
+  if (profile.status !== "active"){
+
+    await supabaseClient.auth.signOut();
+
+    window.location.href = "login.html";
+
+    return null;
+  }
+
+  profileName.textContent =
+    profile.nickname || user.email || "ตัวแทน";
+
+  profileCode.textContent =
+    profile.distributor_code
+      ? "รหัสตัวแทน: " + profile.distributor_code
+      : "สมาชิก Bennie Choco";
+
+  return user;
+}
+
+
+/* =========================================================
+   LOAD ANNOUNCEMENTS
+========================================================= */
+
+async function loadAnnouncements(){
+
+  setLoading(true);
+
+  hideError();
+
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .from("announcements")
+    .select(`
+      id,
+      title,
+      content,
+      image_url,
+      status,
+      pinned,
+      created_at,
+      updated_at
+    `)
+    .eq("status", "published")
+    .order("pinned", {
+      ascending:false
+    })
+    .order("created_at", {
+      ascending:false
+    });
+
+  if (error){
+
+    console.error(
+      "Announcement error:",
+      error
+    );
+
+    setLoading(false);
+
+    showError(
+      "ไม่สามารถโหลดประกาศได้<br>" +
+      escapeHtml(error.message || "เกิดข้อผิดพลาด")
+    );
+
+    countText.textContent = "โหลดไม่สำเร็จ";
+
+    return;
+  }
+
+  announcements =
+    Array.isArray(data)
+      ? data
+      : [];
+
+  setLoading(false);
+
+  renderAnnouncements();
+}
+
+
+/* =========================================================
+   RENDER
+========================================================= */
+
+function renderAnnouncements(){
+
+  announcementList.innerHTML = "";
+
+  let list =
+    [...announcements];
+
+  if (currentFilter === "pinned"){
+
+    list =
+      list.filter(item =>
+        item.pinned === true
+      );
+  }
+
+  countText.textContent =
+    `${list.length} รายการ`;
+
+  if (!list.length){
+
+    empty.style.display = "block";
+
+    return;
+  }
+
+  empty.style.display = "none";
+
+  list.forEach(item => {
+
+    const card =
+      document.createElement("article");
+
+    card.className =
+      "announcement" +
+      (item.pinned ? " pinned" : "");
+
+    const image =
+      item.image_url
+        ? `
+          <img
+            class="announcement-image"
+            src="${escapeHtml(item.image_url)}"
+            alt="${escapeHtml(item.title || "ประกาศ")}"
+            loading="lazy"
+            onerror="this.style.display='none'"
+          >
+        `
+        : "";
+
+    const badges = [];
+
+    if (item.pinned){
+
+      badges.push(`
+        <span class="badge pin">
+          📌 ปักหมุด
+        </span>
+      `);
+    }
+
+    if (isNew(item.created_at)){
+
+      badges.push(`
+        <span class="badge new">
+          🆕 ใหม่
+        </span>
+      `);
+    }
+
+    badges.push(`
+      <span class="badge info">
+        📢 ประกาศ
+      </span>
+    `);
+
+    const content =
+      item.content || "";
+
+    const preview =
+      content.length > 180
+        ? content.slice(0,180) + "…"
+        : content;
+
+    card.innerHTML = `
+      ${image}
+
+      <div class="announcement-body">
+
+        <div class="badges">
+          ${badges.join("")}
+        </div>
+
+        <h3 class="announcement-title">
+          ${escapeHtml(item.title || "ไม่มีหัวข้อ")}
+        </h3>
+
+        <div class="announcement-date">
+          ${formatDate(item.created_at)}
+        </div>
+
+        ${
+          preview
+            ? `
+              <p class="announcement-preview">
+                ${escapeHtml(preview)}
+              </p>
+            `
+            : ""
+        }
+
+        <div class="read-more">
+          แตะเพื่ออ่านรายละเอียด →
+        </div>
+
+      </div>
+    `;
+
+    card.addEventListener("click", () => {
+      openDetail(item);
+    });
+
+    announcementList.appendChild(card);
+  });
+}
+
+
+/* =========================================================
+   DETAIL
+========================================================= */
+
+function openDetail(item){
+
+  const badges = [];
+
+  if (item.pinned){
+
+    badges.push(`
+      <span class="badge pin">
+        📌 ปักหมุด
+      </span>
+    `);
+  }
+
+  if (isNew(item.created_at)){
+
+    badges.push(`
+      <span class="badge new">
+        🆕 ใหม่
+      </span>
+    `);
+  }
+
+  modalContent.innerHTML = `
+
+    ${
+      item.image_url
+        ? `
+          <img
+            class="modal-image"
+            src="${escapeHtml(item.image_url)}"
+            alt="${escapeHtml(item.title || "ประกาศ")}"
+            onerror="this.style.display='none'"
+          >
+        `
+        : ""
+    }
+
+    <div class="modal-badges">
+      ${badges.join("")}
+    </div>
+
+    <h2 class="modal-title">
+      ${escapeHtml(item.title || "ไม่มีหัวข้อ")}
+    </h2>
+
+    <div class="modal-date">
+      ประกาศเมื่อ ${formatDate(item.created_at)}
+      ${
+        item.updated_at &&
+        item.updated_at !== item.created_at
+          ? " · อัปเดตล่าสุด " + formatDate(item.updated_at)
+          : ""
+      }
+    </div>
+
+    <div class="modal-text">
+      ${escapeHtml(item.content || "ไม่มีรายละเอียด")}
+    </div>
+
+  `;
+
+  detailModal.classList.add("show");
+
+  document.body.style.overflow =
+    "hidden";
+}
+
+
+/* =========================================================
+   CLOSE MODAL
+========================================================= */
+
+function closeDetail(){
+
+  detailModal.classList.remove("show");
+
+  document.body.style.overflow =
+    "";
+}
+
+closeModal.addEventListener(
+  "click",
+  closeDetail
+);
+
+detailModal.addEventListener(
+  "click",
+  event => {
+
+    if (event.target === detailModal){
+      closeDetail();
+    }
+
+  }
+);
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if (event.key === "Escape"){
+      closeDetail();
+    }
+
+  }
+);
+
+
+/* =========================================================
+   FILTER
+========================================================= */
+
+allBtn.addEventListener("click", () => {
+
+  currentFilter = "all";
+
+  allBtn.classList.add("active");
+  pinnedBtn.classList.remove("active");
+
+  renderAnnouncements();
+});
+
+
+pinnedBtn.addEventListener("click", () => {
+
+  currentFilter = "pinned";
+
+  pinnedBtn.classList.add("active");
+  allBtn.classList.remove("active");
+
+  renderAnnouncements();
+});
+
+
+/* =========================================================
+   REFRESH
+========================================================= */
+
+refreshBtn.addEventListener(
+  "click",
+  loadAnnouncements
+);
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+function setLoading(state){
+
+  loading.style.display =
+    state ? "block" : "none";
+}
+
+
+function showError(message){
+
+  errorBox.innerHTML =
+    message;
+
+  errorBox.style.display =
+    "block";
+}
+
+
+function hideError(){
+
+  errorBox.style.display =
+    "none";
+
+  errorBox.innerHTML =
+    "";
+}
+
+
+/* =========================================================
+   INIT
+========================================================= */
+
+async function init(){
+
+  const user =
+    await loadUser();
+
+  if (!user) return;
+
+  await loadAnnouncements();
+}
+
+init();
+
+</script>
+
+</body>
+</html>
