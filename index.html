@@ -6,6 +6,75 @@
 
 <title>Bennie Choco — Distributor Portal</title>
 
+<!-- =========================================================
+     SHARE PREVIEW / OPEN GRAPH
+========================================================= -->
+
+<meta
+  name="description"
+  content="พื้นที่สำหรับตัวแทนของ Bennie Choco รวมข้อมูลสินค้า ราคา สิทธิ์สำหรับตัวแทน และรายละเอียดต่าง ๆ ไว้ในที่เดียว"
+>
+
+<meta
+  property="og:type"
+  content="website"
+>
+
+<meta
+  property="og:title"
+  content="Bennie Choco — Distributor Portal"
+>
+
+<meta
+  property="og:description"
+  content="พื้นที่สำหรับตัวแทนของ Bennie Choco รวมข้อมูลสินค้า ราคา สิทธิ์สำหรับตัวแทน และรายละเอียดต่าง ๆ ไว้ในที่เดียว"
+>
+
+<meta
+  property="og:image"
+  content="https://i.postimg.cc/y6b24ph9/mi-m-ch-x-488-20260114125256.png"
+>
+
+<meta
+  property="og:image:secure_url"
+  content="https://i.postimg.cc/y6b24ph9/mi-m-ch-x-488-20260114125256.png"
+>
+
+<meta
+  property="og:image:type"
+  content="image/png"
+>
+
+<meta
+  property="og:image:alt"
+  content="Bennie Choco Distributor Portal"
+>
+
+<meta
+  property="og:site_name"
+  content="Bennie Choco"
+>
+
+<meta
+  name="twitter:card"
+  content="summary_large_image"
+>
+
+<meta
+  name="twitter:title"
+  content="Bennie Choco — Distributor Portal"
+>
+
+<meta
+  name="twitter:description"
+  content="พื้นที่สำหรับตัวแทนของ Bennie Choco"
+>
+
+<meta
+  name="twitter:image"
+  content="https://i.postimg.cc/y6b24ph9/mi-m-ch-x-488-20260114125256.png"
+>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -1846,6 +1915,19 @@ a{
 
   font-size:17px;
 
+  transition:
+    transform .2s,
+    box-shadow .2s;
+
+}
+
+.music-button:hover{
+
+  transform:scale(1.05);
+
+  box-shadow:
+    0 12px 32px rgba(80,100,140,.18);
+
 }
 
 .music-button.playing{
@@ -2971,7 +3053,6 @@ a{
 
 <!-- =======================================================
      CTA
-     ส่วนนี้เป็นของแอดมิน
 ======================================================= -->
 
 <section
@@ -3051,14 +3132,14 @@ a{
   id="bgMusic"
   loop
   preload="none"
->
-</audio>
+></audio>
 
 
 <button
   class="music-button"
   id="musicButton"
   aria-label="เปิดเพลง"
+  type="button"
 >
   ♫
 </button>
@@ -3425,6 +3506,10 @@ bookStage.addEventListener(
 
 /* =========================================================
    MUSIC
+   ---------------------------------------------------------
+   รองรับ:
+   1. URL ที่ตั้งจาก admin1.html
+   2. fallback เป็น URL เพลงที่ผู้ใช้กำหนด
 ========================================================= */
 
 const bgMusic =
@@ -3434,63 +3519,400 @@ const musicButton =
   document.getElementById("musicButton");
 
 
+const DEFAULT_MUSIC_URL =
+  "https://www.image2url.com/r2/default/audio/1789491665315-4b26d2e6-168e-4006-bce1-a8e1b969e912.mp3";
+
+
+const WEBSITE_SETTINGS_KEY =
+  "bennieChocoAdminWebsite";
+
+
 let musicPlaying = false;
 
+
+/* ---------------------------------------------------------
+   อ่านค่าจาก admin1.html
+--------------------------------------------------------- */
+
+function getWebsiteSettings(){
+
+  try{
+
+    const raw =
+      localStorage.getItem(
+        WEBSITE_SETTINGS_KEY
+      );
+
+    if(!raw){
+      return null;
+    }
+
+    const parsed =
+      JSON.parse(raw);
+
+    if(
+      !parsed ||
+      typeof parsed !== "object"
+    ){
+
+      return null;
+
+    }
+
+    return parsed;
+
+  }
+  catch(error){
+
+    console.warn(
+      "อ่านการตั้งค่าเว็บไซต์ไม่สำเร็จ:",
+      error
+    );
+
+    return null;
+
+  }
+
+}
+
+
+/* ---------------------------------------------------------
+   หา URL เพลง
+--------------------------------------------------------- */
+
+function getMusicUrl(){
+
+  const settings =
+    getWebsiteSettings();
+
+
+  /*
+   * รองรับรูปแบบที่ admin1.html ใช้อยู่
+   */
+
+  if(
+    settings &&
+    settings.music &&
+    settings.music.url
+  ){
+
+    const url =
+      String(
+        settings.music.url
+      ).trim();
+
+    if(url){
+      return url;
+    }
+
+  }
+
+
+  /*
+   * รองรับกรณีเก็บเป็น musicUrl โดยตรง
+   */
+
+  if(
+    settings &&
+    settings.musicUrl
+  ){
+
+    const url =
+      String(
+        settings.musicUrl
+      ).trim();
+
+    if(url){
+      return url;
+    }
+
+  }
+
+
+  /*
+   * ถ้าไม่ได้ตั้งค่าไว้
+   * ใช้เพลงที่กำหนดไว้เป็นค่าเริ่มต้น
+   */
+
+  return DEFAULT_MUSIC_URL;
+
+}
+
+
+/* ---------------------------------------------------------
+   ตรวจว่าเปิดใช้งานเพลงหรือไม่
+--------------------------------------------------------- */
+
+function isMusicEnabled(){
+
+  const settings =
+    getWebsiteSettings();
+
+
+  /*
+   * ถ้ามี music.enabled ให้เคารพค่าจาก admin1
+   */
+
+  if(
+    settings &&
+    settings.music &&
+    typeof settings.music.enabled === "boolean"
+  ){
+
+    return settings.music.enabled;
+
+  }
+
+
+  /*
+   * รองรับ musicEnabled โดยตรง
+   */
+
+  if(
+    settings &&
+    typeof settings.musicEnabled === "boolean"
+  ){
+
+    return settings.musicEnabled;
+
+  }
+
+
+  /*
+   * ถ้าไม่เคยตั้งค่า ให้เปิดไว้
+   */
+
+  return true;
+
+}
+
+
+/* ---------------------------------------------------------
+   ตั้งค่าเพลงให้ audio
+--------------------------------------------------------- */
+
+function setupMusic(){
+
+  const enabled =
+    isMusicEnabled();
+
+  const musicUrl =
+    getMusicUrl();
+
+
+  if(
+    !enabled ||
+    !musicUrl
+  ){
+
+    bgMusic.removeAttribute("src");
+
+    bgMusic.load();
+
+    musicButton.style.display =
+      "none";
+
+    return;
+
+  }
+
+
+  musicButton.style.display =
+    "block";
+
+
+  /*
+   * ไม่ตั้ง autoplay
+   * เพราะมือถือส่วนใหญ่จะบล็อก autoplay
+   */
+
+  bgMusic.src =
+    musicUrl;
+
+  bgMusic.load();
+
+}
+
+
+/* ---------------------------------------------------------
+   เปลี่ยนสถานะปุ่ม
+--------------------------------------------------------- */
+
+function setMusicButtonState(
+  playing
+){
+
+  musicPlaying =
+    playing;
+
+
+  if(playing){
+
+    musicButton.classList.add(
+      "playing"
+    );
+
+    musicButton.textContent =
+      "♪";
+
+    musicButton.setAttribute(
+      "aria-label",
+      "ปิดเพลง"
+    );
+
+  }
+  else{
+
+    musicButton.classList.remove(
+      "playing"
+    );
+
+    musicButton.textContent =
+      "♫";
+
+    musicButton.setAttribute(
+      "aria-label",
+      "เปิดเพลง"
+    );
+
+  }
+
+}
+
+
+/* ---------------------------------------------------------
+   กดปุ่มเพลง
+--------------------------------------------------------- */
 
 musicButton.addEventListener(
   "click",
   async ()=>{
 
-    if(!bgMusic.src){
+    /*
+     * ถ้า admin ปิดเพลงไว้
+     */
 
-      musicButton.textContent =
-        "♫";
+    if(!isMusicEnabled()){
+
+      setMusicButtonState(false);
 
       return;
 
     }
 
 
-    if(musicPlaying){
+    /*
+     * ตรวจ URL ใหม่ทุกครั้ง
+     * เผื่อ admin1 ถูกแก้ระหว่างเปิดเว็บ
+     */
+
+    const musicUrl =
+      getMusicUrl();
+
+
+    if(!musicUrl){
+
+      setMusicButtonState(false);
+
+      return;
+
+    }
+
+
+    /*
+     * ถ้า URL เปลี่ยน
+     */
+
+    if(
+      !bgMusic.src ||
+      bgMusic.src !== musicUrl
+    ){
+
+      bgMusic.src =
+        musicUrl;
+
+      bgMusic.load();
+
+    }
+
+
+    /*
+     * ถ้ากำลังเล่น → หยุด
+     */
+
+    if(
+      !bgMusic.paused &&
+      !bgMusic.ended
+    ){
 
       bgMusic.pause();
 
-      musicPlaying = false;
+      setMusicButtonState(false);
 
-      musicButton.classList.remove(
-        "playing"
-      );
-
-      musicButton.textContent =
-        "♫";
+      return;
 
     }
-    else{
 
-      try{
 
-        await bgMusic.play();
+    /*
+     * ถ้ายังไม่เล่น → เล่น
+     */
 
-        musicPlaying = true;
+    try{
 
-        musicButton.classList.add(
-          "playing"
-        );
+      await bgMusic.play();
 
-        musicButton.textContent =
-          "♪";
+      setMusicButtonState(true);
 
-      }
-      catch(error){
+    }
+    catch(error){
 
-        musicPlaying = false;
+      console.warn(
+        "ไม่สามารถเล่นเพลงได้:",
+        error
+      );
 
-      }
+      setMusicButtonState(false);
 
     }
 
   }
 );
+
+
+/* ---------------------------------------------------------
+   ถ้าเพลงจบ / pause จากภายนอก
+--------------------------------------------------------- */
+
+bgMusic.addEventListener(
+  "play",
+  ()=>{
+    setMusicButtonState(true);
+  }
+);
+
+
+bgMusic.addEventListener(
+  "pause",
+  ()=>{
+    setMusicButtonState(false);
+  }
+);
+
+
+bgMusic.addEventListener(
+  "ended",
+  ()=>{
+    setMusicButtonState(false);
+  }
+);
+
+
+/* ---------------------------------------------------------
+   เริ่มต้นระบบเพลง
+--------------------------------------------------------- */
+
+setupMusic();
 
 
 
