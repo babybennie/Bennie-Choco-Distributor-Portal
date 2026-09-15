@@ -1,0 +1,1731 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Bennie Choco — Admin</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --blue:#A0C4FF;
+  --mint:#CAFFBF;
+  --yellow:#FDFFB6;
+  --cream:#FFFDF7;
+  --white:#ffffff;
+  --text:#3D405B;
+  --muted:#7D8299;
+  --danger:#ff8fa3;
+  --green:#79d99a;
+  --shadow:0 15px 40px rgba(61,64,91,.10);
+  --radius:24px;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:"Nunito",sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 10% 10%,rgba(160,196,255,.30),transparent 28%),
+    radial-gradient(circle at 90% 15%,rgba(202,255,191,.32),transparent 28%),
+    linear-gradient(180deg,#f8fbff 0%,#fffef8 55%,#f7fff5 100%);
+  overflow-x:hidden;
+}
+
+/* =========================
+   CLOUDS
+========================= */
+
+.cloud{
+  position:fixed;
+  width:120px;
+  height:45px;
+  background:rgba(255,255,255,.82);
+  border-radius:999px;
+  filter:blur(.2px);
+  z-index:0;
+  pointer-events:none;
+}
+
+.cloud:before,
+.cloud:after{
+  content:"";
+  position:absolute;
+  background:inherit;
+  border-radius:50%;
+}
+
+.cloud:before{
+  width:55px;
+  height:55px;
+  left:18px;
+  bottom:10px;
+}
+
+.cloud:after{
+  width:70px;
+  height:70px;
+  right:15px;
+  bottom:5px;
+}
+
+.cloud-1{
+  top:110px;
+  left:-30px;
+  transform:scale(.9);
+}
+
+.cloud-2{
+  top:330px;
+  right:-35px;
+  transform:scale(1.15);
+}
+
+.cloud-3{
+  top:650px;
+  left:-50px;
+  transform:scale(.75);
+}
+
+.cloud-4{
+  top:900px;
+  right:-45px;
+  transform:scale(.9);
+}
+
+/* =========================
+   FLOATING DECOR
+========================= */
+
+.float-img{
+  position:fixed;
+  width:62px;
+  opacity:.75;
+  z-index:0;
+  pointer-events:none;
+  animation:float 5s ease-in-out infinite;
+}
+
+.float-1{
+  top:170px;
+  right:8%;
+}
+
+.float-2{
+  top:510px;
+  left:5%;
+  animation-delay:1s;
+}
+
+.float-3{
+  top:760px;
+  right:6%;
+  animation-delay:2s;
+}
+
+@keyframes float{
+  0%,100%{
+    transform:translateY(0) rotate(-4deg);
+  }
+  50%{
+    transform:translateY(-12px) rotate(4deg);
+  }
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+  position:sticky;
+  top:0;
+  z-index:20;
+  padding:14px 18px;
+  background:rgba(255,255,255,.78);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(160,196,255,.20);
+}
+
+.header-inner{
+  max-width:1180px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+}
+
+.brand-icon{
+  width:46px;
+  height:46px;
+  border-radius:16px;
+  background:linear-gradient(135deg,var(--blue),#d9e8ff);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:23px;
+  box-shadow:0 8px 18px rgba(160,196,255,.25);
+}
+
+.brand-text strong{
+  display:block;
+  font-size:17px;
+  font-weight:900;
+}
+
+.brand-text span{
+  display:block;
+  font-size:12px;
+  color:var(--muted);
+  margin-top:-2px;
+}
+
+.logout-btn{
+  border:0;
+  background:#fff;
+  color:var(--text);
+  border:1px solid #e9edf5;
+  padding:10px 15px;
+  border-radius:14px;
+  font-family:inherit;
+  font-weight:800;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.logout-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 18px rgba(61,64,91,.08);
+}
+
+/* =========================
+   MAIN
+========================= */
+
+main{
+  position:relative;
+  z-index:2;
+  width:min(1180px,calc(100% - 28px));
+  margin:30px auto 100px;
+}
+
+.page-title{
+  margin-bottom:22px;
+}
+
+.page-title .eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  background:rgba(253,255,182,.75);
+  padding:7px 12px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:900;
+  margin-bottom:10px;
+}
+
+.page-title h1{
+  margin:0;
+  font-size:clamp(28px,5vw,42px);
+  line-height:1.1;
+  font-weight:900;
+}
+
+.page-title p{
+  margin:9px 0 0;
+  color:var(--muted);
+  font-size:14px;
+}
+
+/* =========================
+   STATS
+========================= */
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+  margin-bottom:22px;
+}
+
+.stat{
+  background:rgba(255,255,255,.90);
+  border:1px solid rgba(255,255,255,.9);
+  border-radius:20px;
+  padding:18px;
+  box-shadow:var(--shadow);
+}
+
+.stat-icon{
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:12px;
+  font-size:19px;
+}
+
+.stat.pending .stat-icon{
+  background:#fff4bd;
+}
+
+.stat.active .stat-icon{
+  background:#dff9e7;
+}
+
+.stat.rejected .stat-icon{
+  background:#ffe4ea;
+}
+
+.stat.suspended .stat-icon{
+  background:#ececf3;
+}
+
+.stat-number{
+  font-size:28px;
+  font-weight:900;
+  line-height:1;
+}
+
+.stat-label{
+  color:var(--muted);
+  font-size:13px;
+  margin-top:5px;
+  font-weight:700;
+}
+
+/* =========================
+   TOOLBAR
+========================= */
+
+.toolbar{
+  background:rgba(255,255,255,.9);
+  border-radius:22px;
+  padding:15px;
+  box-shadow:var(--shadow);
+  margin-bottom:18px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.search{
+  flex:1;
+  min-width:220px;
+  position:relative;
+}
+
+.search input{
+  width:100%;
+  height:46px;
+  border:1px solid #e7ebf3;
+  border-radius:15px;
+  padding:0 16px 0 43px;
+  outline:none;
+  font-family:inherit;
+  color:var(--text);
+  background:#fbfcff;
+}
+
+.search input:focus{
+  border-color:var(--blue);
+  box-shadow:0 0 0 4px rgba(160,196,255,.15);
+}
+
+.search-icon{
+  position:absolute;
+  left:15px;
+  top:12px;
+  font-size:18px;
+}
+
+.filter{
+  height:46px;
+  border:1px solid #e7ebf3;
+  background:#fbfcff;
+  border-radius:15px;
+  padding:0 14px;
+  font-family:inherit;
+  font-weight:700;
+  color:var(--text);
+  outline:none;
+}
+
+.refresh-btn{
+  height:46px;
+  border:0;
+  border-radius:15px;
+  background:var(--blue);
+  color:var(--text);
+  padding:0 18px;
+  font-family:inherit;
+  font-weight:900;
+  cursor:pointer;
+}
+
+/* =========================
+   APPLICATION LIST
+========================= */
+
+.application-list{
+  display:grid;
+  gap:14px;
+}
+
+.application{
+  background:rgba(255,255,255,.94);
+  border-radius:24px;
+  padding:20px;
+  box-shadow:var(--shadow);
+  border:1px solid rgba(255,255,255,.9);
+}
+
+.application-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+}
+
+.app-person{
+  display:flex;
+  gap:13px;
+  align-items:center;
+  min-width:0;
+}
+
+.avatar{
+  width:52px;
+  height:52px;
+  flex:none;
+  border-radius:18px;
+  background:linear-gradient(135deg,var(--blue),var(--mint));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:23px;
+}
+
+.app-name{
+  font-size:18px;
+  font-weight:900;
+}
+
+.app-code{
+  color:var(--muted);
+  font-size:13px;
+  margin-top:2px;
+}
+
+.status{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  padding:7px 11px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:900;
+  white-space:nowrap;
+}
+
+.status.pending{
+  background:#fff4bd;
+  color:#8a7210;
+}
+
+.status.active{
+  background:#dff9e7;
+  color:#25834b;
+}
+
+.status.rejected{
+  background:#ffe4ea;
+  color:#b94c65;
+}
+
+.status.suspended{
+  background:#ededf3;
+  color:#66697b;
+}
+
+.app-info{
+  margin:18px 0;
+  padding:15px;
+  border-radius:17px;
+  background:#fafcff;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:13px;
+}
+
+.info-label{
+  color:var(--muted);
+  font-size:11px;
+  font-weight:800;
+  margin-bottom:3px;
+}
+
+.info-value{
+  font-size:13px;
+  font-weight:800;
+  overflow-wrap:anywhere;
+}
+
+.app-actions{
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap;
+}
+
+.action-btn{
+  border:0;
+  min-height:43px;
+  padding:0 17px;
+  border-radius:14px;
+  font-family:inherit;
+  font-weight:900;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.action-btn:hover{
+  transform:translateY(-2px);
+}
+
+.btn-approve{
+  background:var(--green);
+  color:#205b38;
+}
+
+.btn-reject{
+  background:#ffe0e7;
+  color:#a63c55;
+}
+
+.btn-suspend{
+  background:#ececf3;
+  color:#5e6070;
+}
+
+.btn-reactivate{
+  background:#dff9e7;
+  color:#25834b;
+}
+
+.btn-pending{
+  background:#fff4bd;
+  color:#7b6916;
+}
+
+.empty{
+  background:rgba(255,255,255,.9);
+  border-radius:24px;
+  padding:50px 20px;
+  text-align:center;
+  box-shadow:var(--shadow);
+}
+
+.empty-icon{
+  font-size:42px;
+  margin-bottom:8px;
+}
+
+.empty strong{
+  display:block;
+  font-size:18px;
+}
+
+.empty span{
+  display:block;
+  color:var(--muted);
+  font-size:13px;
+  margin-top:5px;
+}
+
+/* =========================
+   LOADING
+========================= */
+
+.loading{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  background:#f8fbff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:13px;
+}
+
+.loading.hide{
+  display:none;
+}
+
+.spinner{
+  width:42px;
+  height:42px;
+  border:4px solid #e8eef8;
+  border-top-color:var(--blue);
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal-wrap{
+  position:fixed;
+  inset:0;
+  z-index:90;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  background:rgba(61,64,91,.25);
+  backdrop-filter:blur(8px);
+}
+
+.modal-wrap.show{
+  display:flex;
+}
+
+.modal{
+  width:min(450px,100%);
+  background:#fff;
+  border-radius:27px;
+  padding:25px;
+  box-shadow:0 30px 80px rgba(61,64,91,.20);
+  animation:modalIn .2s ease;
+}
+
+@keyframes modalIn{
+  from{
+    opacity:0;
+    transform:translateY(10px) scale(.98);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+.modal h2{
+  margin:0 0 8px;
+  font-size:21px;
+}
+
+.modal p{
+  margin:0;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.7;
+}
+
+.modal-buttons{
+  display:flex;
+  gap:9px;
+  margin-top:20px;
+}
+
+.modal-buttons button{
+  flex:1;
+  min-height:45px;
+  border:0;
+  border-radius:14px;
+  font-family:inherit;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.modal-cancel{
+  background:#f0f1f5;
+  color:var(--text);
+}
+
+.modal-confirm{
+  background:var(--blue);
+  color:var(--text);
+}
+
+/* =========================
+   TOAST
+========================= */
+
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:25px;
+  transform:translate(-50%,20px);
+  background:#3D405B;
+  color:#fff;
+  padding:12px 18px;
+  border-radius:14px;
+  font-size:13px;
+  font-weight:800;
+  z-index:200;
+  opacity:0;
+  pointer-events:none;
+  transition:.25s;
+  max-width:calc(100% - 30px);
+  text-align:center;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translate(-50%,0);
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:760px){
+
+  .header{
+    padding:11px 13px;
+  }
+
+  .brand-icon{
+    width:42px;
+    height:42px;
+  }
+
+  .brand-text strong{
+    font-size:15px;
+  }
+
+  .brand-text span{
+    font-size:11px;
+  }
+
+  .logout-btn{
+    padding:9px 12px;
+    font-size:12px;
+  }
+
+  main{
+    width:min(100% - 20px,1180px);
+    margin-top:22px;
+  }
+
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .stat{
+    padding:15px;
+  }
+
+  .stat-number{
+    font-size:24px;
+  }
+
+  .toolbar{
+    padding:12px;
+  }
+
+  .search{
+    min-width:100%;
+  }
+
+  .filter{
+    flex:1;
+    min-width:0;
+  }
+
+  .refresh-btn{
+    flex:none;
+  }
+
+  .application{
+    padding:16px;
+    border-radius:21px;
+  }
+
+  .application-top{
+    align-items:flex-start;
+  }
+
+  .app-person{
+    min-width:0;
+  }
+
+  .avatar{
+    width:46px;
+    height:46px;
+    border-radius:15px;
+  }
+
+  .app-name{
+    font-size:16px;
+  }
+
+  .status{
+    font-size:10px;
+    padding:6px 8px;
+  }
+
+  .app-info{
+    grid-template-columns:1fr;
+    gap:10px;
+    margin:14px 0;
+  }
+
+  .app-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+
+  .action-btn{
+    width:100%;
+    padding:0 8px;
+    font-size:12px;
+  }
+
+  .float-img{
+    width:48px;
+  }
+
+}
+
+@media(max-width:390px){
+
+  .application-top{
+    flex-direction:column;
+  }
+
+  .app-actions{
+    grid-template-columns:1fr;
+  }
+
+  .stats{
+    gap:9px;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<!-- DECOR -->
+<div class="cloud cloud-1"></div>
+<div class="cloud cloud-2"></div>
+<div class="cloud cloud-3"></div>
+<div class="cloud cloud-4"></div>
+
+<img class="float-img float-1"
+     src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
+     alt="">
+
+<img class="float-img float-2"
+     src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
+     alt="">
+
+<img class="float-img float-3"
+     src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
+     alt="">
+
+<!-- LOADING -->
+<div class="loading" id="loading">
+  <div class="spinner"></div>
+  <strong>กำลังเปิดระบบแอดมิน...</strong>
+  <span style="color:#7D8299;font-size:13px;">
+    กรุณารอสักครู่
+  </span>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+
+    <div class="brand">
+      <div class="brand-icon">☁️</div>
+
+      <div class="brand-text">
+        <strong>Bennie Choco</strong>
+        <span>Distributor Admin</span>
+      </div>
+    </div>
+
+    <button class="logout-btn" id="logoutBtn">
+      ออกจากระบบ
+    </button>
+
+  </div>
+</header>
+
+<!-- MAIN -->
+<main>
+
+  <section class="page-title">
+
+    <div class="eyebrow">
+      ♡ ADMIN CONTROL
+    </div>
+
+    <h1>จัดการตัวแทน</h1>
+
+    <p>
+      ตรวจสอบคำขอและจัดการสิทธิ์การเข้าใช้งาน Distributor Portal
+    </p>
+
+  </section>
+
+  <!-- STATS -->
+  <section class="stats">
+
+    <div class="stat pending">
+      <div class="stat-icon">⏳</div>
+      <div class="stat-number" id="pendingCount">0</div>
+      <div class="stat-label">รอตรวจสอบ</div>
+    </div>
+
+    <div class="stat active">
+      <div class="stat-icon">✓</div>
+      <div class="stat-number" id="activeCount">0</div>
+      <div class="stat-label">อนุมัติแล้ว</div>
+    </div>
+
+    <div class="stat rejected">
+      <div class="stat-icon">×</div>
+      <div class="stat-number" id="rejectedCount">0</div>
+      <div class="stat-label">ปฏิเสธ</div>
+    </div>
+
+    <div class="stat suspended">
+      <div class="stat-icon">Ⅱ</div>
+      <div class="stat-number" id="suspendedCount">0</div>
+      <div class="stat-label">ระงับ</div>
+    </div>
+
+  </section>
+
+  <!-- TOOLBAR -->
+  <section class="toolbar">
+
+    <div class="search">
+      <span class="search-icon">⌕</span>
+
+      <input
+        id="searchInput"
+        type="search"
+        placeholder="ค้นหาชื่อเล่น / รหัสตัวแทน / Email / เลขคำขอ..."
+      >
+    </div>
+
+    <select class="filter" id="statusFilter">
+      <option value="all">ทุกสถานะ</option>
+      <option value="pending">รอตรวจสอบ</option>
+      <option value="active">อนุมัติแล้ว</option>
+      <option value="rejected">ปฏิเสธ</option>
+      <option value="suspended">ระงับ</option>
+    </select>
+
+    <button class="refresh-btn" id="refreshBtn">
+      ↻ รีเฟรช
+    </button>
+
+  </section>
+
+  <!-- APPLICATION LIST -->
+  <section class="application-list" id="applicationList">
+
+    <div class="empty">
+      <div class="empty-icon">☁️</div>
+      <strong>กำลังโหลดข้อมูล...</strong>
+      <span>กำลังดึงข้อมูลจาก Supabase</span>
+    </div>
+
+  </section>
+
+</main>
+
+<!-- MODAL -->
+<div class="modal-wrap" id="modalWrap">
+
+  <div class="modal">
+
+    <h2 id="modalTitle">ยืนยันการเปลี่ยนสถานะ</h2>
+
+    <p id="modalText">
+      คุณต้องการเปลี่ยนสถานะตัวแทนหรือไม่
+    </p>
+
+    <div class="modal-buttons">
+
+      <button
+        class="modal-cancel"
+        id="modalCancel">
+        ยกเลิก
+      </button>
+
+      <button
+        class="modal-confirm"
+        id="modalConfirm">
+        ยืนยัน
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =====================================================
+   SUPABASE CONFIG
+===================================================== */
+
+const SUPABASE_URL =
+  "https://arhvdvaugcjzkdbxesma.supabase.co";
+
+const SUPABASE_ANON_KEY =
+  "sb_publishable_Ctpm1h1NQKTdOPpY9yQ2qw_7kQg_57Z";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const loading =
+  document.getElementById("loading");
+
+const applicationList =
+  document.getElementById("applicationList");
+
+const searchInput =
+  document.getElementById("searchInput");
+
+const statusFilter =
+  document.getElementById("statusFilter");
+
+const refreshBtn =
+  document.getElementById("refreshBtn");
+
+const logoutBtn =
+  document.getElementById("logoutBtn");
+
+const pendingCount =
+  document.getElementById("pendingCount");
+
+const activeCount =
+  document.getElementById("activeCount");
+
+const rejectedCount =
+  document.getElementById("rejectedCount");
+
+const suspendedCount =
+  document.getElementById("suspendedCount");
+
+const modalWrap =
+  document.getElementById("modalWrap");
+
+const modalTitle =
+  document.getElementById("modalTitle");
+
+const modalText =
+  document.getElementById("modalText");
+
+const modalCancel =
+  document.getElementById("modalCancel");
+
+const modalConfirm =
+  document.getElementById("modalConfirm");
+
+const toast =
+  document.getElementById("toast");
+
+
+/* =====================================================
+   STATE
+===================================================== */
+
+let currentUser = null;
+let profiles = [];
+let pendingAction = null;
+
+
+/* =====================================================
+   HELPERS
+===================================================== */
+
+function hideLoading(){
+  loading.classList.add("hide");
+}
+
+
+function showToast(message){
+  toast.textContent = message;
+  toast.classList.add("show");
+
+  clearTimeout(window.toastTimer);
+
+  window.toastTimer = setTimeout(()=>{
+    toast.classList.remove("show");
+  },2600);
+}
+
+
+function escapeHTML(value){
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+
+function statusText(status){
+
+  const map = {
+    pending:"🟡 รอตรวจสอบ",
+    active:"🟢 อนุมัติแล้ว",
+    rejected:"🔴 ปฏิเสธ",
+    suspended:"⚫ ระงับ"
+  };
+
+  return map[status] || status;
+}
+
+
+/* =====================================================
+   CHECK ADMIN
+===================================================== */
+
+async function checkAdmin(userId){
+
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .from("admin_users")
+    .select("user_id")
+    .eq("user_id",userId)
+    .maybeSingle();
+
+  if(error){
+    console.error(error);
+    return false;
+  }
+
+  return !!data;
+}
+
+
+/* =====================================================
+   AUTH CHECK
+===================================================== */
+
+async function init(){
+
+  try{
+
+    const {
+      data:{
+        session
+      }
+    } = await supabaseClient
+      .auth
+      .getSession();
+
+    if(!session){
+
+      window.location.href =
+        "admin-login.html";
+
+      return;
+    }
+
+    currentUser = session.user;
+
+    const admin =
+      await checkAdmin(currentUser.id);
+
+    if(!admin){
+
+      await supabaseClient.auth.signOut();
+
+      alert("บัญชีนี้ไม่มีสิทธิ์เข้าระบบแอดมิน");
+
+      window.location.href =
+        "admin-login.html";
+
+      return;
+    }
+
+    await loadProfiles();
+
+    hideLoading();
+
+  }catch(error){
+
+    console.error(error);
+
+    hideLoading();
+
+    showToast(
+      "เกิดข้อผิดพลาดในการเปิดระบบ"
+    );
+  }
+}
+
+
+/* =====================================================
+   LOAD PROFILES
+===================================================== */
+
+async function loadProfiles(){
+
+  applicationList.innerHTML = `
+    <div class="empty">
+      <div class="empty-icon">☁️</div>
+      <strong>กำลังโหลดข้อมูล...</strong>
+      <span>กำลังดึงข้อมูลตัวแทน</span>
+    </div>
+  `;
+
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .from("profiles")
+    .select(`
+      id,
+      email,
+      nickname,
+      distributor_code,
+      status,
+      request_no,
+      approved_at,
+      approved_by,
+      created_at,
+      updated_at
+    `)
+    .order("created_at",{
+      ascending:false
+    });
+
+  if(error){
+
+    console.error(error);
+
+    applicationList.innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">⚠️</div>
+        <strong>โหลดข้อมูลไม่สำเร็จ</strong>
+        <span>${escapeHTML(error.message)}</span>
+      </div>
+    `;
+
+    return;
+  }
+
+  profiles = data || [];
+
+  updateStats();
+  renderProfiles();
+}
+
+
+/* =====================================================
+   UPDATE STATS
+===================================================== */
+
+function updateStats(){
+
+  pendingCount.textContent =
+    profiles.filter(
+      x => x.status === "pending"
+    ).length;
+
+  activeCount.textContent =
+    profiles.filter(
+      x => x.status === "active"
+    ).length;
+
+  rejectedCount.textContent =
+    profiles.filter(
+      x => x.status === "rejected"
+    ).length;
+
+  suspendedCount.textContent =
+    profiles.filter(
+      x => x.status === "suspended"
+    ).length;
+}
+
+
+/* =====================================================
+   RENDER
+===================================================== */
+
+function renderProfiles(){
+
+  const search =
+    searchInput.value
+      .trim()
+      .toLowerCase();
+
+  const filter =
+    statusFilter.value;
+
+  let list =
+    profiles.filter(profile => {
+
+      const matchesSearch =
+        !search ||
+        String(profile.nickname || "")
+          .toLowerCase()
+          .includes(search) ||
+        String(profile.distributor_code || "")
+          .toLowerCase()
+          .includes(search) ||
+        String(profile.email || "")
+          .toLowerCase()
+          .includes(search) ||
+        String(profile.request_no || "")
+          .toLowerCase()
+          .includes(search);
+
+      const matchesStatus =
+        filter === "all" ||
+        profile.status === filter;
+
+      return matchesSearch &&
+             matchesStatus;
+    });
+
+
+  if(!list.length){
+
+    applicationList.innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">☁️</div>
+        <strong>ไม่พบข้อมูล</strong>
+        <span>ยังไม่มีรายการที่ตรงกับการค้นหา</span>
+      </div>
+    `;
+
+    return;
+  }
+
+
+  applicationList.innerHTML =
+    list.map(profile => {
+
+      return `
+        <article class="application">
+
+          <div class="application-top">
+
+            <div class="app-person">
+
+              <div class="avatar">
+                ♡
+              </div>
+
+              <div>
+
+                <div class="app-name">
+                  ${escapeHTML(profile.nickname)}
+                </div>
+
+                <div class="app-code">
+                  รหัสตัวแทน:
+                  ${escapeHTML(profile.distributor_code)}
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="status ${escapeHTML(profile.status)}">
+              ${statusText(profile.status)}
+            </div>
+
+          </div>
+
+
+          <div class="app-info">
+
+            <div>
+              <div class="info-label">
+                เลขคำขอ
+              </div>
+
+              <div class="info-value">
+                ${escapeHTML(profile.request_no || "-")}
+              </div>
+            </div>
+
+
+            <div>
+              <div class="info-label">
+                Email
+              </div>
+
+              <div class="info-value">
+                ${escapeHTML(profile.email)}
+              </div>
+            </div>
+
+
+            <div>
+              <div class="info-label">
+                สมัครเมื่อ
+              </div>
+
+              <div class="info-value">
+                ${formatDate(profile.created_at)}
+              </div>
+            </div>
+
+          </div>
+
+
+          <div class="app-actions">
+
+            ${profile.status === "pending" ? `
+
+              <button
+                class="action-btn btn-approve"
+                onclick="askStatusChange('${profile.id}','active')">
+                ✓ อนุมัติ
+              </button>
+
+              <button
+                class="action-btn btn-reject"
+                onclick="askStatusChange('${profile.id}','rejected')">
+                × ปฏิเสธ
+              </button>
+
+            ` : ""}
+
+
+            ${profile.status === "active" ? `
+
+              <button
+                class="action-btn btn-suspend"
+                onclick="askStatusChange('${profile.id}','suspended')">
+                ⏸ ระงับบัญชี
+              </button>
+
+            ` : ""}
+
+
+            ${profile.status === "suspended" ? `
+
+              <button
+                class="action-btn btn-reactivate"
+                onclick="askStatusChange('${profile.id}','active')">
+                ✓ เปิดใช้งานอีกครั้ง
+              </button>
+
+            ` : ""}
+
+
+            ${profile.status === "rejected" ? `
+
+              <button
+                class="action-btn btn-pending"
+                onclick="askStatusChange('${profile.id}','pending')">
+                ↺ ให้ตรวจสอบใหม่
+              </button>
+
+            ` : ""}
+
+          </div>
+
+        </article>
+      `;
+
+    }).join("");
+}
+
+
+/* =====================================================
+   DATE
+===================================================== */
+
+function formatDate(value){
+
+  if(!value) return "-";
+
+  const date =
+    new Date(value);
+
+  return date.toLocaleString(
+    "th-TH",
+    {
+      year:"numeric",
+      month:"short",
+      day:"numeric",
+      hour:"2-digit",
+      minute:"2-digit"
+    }
+  );
+}
+
+
+/* =====================================================
+   CONFIRM MODAL
+===================================================== */
+
+function askStatusChange(
+  profileId,
+  newStatus
+){
+
+  const profile =
+    profiles.find(
+      x => x.id === profileId
+    );
+
+  if(!profile) return;
+
+  pendingAction = {
+    profileId,
+    newStatus
+  };
+
+  const labels = {
+    active:"อนุมัติ",
+    rejected:"ปฏิเสธ",
+    suspended:"ระงับบัญชี",
+    pending:"ส่งกลับไปรอตรวจสอบ"
+  };
+
+  modalTitle.textContent =
+    `${labels[newStatus]}ตัวแทน`;
+
+  modalText.innerHTML =
+    `คุณต้องการ <strong>${labels[newStatus]}</strong>
+     <strong>${escapeHTML(profile.nickname)}</strong>
+     (${escapeHTML(profile.distributor_code)}) ใช่หรือไม่`;
+
+  modalConfirm.textContent =
+    labels[newStatus];
+
+  modalWrap.classList.add("show");
+}
+
+
+modalCancel.addEventListener(
+  "click",
+  ()=>{
+    pendingAction = null;
+    modalWrap.classList.remove("show");
+  }
+);
+
+
+modalWrap.addEventListener(
+  "click",
+  event=>{
+    if(event.target === modalWrap){
+      pendingAction = null;
+      modalWrap.classList.remove("show");
+    }
+  }
+);
+
+
+/* =====================================================
+   UPDATE STATUS
+===================================================== */
+
+modalConfirm.addEventListener(
+  "click",
+  async ()=>{
+
+    if(!pendingAction) return;
+
+    const {
+      profileId,
+      newStatus
+    } = pendingAction;
+
+    modalConfirm.disabled = true;
+    modalConfirm.textContent =
+      "กำลังบันทึก...";
+
+    const updateData = {
+      status:newStatus
+    };
+
+    /*
+      ถ้าอนุมัติ:
+      บันทึกเวลาและ admin ที่อนุมัติ
+    */
+
+    if(newStatus === "active"){
+
+      updateData.approved_at =
+        new Date().toISOString();
+
+      updateData.approved_by =
+        currentUser.id;
+
+    }
+
+    const {
+      error
+    } = await supabaseClient
+      .from("profiles")
+      .update(updateData)
+      .eq("id",profileId);
+
+    if(error){
+
+      console.error(error);
+
+      modalConfirm.disabled = false;
+      modalConfirm.textContent =
+        "ลองอีกครั้ง";
+
+      showToast(
+        "บันทึกไม่สำเร็จ: " +
+        error.message
+      );
+
+      return;
+    }
+
+    modalWrap.classList.remove("show");
+
+    pendingAction = null;
+
+    showToast(
+      newStatus === "active"
+        ? "✓ อนุมัติตัวแทนเรียบร้อยแล้ว"
+        : "บันทึกสถานะเรียบร้อยแล้ว"
+    );
+
+    await loadProfiles();
+
+    modalConfirm.disabled = false;
+    modalConfirm.textContent =
+      "ยืนยัน";
+  }
+);
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+searchInput.addEventListener(
+  "input",
+  renderProfiles
+);
+
+statusFilter.addEventListener(
+  "change",
+  renderProfiles
+);
+
+refreshBtn.addEventListener(
+  "click",
+  async ()=>{
+
+    refreshBtn.disabled = true;
+    refreshBtn.textContent =
+      "กำลังโหลด...";
+
+    await loadProfiles();
+
+    refreshBtn.disabled = false;
+    refreshBtn.textContent =
+      "↻ รีเฟรช";
+  }
+);
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+logoutBtn.addEventListener(
+  "click",
+  async ()=>{
+
+    await supabaseClient
+      .auth
+      .signOut();
+
+    window.location.href =
+      "admin-login.html";
+  }
+);
+
+
+/* =====================================================
+   AUTH STATE
+===================================================== */
+
+supabaseClient.auth.onAuthStateChange(
+  (event,session)=>{
+
+    if(
+      event === "SIGNED_OUT" &&
+      location.pathname.endsWith("admin.html")
+    ){
+
+      window.location.href =
+        "admin-login.html";
+    }
+
+  }
+);
+
+
+/* =====================================================
+   START
+===================================================== */
+
+init();
+
+</script>
+
+</body>
+</html>
