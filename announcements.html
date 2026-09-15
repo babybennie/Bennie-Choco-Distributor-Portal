@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>ประกาศ | Bennie Choco</title>
+<title>Bennie Choco — ประกาศ</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,12 +17,14 @@
   --blue:#A0C4FF;
   --mint:#CAFFBF;
   --yellow:#FDFFB6;
-  --cream:#fffdf7;
+  --cream:#fffdf5;
   --white:#ffffff;
   --text:#3D405B;
-  --muted:#7d8299;
-  --border:rgba(61,64,91,.10);
-  --shadow:0 12px 35px rgba(61,64,91,.10);
+  --muted:#7b8098;
+  --line:rgba(61,64,91,.10);
+  --shadow:0 16px 45px rgba(61,64,91,.10);
+  --shadow-soft:0 8px 25px rgba(61,64,91,.08);
+  --radius:24px;
 }
 
 *{
@@ -30,28 +32,32 @@
   -webkit-tap-highlight-color:transparent;
 }
 
-html,body{
-  margin:0;
-  min-height:100%;
+html{
+  scroll-behavior:smooth;
 }
 
 body{
+  margin:0;
+  min-height:100vh;
   font-family:"Prompt",sans-serif;
   color:var(--text);
   background:
-    radial-gradient(circle at 10% 10%,rgba(160,196,255,.42),transparent 28%),
-    radial-gradient(circle at 90% 20%,rgba(202,255,191,.42),transparent 28%),
-    radial-gradient(circle at 50% 100%,rgba(253,255,182,.35),transparent 32%),
-    var(--cream);
+    radial-gradient(circle at 10% 8%,rgba(160,196,255,.55),transparent 27%),
+    radial-gradient(circle at 90% 18%,rgba(202,255,191,.58),transparent 28%),
+    radial-gradient(circle at 50% 100%,rgba(253,255,182,.42),transparent 35%),
+    linear-gradient(180deg,#fafdff 0%,#fffef7 100%);
   overflow-x:hidden;
 }
 
-/* clouds */
+/* =========================
+   BACKGROUND CLOUDS
+========================= */
+
 .cloud{
   position:fixed;
   z-index:0;
   pointer-events:none;
-  opacity:.65;
+  opacity:.55;
   filter:blur(.2px);
 }
 
@@ -59,370 +65,452 @@ body{
 .cloud::after{
   content:"";
   position:absolute;
-  background:rgba(255,255,255,.9);
   border-radius:50%;
+  background:rgba(255,255,255,.92);
 }
 
 .cloud.one{
-  width:150px;
-  height:45px;
-  top:80px;
-  left:-35px;
+  width:180px;
+  height:55px;
+  top:90px;
+  left:-55px;
   border-radius:50px;
-  background:rgba(255,255,255,.9);
+  background:rgba(255,255,255,.92);
 }
 
 .cloud.one::before{
-  width:60px;
-  height:60px;
-  left:25px;
-  bottom:5px;
+  width:75px;
+  height:75px;
+  left:35px;
+  bottom:10px;
 }
 
 .cloud.one::after{
-  width:75px;
-  height:75px;
-  left:65px;
-  bottom:3px;
-}
-
-.cloud.two{
-  width:170px;
-  height:50px;
-  top:280px;
-  right:-55px;
-  border-radius:50px;
-  background:rgba(255,255,255,.75);
-}
-
-.cloud.two::before{
-  width:70px;
-  height:70px;
-  left:35px;
-  bottom:2px;
-}
-
-.cloud.two::after{
   width:55px;
   height:55px;
   left:95px;
-  bottom:3px;
+  bottom:7px;
+}
+
+.cloud.two{
+  width:210px;
+  height:58px;
+  top:42%;
+  right:-90px;
+  border-radius:50px;
+  background:rgba(255,255,255,.8);
+}
+
+.cloud.two::before{
+  width:82px;
+  height:82px;
+  left:38px;
+  bottom:9px;
+}
+
+.cloud.two::after{
+  width:60px;
+  height:60px;
+  left:110px;
+  bottom:6px;
 }
 
 .cloud.three{
-  width:130px;
-  height:42px;
-  bottom:100px;
-  left:-45px;
+  width:190px;
+  height:52px;
+  bottom:70px;
+  left:-65px;
   border-radius:50px;
-  background:rgba(255,255,255,.7);
+  background:rgba(255,255,255,.82);
 }
 
 .cloud.three::before{
-  width:55px;
-  height:55px;
-  left:20px;
-  bottom:3px;
+  width:68px;
+  height:68px;
+  left:42px;
+  bottom:8px;
 }
 
 .cloud.three::after{
-  width:65px;
-  height:65px;
-  left:55px;
-  bottom:0;
+  width:54px;
+  height:54px;
+  left:100px;
+  bottom:6px;
 }
 
-/* floating decoration */
-.float{
-  position:fixed;
-  z-index:1;
-  pointer-events:none;
-  width:70px;
-  opacity:.85;
-}
+/* =========================
+   PAGE
+========================= */
 
-.float.f1{
-  top:150px;
-  right:10px;
-  transform:rotate(8deg);
-}
-
-.float.f2{
-  bottom:150px;
-  left:8px;
-  width:60px;
-  transform:rotate(-8deg);
-}
-
-.wrapper{
+.page{
   position:relative;
   z-index:2;
   width:min(100%,760px);
   margin:0 auto;
-  padding:22px 16px 40px;
+  padding:18px 16px 45px;
 }
 
-/* header */
+/* =========================
+   HEADER
+========================= */
+
 .topbar{
   display:flex;
   align-items:center;
+  justify-content:space-between;
   gap:12px;
   margin-bottom:18px;
 }
 
-.back-btn{
-  width:44px;
-  height:44px;
-  flex:0 0 44px;
-  border:none;
-  border-radius:15px;
+.back-btn,
+.refresh-btn{
+  border:0;
   background:rgba(255,255,255,.88);
-  box-shadow:0 7px 20px rgba(61,64,91,.08);
   color:var(--text);
-  font-size:20px;
+  min-height:46px;
+  padding:0 15px;
+  border-radius:16px;
+  font-family:inherit;
+  font-size:14px;
+  font-weight:500;
+  box-shadow:var(--shadow-soft);
   cursor:pointer;
+  transition:.2s ease;
+  border:1px solid rgba(255,255,255,.8);
 }
 
-.back-btn:active{
-  transform:scale(.96);
+.back-btn:hover,
+.refresh-btn:hover{
+  transform:translateY(-1px);
 }
 
-.title-area{
+.back-btn:active,
+.refresh-btn:active{
+  transform:scale(.97);
+}
+
+.refresh-btn:disabled{
+  opacity:.6;
+  cursor:wait;
+  transform:none;
+}
+
+.brand-mini{
+  display:flex;
+  align-items:center;
+  gap:9px;
   min-width:0;
 }
 
-.title{
-  margin:0;
-  font-size:25px;
-  line-height:1.2;
-  font-weight:700;
-}
-
-.subtitle{
-  margin:4px 0 0;
-  color:var(--muted);
-  font-size:13px;
-}
-
-/* profile strip */
-.profile-strip{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  background:rgba(255,255,255,.82);
-  border:1px solid rgba(255,255,255,.95);
-  border-radius:20px;
-  padding:12px 14px;
-  margin-bottom:18px;
-  box-shadow:var(--shadow);
-  backdrop-filter:blur(12px);
-}
-
-.profile-icon{
-  width:40px;
-  height:40px;
-  border-radius:14px;
+.brand-icon{
+  width:42px;
+  height:42px;
+  flex:0 0 42px;
+  border-radius:15px;
   display:flex;
   align-items:center;
   justify-content:center;
-  background:linear-gradient(135deg,var(--blue),var(--mint));
+  background:linear-gradient(145deg,#fff,#eef6ff);
+  box-shadow:var(--shadow-soft);
   font-size:20px;
-  flex:0 0 40px;
 }
 
-.profile-info{
+.brand-text{
   min-width:0;
 }
 
-.profile-name{
-  font-size:14px;
+.brand-name{
+  font-size:15px;
   font-weight:600;
   white-space:nowrap;
+}
+
+.brand-sub{
+  font-size:11px;
+  color:var(--muted);
+  white-space:nowrap;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+  position:relative;
   overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.profile-code{
-  font-size:12px;
-  color:var(--muted);
-}
-
-/* tools */
-.tools{
-  display:flex;
-  gap:8px;
-  margin-bottom:18px;
-}
-
-.tool-btn{
-  border:none;
-  background:rgba(255,255,255,.85);
-  color:var(--text);
-  border-radius:14px;
-  padding:9px 13px;
-  font-family:inherit;
-  font-size:12px;
-  cursor:pointer;
-  box-shadow:0 6px 18px rgba(61,64,91,.06);
-}
-
-.tool-btn.active{
-  background:var(--blue);
-  font-weight:600;
-}
-
-/* section heading */
-.section-head{
-  display:flex;
-  align-items:end;
-  justify-content:space-between;
-  gap:10px;
-  margin:4px 2px 12px;
-}
-
-.section-head h2{
-  margin:0;
-  font-size:18px;
-}
-
-.count{
-  color:var(--muted);
-  font-size:12px;
-}
-
-/* loading */
-.loading{
-  text-align:center;
-  padding:50px 20px;
-  color:var(--muted);
-}
-
-.spinner{
-  width:34px;
-  height:34px;
-  margin:0 auto 12px;
-  border:3px solid rgba(160,196,255,.35);
-  border-top-color:var(--blue);
-  border-radius:50%;
-  animation:spin .8s linear infinite;
-}
-
-@keyframes spin{
-  to{transform:rotate(360deg)}
-}
-
-/* empty */
-.empty{
-  background:rgba(255,255,255,.84);
-  border-radius:24px;
-  padding:42px 20px;
-  text-align:center;
+  padding:27px 23px 25px;
+  border-radius:30px;
+  background:
+    linear-gradient(135deg,
+      rgba(255,255,255,.95),
+      rgba(240,248,255,.92));
+  border:1px solid rgba(255,255,255,.9);
   box-shadow:var(--shadow);
+  margin-bottom:16px;
 }
 
-.empty-icon{
-  font-size:42px;
+.hero::after{
+  content:"";
+  position:absolute;
+  width:145px;
+  height:145px;
+  right:-55px;
+  top:-55px;
+  border-radius:50%;
+  background:rgba(202,255,191,.45);
+}
+
+.hero::before{
+  content:"";
+  position:absolute;
+  width:90px;
+  height:90px;
+  right:48px;
+  bottom:-58px;
+  border-radius:50%;
+  background:rgba(253,255,182,.55);
+}
+
+.hero-content{
+  position:relative;
+  z-index:2;
+}
+
+.hero-kicker{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 11px;
+  border-radius:999px;
+  background:rgba(160,196,255,.20);
+  color:#5578b7;
+  font-size:12px;
+  font-weight:500;
   margin-bottom:10px;
 }
 
-.empty-title{
-  font-weight:600;
-  font-size:16px;
+.hero h1{
+  margin:0;
+  font-size:clamp(25px,7vw,35px);
+  line-height:1.2;
+  letter-spacing:-.4px;
 }
 
-.empty-text{
+.hero p{
+  margin:9px 0 0;
   color:var(--muted);
   font-size:13px;
-  margin-top:5px;
+  line-height:1.7;
 }
 
-/* announcement list */
-.list{
+/* =========================
+   USER INFO
+========================= */
+
+.user-card{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:14px 16px;
+  background:rgba(255,255,255,.78);
+  border:1px solid rgba(255,255,255,.9);
+  border-radius:20px;
+  box-shadow:var(--shadow-soft);
+  margin-bottom:15px;
+}
+
+.user-left{
+  min-width:0;
+}
+
+.user-label{
+  font-size:10px;
+  color:var(--muted);
+  margin-bottom:2px;
+}
+
+.user-name{
+  font-size:14px;
+  font-weight:600;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.user-code{
+  font-size:11px;
+  color:#6f86a9;
+}
+
+.status-pill{
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  padding:7px 10px;
+  border-radius:999px;
+  background:rgba(202,255,191,.48);
+  color:#47744a;
+  font-size:11px;
+  font-weight:500;
+}
+
+/* =========================
+   FILTERS
+========================= */
+
+.toolbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:13px;
+}
+
+.filters{
+  display:flex;
+  gap:7px;
+  overflow-x:auto;
+  scrollbar-width:none;
+  min-width:0;
+}
+
+.filters::-webkit-scrollbar{
+  display:none;
+}
+
+.filter-btn{
+  flex:0 0 auto;
+  border:1px solid rgba(61,64,91,.07);
+  background:rgba(255,255,255,.78);
+  color:var(--muted);
+  padding:9px 14px;
+  border-radius:999px;
+  font-family:inherit;
+  font-size:12px;
+  cursor:pointer;
+  transition:.2s ease;
+}
+
+.filter-btn.active{
+  color:var(--text);
+  background:linear-gradient(135deg,var(--blue),#d9e8ff);
+  border-color:transparent;
+  box-shadow:0 6px 18px rgba(160,196,255,.3);
+  font-weight:500;
+}
+
+.toolbar-refresh{
+  flex:0 0 auto;
+  width:40px;
+  height:40px;
+  border:0;
+  border-radius:14px;
+  background:rgba(255,255,255,.88);
+  color:var(--text);
+  font-size:17px;
+  cursor:pointer;
+  box-shadow:var(--shadow-soft);
+}
+
+/* =========================
+   LIST
+========================= */
+
+.announcement-list{
   display:grid;
   gap:13px;
 }
 
-.announcement{
+.announcement-card{
   position:relative;
   overflow:hidden;
-  background:rgba(255,255,255,.9);
-  border:1px solid rgba(255,255,255,.95);
+  background:rgba(255,255,255,.91);
+  border:1px solid rgba(255,255,255,.9);
   border-radius:23px;
-  box-shadow:var(--shadow);
+  box-shadow:var(--shadow-soft);
   cursor:pointer;
-  transition:.18s ease;
+  transition:transform .2s ease,box-shadow .2s ease;
 }
 
-.announcement:active{
-  transform:scale(.985);
+.announcement-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 15px 34px rgba(61,64,91,.11);
 }
 
-.announcement.pinned{
-  border:1px solid rgba(253,221,100,.45);
+.announcement-card:active{
+  transform:scale(.99);
 }
 
-.announcement-image{
+.card-image{
   width:100%;
-  max-height:240px;
+  aspect-ratio:16/8;
   object-fit:cover;
   display:block;
-  background:#f5f6fb;
+  background:#eef5ff;
 }
 
-.announcement-body{
-  padding:15px 16px 16px;
+.card-body{
+  padding:16px 17px 17px;
+}
+
+.card-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.card-title{
+  margin:0;
+  font-size:16px;
+  line-height:1.45;
+  font-weight:600;
 }
 
 .badges{
   display:flex;
   align-items:center;
+  gap:5px;
+  flex:0 0 auto;
   flex-wrap:wrap;
-  gap:6px;
-  margin-bottom:8px;
+  justify-content:flex-end;
 }
 
 .badge{
   display:inline-flex;
   align-items:center;
-  padding:4px 9px;
+  gap:3px;
+  padding:5px 8px;
   border-radius:999px;
-  font-size:10px;
-  font-weight:600;
+  font-size:9px;
+  line-height:1;
+  font-weight:500;
+  white-space:nowrap;
 }
 
-.badge.pin{
-  background:#fff4b0;
-  color:#746718;
+.badge-pinned{
+  background:rgba(253,255,182,.75);
+  color:#857b2e;
 }
 
-.badge.new{
-  background:#dfffd7;
-  color:#41743a;
+.badge-new{
+  background:rgba(202,255,191,.65);
+  color:#4d7852;
 }
 
-.badge.info{
-  background:#e8f0ff;
-  color:#58709d;
-}
-
-.announcement-title{
-  margin:0;
-  font-size:17px;
-  line-height:1.4;
-  font-weight:600;
-}
-
-.announcement-date{
+.card-date{
   margin-top:6px;
-  font-size:11px;
-  color:var(--muted);
+  color:#9a9daf;
+  font-size:10px;
 }
 
-.announcement-preview{
-  margin:10px 0 0;
-  color:#666b80;
-  font-size:13px;
-  line-height:1.65;
+.card-preview{
+  margin:11px 0 0;
+  color:#6e7286;
+  font-size:12px;
+  line-height:1.7;
   display:-webkit-box;
   -webkit-line-clamp:3;
   -webkit-box-orient:vertical;
@@ -430,142 +518,318 @@ body{
 }
 
 .read-more{
-  margin-top:11px;
-  color:#6384bf;
-  font-size:12px;
+  margin-top:12px;
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  color:#6688bd;
+  font-size:11px;
   font-weight:500;
 }
 
-/* modal */
+/* =========================
+   EMPTY / ERROR
+========================= */
+
+.state-box{
+  padding:38px 22px;
+  text-align:center;
+  border-radius:24px;
+  background:rgba(255,255,255,.82);
+  border:1px solid rgba(255,255,255,.9);
+  box-shadow:var(--shadow-soft);
+}
+
+.state-icon{
+  font-size:36px;
+  margin-bottom:8px;
+}
+
+.state-title{
+  font-size:15px;
+  font-weight:600;
+}
+
+.state-text{
+  margin-top:5px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.7;
+}
+
+.retry-btn{
+  margin-top:15px;
+  border:0;
+  padding:10px 16px;
+  border-radius:14px;
+  background:var(--blue);
+  color:var(--text);
+  font-family:inherit;
+  font-size:12px;
+  font-weight:500;
+  cursor:pointer;
+}
+
+/* =========================
+   LOADING
+========================= */
+
+.loading-wrap{
+  display:grid;
+  gap:12px;
+}
+
+.skeleton{
+  height:155px;
+  border-radius:23px;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.65) 25%,
+      rgba(255,255,255,.95) 50%,
+      rgba(255,255,255,.65) 75%
+    );
+  background-size:200% 100%;
+  animation:loading 1.3s infinite;
+}
+
+@keyframes loading{
+  from{background-position:200% 0}
+  to{background-position:-200% 0}
+}
+
+/* =========================
+   MODAL
+========================= */
+
 .modal{
   position:fixed;
   inset:0;
-  z-index:50;
+  z-index:100;
   display:none;
   align-items:flex-end;
   justify-content:center;
-  background:rgba(35,39,57,.38);
-  backdrop-filter:blur(4px);
+  background:rgba(61,64,91,.32);
+  backdrop-filter:blur(7px);
+  -webkit-backdrop-filter:blur(7px);
+  padding:12px;
 }
 
 .modal.show{
   display:flex;
 }
 
-.modal-box{
-  width:min(100%,760px);
-  max-height:90vh;
-  overflow:auto;
+.modal-panel{
+  width:min(100%,720px);
+  max-height:92vh;
+  overflow:hidden;
+  border-radius:29px 29px 22px 22px;
   background:#fffefa;
-  border-radius:28px 28px 0 0;
-  box-shadow:0 -15px 50px rgba(0,0,0,.16);
-  animation:slideUp .22s ease;
+  box-shadow:0 25px 80px rgba(61,64,91,.22);
+  animation:modalIn .22s ease;
 }
 
-@keyframes slideUp{
+@keyframes modalIn{
   from{
-    transform:translateY(30px);
     opacity:0;
+    transform:translateY(18px);
   }
   to{
-    transform:translateY(0);
     opacity:1;
+    transform:translateY(0);
   }
 }
 
-.modal-top{
-  position:sticky;
-  top:0;
-  z-index:2;
-  display:flex;
-  justify-content:flex-end;
-  padding:12px 14px 0;
-  background:#fffefa;
-}
-
-.close-btn{
-  width:40px;
-  height:40px;
-  border:none;
-  border-radius:13px;
-  background:#f1f3f8;
-  color:var(--text);
-  font-size:20px;
-  cursor:pointer;
-}
-
-.modal-content{
-  padding:4px 18px 28px;
+.modal-scroll{
+  max-height:92vh;
+  overflow-y:auto;
+  overscroll-behavior:contain;
 }
 
 .modal-image{
   width:100%;
   max-height:320px;
   object-fit:cover;
-  border-radius:20px;
-  margin-bottom:16px;
+  display:none;
+}
+
+.modal-content{
+  padding:22px 20px 25px;
+}
+
+.modal-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
 }
 
 .modal-title{
   margin:0;
-  font-size:23px;
-  line-height:1.35;
+  font-size:20px;
+  line-height:1.45;
+  font-weight:600;
 }
 
-.modal-date{
-  margin-top:7px;
-  color:var(--muted);
-  font-size:12px;
+.close-btn{
+  flex:0 0 auto;
+  width:39px;
+  height:39px;
+  border:0;
+  border-radius:13px;
+  background:#f2f5fa;
+  color:var(--text);
+  font-size:18px;
+  cursor:pointer;
+}
+
+.modal-meta{
+  margin-top:8px;
+  color:#969aaa;
+  font-size:10px;
 }
 
 .modal-text{
   margin-top:18px;
-  font-size:14px;
+  color:#555a70;
+  font-size:13px;
   line-height:1.9;
   white-space:pre-wrap;
   word-break:break-word;
 }
 
 .modal-badges{
+  margin-top:10px;
   display:flex;
   gap:6px;
   flex-wrap:wrap;
-  margin:0 0 12px;
 }
 
-/* error */
-.error-box{
-  display:none;
-  background:#fff0f0;
-  color:#a04d4d;
-  border-radius:20px;
-  padding:18px;
-  margin-bottom:15px;
-  font-size:13px;
-  line-height:1.6;
-}
+/* =========================
+   FOOTER
+========================= */
 
-/* footer */
 .footer{
+  padding:25px 8px 5px;
   text-align:center;
-  color:var(--muted);
-  font-size:11px;
-  padding:28px 0 5px;
+  color:#9b9eb0;
+  font-size:10px;
 }
 
-@media(min-width:700px){
-  .wrapper{
-    padding-top:35px;
+/* =========================
+   TOAST
+========================= */
+
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:22px;
+  z-index:300;
+  transform:translate(-50%,20px);
+  opacity:0;
+  pointer-events:none;
+  padding:10px 15px;
+  border-radius:14px;
+  background:rgba(61,64,91,.92);
+  color:white;
+  font-size:11px;
+  transition:.22s ease;
+  max-width:calc(100% - 30px);
+  text-align:center;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translate(-50%,0);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:480px){
+
+  .page{
+    padding:13px 12px 35px;
+  }
+
+  .topbar{
+    margin-bottom:13px;
+  }
+
+  .brand-name{
+    font-size:13px;
+  }
+
+  .brand-sub{
+    font-size:9px;
+  }
+
+  .brand-icon{
+    width:38px;
+    height:38px;
+    flex-basis:38px;
+  }
+
+  .back-btn{
+    padding:0 12px;
+    min-height:42px;
+    font-size:12px;
+  }
+
+  .hero{
+    padding:23px 19px;
+    border-radius:25px;
+  }
+
+  .hero h1{
+    font-size:25px;
+  }
+
+  .hero p{
+    font-size:12px;
+  }
+
+  .user-card{
+    padding:12px 13px;
+  }
+
+  .status-pill{
+    padding:6px 8px;
+    font-size:10px;
+  }
+
+  .card-body{
+    padding:14px;
+  }
+
+  .card-title{
+    font-size:15px;
   }
 
   .modal{
-    align-items:center;
-    padding:20px;
+    padding:0;
   }
 
-  .modal-box{
-    border-radius:28px;
-    max-height:88vh;
+  .modal-panel{
+    width:100%;
+    max-height:94vh;
+    border-radius:27px 27px 0 0;
+  }
+
+  .modal-scroll{
+    max-height:94vh;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,
+  *::before,
+  *::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+    scroll-behavior:auto !important;
   }
 }
 </style>
@@ -577,103 +841,180 @@ body{
 <div class="cloud two"></div>
 <div class="cloud three"></div>
 
-<img
-  class="float f1"
-  src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
-  alt=""
->
+<main class="page">
 
-<img
-  class="float f2"
-  src="https://i.postimg.cc/J7DGzDk1/IMG-8482.png"
-  alt=""
->
+  <header class="topbar">
 
-<div class="wrapper">
-
-  <div class="topbar">
-    <button class="back-btn" id="backBtn" aria-label="กลับ">
-      ‹
+    <button
+      type="button"
+      class="back-btn"
+      id="backBtn"
+      aria-label="กลับหน้าหลัก">
+      ← กลับ
     </button>
 
-    <div class="title-area">
-      <h1 class="title">📢 ประกาศ</h1>
-      <p class="subtitle">ข่าวสารและประกาศสำหรับตัวแทน Bennie Choco</p>
-    </div>
-  </div>
+    <div class="brand-mini">
+      <div class="brand-icon">🍫</div>
 
-  <div class="profile-strip">
-    <div class="profile-icon">🍫</div>
-
-    <div class="profile-info">
-      <div class="profile-name" id="profileName">
-        กำลังโหลด...
-      </div>
-
-      <div class="profile-code" id="profileCode">
-        —
+      <div class="brand-text">
+        <div class="brand-name">Bennie Choco</div>
+        <div class="brand-sub">Distributor Portal</div>
       </div>
     </div>
-  </div>
 
-  <div class="tools">
-    <button class="tool-btn active" id="allBtn">
-      ทั้งหมด
-    </button>
+  </header>
 
-    <button class="tool-btn" id="pinnedBtn">
-      📌 ปักหมุด
-    </button>
 
-    <button class="tool-btn" id="refreshBtn">
-      ↻ รีเฟรช
-    </button>
-  </div>
+  <section class="hero">
 
-  <div class="error-box" id="errorBox"></div>
+    <div class="hero-content">
 
-  <div class="section-head">
-    <h2>ประวัติประกาศ</h2>
-    <span class="count" id="countText">กำลังโหลด...</span>
-  </div>
+      <div class="hero-kicker">
+        ☁️ สำหรับตัวแทนจำหน่าย
+      </div>
 
-  <div id="loading" class="loading">
-    <div class="spinner"></div>
-    กำลังโหลดประกาศ...
-  </div>
+      <h1>ประกาศจาก Bennie Choco</h1>
 
-  <div id="empty" class="empty" style="display:none;">
-    <div class="empty-icon">☁️</div>
-    <div class="empty-title">ยังไม่มีประกาศ</div>
-    <div class="empty-text">
-      ตอนนี้ยังไม่มีประกาศที่เผยแพร่ให้ตัวแทน
+      <p>
+        รวมข่าวสาร อัปเดต และประกาศสำคัญสำหรับตัวแทนจำหน่าย
+      </p>
+
     </div>
-  </div>
 
-  <div id="announcementList" class="list"></div>
+  </section>
 
-  <div class="footer">
-    Bennie Choco Distributor Portal ♡
-  </div>
 
-</div>
+  <section class="user-card">
 
-<!-- detail modal -->
-<div class="modal" id="detailModal">
+    <div class="user-left">
+      <div class="user-label">เข้าสู่ระบบในชื่อ</div>
+      <div class="user-name" id="userName">กำลังโหลด...</div>
+      <div class="user-code" id="userCode">—</div>
+    </div>
 
-  <div class="modal-box">
+    <div class="status-pill">
+      <span>●</span>
+      ตัวแทน
+    </div>
 
-    <div class="modal-top">
-      <button class="close-btn" id="closeModal">
-        ×
+  </section>
+
+
+  <section class="toolbar">
+
+    <div class="filters">
+
+      <button
+        type="button"
+        class="filter-btn active"
+        data-filter="all">
+        ทั้งหมด
       </button>
+
+      <button
+        type="button"
+        class="filter-btn"
+        data-filter="pinned">
+        📌 ปักหมุด
+      </button>
+
     </div>
 
-    <div class="modal-content" id="modalContent"></div>
+    <button
+      type="button"
+      class="toolbar-refresh"
+      id="refreshBtn"
+      aria-label="รีเฟรชประกาศ">
+      ↻
+    </button>
+
+  </section>
+
+
+  <section id="announcementList" class="announcement-list">
+
+    <div class="loading-wrap">
+
+      <div class="skeleton"></div>
+      <div class="skeleton"></div>
+
+    </div>
+
+  </section>
+
+
+  <footer class="footer">
+    Bennie Choco Distributor Portal ♡
+  </footer>
+
+</main>
+
+
+<!-- DETAIL MODAL -->
+
+<div
+  class="modal"
+  id="detailModal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="modalTitle">
+
+  <div class="modal-panel">
+
+    <div class="modal-scroll">
+
+      <img
+        id="modalImage"
+        class="modal-image"
+        alt="รูปประกาศ">
+
+      <div class="modal-content">
+
+        <div class="modal-head">
+
+          <div>
+            <h2 class="modal-title" id="modalTitle"></h2>
+
+            <div
+              class="modal-badges"
+              id="modalBadges">
+            </div>
+
+            <div
+              class="modal-meta"
+              id="modalDate">
+            </div>
+          </div>
+
+          <button
+            type="button"
+            class="close-btn"
+            id="closeModal"
+            aria-label="ปิด">
+            ×
+          </button>
+
+        </div>
+
+        <div
+          class="modal-text"
+          id="modalContent">
+        </div>
+
+      </div>
+
+    </div>
 
   </div>
 
 </div>
+
+
+<div
+  class="toast"
+  id="toast">
+</div>
+
 
 <script>
 /* =========================================================
@@ -684,12 +1025,19 @@ const SUPABASE_URL =
   "https://arhvdvaugcjzkdbxesma.supabase.co";
 
 const SUPABASE_ANON_KEY =
-  "sb_publishable_Ctpm1hNQKTdOPpY9yQ2qw_7kQg_57Z";
+  "sb_publishable_Ctpm1h1NQKTdOPpY9yQ2qw_7kQg_57Z";
 
 const supabaseClient =
   window.supabase.createClient(
     SUPABASE_URL,
-    SUPABASE_ANON_KEY
+    SUPABASE_ANON_KEY,
+    {
+      auth:{
+        persistSession:true,
+        autoRefreshToken:true,
+        detectSessionInUrl:true
+      }
+    }
   );
 
 
@@ -700,131 +1048,293 @@ const supabaseClient =
 const backBtn =
   document.getElementById("backBtn");
 
-const profileName =
-  document.getElementById("profileName");
-
-const profileCode =
-  document.getElementById("profileCode");
-
-const loading =
-  document.getElementById("loading");
-
-const empty =
-  document.getElementById("empty");
+const refreshBtn =
+  document.getElementById("refreshBtn");
 
 const announcementList =
   document.getElementById("announcementList");
 
-const countText =
-  document.getElementById("countText");
+const userName =
+  document.getElementById("userName");
 
-const errorBox =
-  document.getElementById("errorBox");
-
-const allBtn =
-  document.getElementById("allBtn");
-
-const pinnedBtn =
-  document.getElementById("pinnedBtn");
-
-const refreshBtn =
-  document.getElementById("refreshBtn");
+const userCode =
+  document.getElementById("userCode");
 
 const detailModal =
   document.getElementById("detailModal");
 
-const closeModal =
+const closeModalBtn =
   document.getElementById("closeModal");
+
+const modalImage =
+  document.getElementById("modalImage");
+
+const modalTitle =
+  document.getElementById("modalTitle");
 
 const modalContent =
   document.getElementById("modalContent");
+
+const modalDate =
+  document.getElementById("modalDate");
+
+const modalBadges =
+  document.getElementById("modalBadges");
+
+const toast =
+  document.getElementById("toast");
+
+const filterButtons =
+  document.querySelectorAll(".filter-btn");
 
 
 /* =========================================================
    STATE
 ========================================================= */
 
+let currentUser = null;
+let currentProfile = null;
 let announcements = [];
 let currentFilter = "all";
+let loadingAnnouncements = false;
+let toastTimer = null;
 
 
 /* =========================================================
-   BACK
-========================================================= */
-
-backBtn.addEventListener("click", () => {
-
-  if (document.referrer) {
-    history.back();
-  } else {
-    window.location.href = "dashboard.html";
-  }
-
-});
-
-
-/* =========================================================
-   ESCAPE HTML
+   HELPERS
 ========================================================= */
 
 function escapeHtml(value){
 
-  if (value === null || value === undefined) {
+  if(value === null || value === undefined){
     return "";
   }
 
   return String(value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 }
 
 
-/* =========================================================
-   DATE
-========================================================= */
+function formatDate(dateValue){
 
-function formatDate(dateString){
-
-  if (!dateString) return "ไม่ระบุวันที่";
-
-  const date = new Date(dateString);
-
-  if (Number.isNaN(date.getTime())) {
-    return "ไม่ระบุวันที่";
+  if(!dateValue){
+    return "";
   }
 
-  return date.toLocaleDateString("th-TH", {
-    year: "numeric",
-    month: "long",
-    day: "numeric"
-  });
+  const date = new Date(dateValue);
+
+  if(Number.isNaN(date.getTime())){
+    return "";
+  }
+
+  return new Intl.DateTimeFormat(
+    "th-TH",
+    {
+      dateStyle:"medium",
+      timeStyle:"short"
+    }
+  ).format(date);
 }
 
 
-/* =========================================================
-   NEW CHECK
-========================================================= */
+function isNewAnnouncement(dateValue){
 
-function isNew(dateString){
-
-  if (!dateString) return false;
+  if(!dateValue){
+    return false;
+  }
 
   const created =
-    new Date(dateString).getTime();
+    new Date(dateValue).getTime();
 
-  const now =
-    Date.now();
+  if(Number.isNaN(created)){
+    return false;
+  }
+
+  const now = Date.now();
 
   const sevenDays =
     7 * 24 * 60 * 60 * 1000;
 
-  return (
-    now - created <= sevenDays &&
-    now - created >= 0
-  );
+  return now - created <= sevenDays;
+}
+
+
+function showToast(message){
+
+  clearTimeout(toastTimer);
+
+  toast.textContent = message;
+  toast.classList.add("show");
+
+  toastTimer = setTimeout(() => {
+    toast.classList.remove("show");
+  },2600);
+}
+
+
+function showErrorState(message){
+
+  announcementList.innerHTML = `
+    <div class="state-box">
+
+      <div class="state-icon">☁️</div>
+
+      <div class="state-title">
+        ไม่สามารถโหลดประกาศได้
+      </div>
+
+      <div class="state-text">
+        ${escapeHtml(message)}
+      </div>
+
+      <button
+        type="button"
+        class="retry-btn"
+        id="retryBtn">
+        ลองใหม่
+      </button>
+
+    </div>
+  `;
+
+  const retryBtn =
+    document.getElementById("retryBtn");
+
+  if(retryBtn){
+    retryBtn.addEventListener(
+      "click",
+      loadAnnouncements
+    );
+  }
+}
+
+
+function showEmptyState(){
+
+  announcementList.innerHTML = `
+    <div class="state-box">
+
+      <div class="state-icon">📢</div>
+
+      <div class="state-title">
+        ยังไม่มีประกาศ
+      </div>
+
+      <div class="state-text">
+        ตอนนี้ยังไม่มีประกาศที่เผยแพร่
+      </div>
+
+    </div>
+  `;
+}
+
+
+/* =========================================================
+   SESSION
+========================================================= */
+
+/*
+  จุดสำคัญ:
+  ไม่ใช้ history.back()
+  และไม่ redirect ทันทีจาก getUser()
+  ก่อนที่ Supabase จะ restore session
+*/
+
+async function getValidSession(){
+
+  try{
+
+    const {
+      data:{
+        session
+      },
+      error
+    } =
+      await supabaseClient.auth.getSession();
+
+    if(error){
+      console.error(
+        "getSession error:",
+        error
+      );
+    }
+
+    if(session){
+      return session;
+    }
+
+  }catch(error){
+
+    console.error(
+      "session check error:",
+      error
+    );
+
+  }
+
+  /*
+    เผื่อกรณี session กำลังถูก restore
+    รอ event INITIAL_SESSION / SIGNED_IN
+    แต่ไม่รอนานเกินไป
+  */
+
+  return await new Promise(resolve => {
+
+    let finished = false;
+
+    const finish = session => {
+
+      if(finished){
+        return;
+      }
+
+      finished = true;
+
+      clearTimeout(timeout);
+
+      try{
+        subscription.unsubscribe();
+      }catch(_){}
+
+      resolve(session || null);
+    };
+
+
+    const timeout =
+      setTimeout(() => {
+        finish(null);
+      },1500);
+
+
+    const {
+      data:{
+        subscription
+      }
+    } =
+      supabaseClient.auth.onAuthStateChange(
+        (event, session) => {
+
+          if(
+            event === "SIGNED_IN" ||
+            event === "INITIAL_SESSION" ||
+            event === "TOKEN_REFRESHED"
+          ){
+
+            if(session){
+              finish(session);
+            }
+
+          }
+
+        }
+      );
+
+  });
+
 }
 
 
@@ -834,56 +1344,87 @@ function isNew(dateString){
 
 async function loadUser(){
 
+  const session =
+    await getValidSession();
+
+  if(!session || !session.user){
+
+    window.location.replace("login.html");
+
+    return false;
+  }
+
+  currentUser =
+    session.user;
+
+
   const {
-    data: { user },
+    data:profile,
     error
-  } = await supabaseClient.auth.getUser();
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select(`
+        nickname,
+        distributor_code,
+        status,
+        email
+      `)
+      .eq("id",currentUser.id)
+      .maybeSingle();
 
-  if (error || !user){
 
-    window.location.href = "login.html";
-    return null;
-  }
+  if(error){
 
-  const {
-    data: profile,
-    error: profileError
-  } = await supabaseClient
-    .from("profiles")
-    .select("nickname,distributor_code,status")
-    .eq("id", user.id)
-    .single();
-
-  if (profileError){
-
-    console.error(profileError);
-
-    profileName.textContent =
-      user.email || "ตัวแทน";
-
-    profileCode.textContent = "—";
-
-    return user;
-  }
-
-  if (profile.status !== "active"){
+    console.error(
+      "profile error:",
+      error
+    );
 
     await supabaseClient.auth.signOut();
 
-    window.location.href = "login.html";
+    window.location.replace("login.html");
 
-    return null;
+    return false;
   }
 
-  profileName.textContent =
-    profile.nickname || user.email || "ตัวแทน";
 
-  profileCode.textContent =
+  if(!profile){
+
+    await supabaseClient.auth.signOut();
+
+    window.location.replace("login.html");
+
+    return false;
+  }
+
+
+  if(profile.status !== "active"){
+
+    await supabaseClient.auth.signOut();
+
+    window.location.replace("login.html");
+
+    return false;
+  }
+
+
+  currentProfile =
+    profile;
+
+
+  userName.textContent =
+    profile.nickname ||
+    "ตัวแทนจำหน่าย";
+
+
+  userCode.textContent =
     profile.distributor_code
-      ? "รหัสตัวแทน: " + profile.distributor_code
-      : "สมาชิก Bennie Choco";
+      ? `รหัสตัวแทน: ${profile.distributor_code}`
+      : "";
 
-  return user;
+
+  return true;
 }
 
 
@@ -893,262 +1434,354 @@ async function loadUser(){
 
 async function loadAnnouncements(){
 
-  setLoading(true);
-
-  hideError();
-
-  const {
-    data,
-    error
-  } = await supabaseClient
-    .from("announcements")
-    .select(`
-      id,
-      title,
-      content,
-      image_url,
-      status,
-      pinned,
-      created_at,
-      updated_at
-    `)
-    .eq("status", "published")
-    .order("pinned", {
-      ascending:false
-    })
-    .order("created_at", {
-      ascending:false
-    });
-
-  if (error){
-
-    console.error(
-      "Announcement error:",
-      error
-    );
-
-    setLoading(false);
-
-    showError(
-      "ไม่สามารถโหลดประกาศได้<br>" +
-      escapeHtml(error.message || "เกิดข้อผิดพลาด")
-    );
-
-    countText.textContent = "โหลดไม่สำเร็จ";
-
+  if(loadingAnnouncements){
     return;
   }
 
-  announcements =
-    Array.isArray(data)
-      ? data
-      : [];
+  loadingAnnouncements = true;
 
-  setLoading(false);
-
-  renderAnnouncements();
-}
+  refreshBtn.disabled = true;
+  refreshBtn.textContent = "…";
 
 
-/* =========================================================
-   RENDER
-========================================================= */
+  /*
+    แสดง skeleton เฉพาะกรณียังไม่มีข้อมูล
+    เพื่อไม่ให้หน้ากระพริบทุกครั้งที่ refresh
+  */
 
-function renderAnnouncements(){
+  if(!announcements.length){
 
-  announcementList.innerHTML = "";
-
-  let list =
-    [...announcements];
-
-  if (currentFilter === "pinned"){
-
-    list =
-      list.filter(item =>
-        item.pinned === true
-      );
-  }
-
-  countText.textContent =
-    `${list.length} รายการ`;
-
-  if (!list.length){
-
-    empty.style.display = "block";
-
-    return;
-  }
-
-  empty.style.display = "none";
-
-  list.forEach(item => {
-
-    const card =
-      document.createElement("article");
-
-    card.className =
-      "announcement" +
-      (item.pinned ? " pinned" : "");
-
-    const image =
-      item.image_url
-        ? `
-          <img
-            class="announcement-image"
-            src="${escapeHtml(item.image_url)}"
-            alt="${escapeHtml(item.title || "ประกาศ")}"
-            loading="lazy"
-            onerror="this.style.display='none'"
-          >
-        `
-        : "";
-
-    const badges = [];
-
-    if (item.pinned){
-
-      badges.push(`
-        <span class="badge pin">
-          📌 ปักหมุด
-        </span>
-      `);
-    }
-
-    if (isNew(item.created_at)){
-
-      badges.push(`
-        <span class="badge new">
-          🆕 ใหม่
-        </span>
-      `);
-    }
-
-    badges.push(`
-      <span class="badge info">
-        📢 ประกาศ
-      </span>
-    `);
-
-    const content =
-      item.content || "";
-
-    const preview =
-      content.length > 180
-        ? content.slice(0,180) + "…"
-        : content;
-
-    card.innerHTML = `
-      ${image}
-
-      <div class="announcement-body">
-
-        <div class="badges">
-          ${badges.join("")}
-        </div>
-
-        <h3 class="announcement-title">
-          ${escapeHtml(item.title || "ไม่มีหัวข้อ")}
-        </h3>
-
-        <div class="announcement-date">
-          ${formatDate(item.created_at)}
-        </div>
-
-        ${
-          preview
-            ? `
-              <p class="announcement-preview">
-                ${escapeHtml(preview)}
-              </p>
-            `
-            : ""
-        }
-
-        <div class="read-more">
-          แตะเพื่ออ่านรายละเอียด →
-        </div>
-
+    announcementList.innerHTML = `
+      <div class="loading-wrap">
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
       </div>
     `;
 
-    card.addEventListener("click", () => {
-      openDetail(item);
-    });
+  }
 
-    announcementList.appendChild(card);
-  });
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("announcements")
+        .select(`
+          id,
+          title,
+          content,
+          image_url,
+          status,
+          pinned,
+          created_at,
+          updated_at
+        `)
+        .eq("status","published")
+        .order("pinned",{ascending:false})
+        .order("created_at",{ascending:false});
+
+
+    if(error){
+      throw error;
+    }
+
+
+    announcements =
+      Array.isArray(data)
+        ? data
+        : [];
+
+
+    renderAnnouncements();
+
+
+  }catch(error){
+
+    console.error(
+      "announcements error:",
+      error
+    );
+
+
+    if(!announcements.length){
+
+      showErrorState(
+        "กรุณาลองใหม่อีกครั้ง"
+      );
+
+    }else{
+
+      showToast(
+        "รีเฟรชประกาศไม่สำเร็จ"
+      );
+
+    }
+
+  }finally{
+
+    loadingAnnouncements = false;
+
+    refreshBtn.disabled = false;
+    refreshBtn.textContent = "↻";
+
+  }
+
 }
 
 
 /* =========================================================
-   DETAIL
+   FILTER
 ========================================================= */
 
-function openDetail(item){
+function getFilteredAnnouncements(){
 
-  const badges = [];
+  if(currentFilter === "pinned"){
 
-  if (item.pinned){
+    return announcements.filter(
+      item => item.pinned === true
+    );
 
-    badges.push(`
-      <span class="badge pin">
+  }
+
+  return announcements;
+}
+
+
+function renderAnnouncements(){
+
+  const items =
+    getFilteredAnnouncements();
+
+
+  if(!items.length){
+
+    showEmptyState();
+
+    return;
+  }
+
+
+  announcementList.innerHTML =
+    items.map(item => {
+
+      const title =
+        escapeHtml(item.title || "ไม่มีหัวข้อ");
+
+
+      const content =
+        String(item.content || "")
+          .replace(/\s+/g," ")
+          .trim();
+
+
+      const preview =
+        escapeHtml(content);
+
+
+      const image =
+        item.image_url
+          ? `
+            <img
+              class="card-image"
+              src="${escapeHtml(item.image_url)}"
+              alt="${title}"
+              loading="lazy"
+              onerror="this.style.display='none'">
+          `
+          : "";
+
+
+      const pinnedBadge =
+        item.pinned === true
+          ? `
+            <span class="badge badge-pinned">
+              📌 ปักหมุด
+            </span>
+          `
+          : "";
+
+
+      const newBadge =
+        isNewAnnouncement(item.created_at)
+          ? `
+            <span class="badge badge-new">
+              ✦ ใหม่
+            </span>
+          `
+          : "";
+
+
+      return `
+        <article
+          class="announcement-card"
+          data-id="${escapeHtml(item.id)}"
+          tabindex="0"
+          role="button"
+          aria-label="อ่านประกาศ ${title}">
+
+          ${image}
+
+          <div class="card-body">
+
+            <div class="card-top">
+
+              <h2 class="card-title">
+                ${title}
+              </h2>
+
+              <div class="badges">
+                ${pinnedBadge}
+                ${newBadge}
+              </div>
+
+            </div>
+
+            <div class="card-date">
+              ${escapeHtml(formatDate(item.created_at))}
+            </div>
+
+            ${
+              preview
+                ? `
+                  <p class="card-preview">
+                    ${preview}
+                  </p>
+                `
+                : ""
+            }
+
+            <div class="read-more">
+              อ่านรายละเอียด →
+            </div>
+
+          </div>
+
+        </article>
+      `;
+
+    }).join("");
+
+
+  document
+    .querySelectorAll(".announcement-card")
+    .forEach(card => {
+
+      const id =
+        card.dataset.id;
+
+
+      card.addEventListener(
+        "click",
+        () => openAnnouncement(id)
+      );
+
+
+      card.addEventListener(
+        "keydown",
+        event => {
+
+          if(
+            event.key === "Enter" ||
+            event.key === " "
+          ){
+
+            event.preventDefault();
+
+            openAnnouncement(id);
+
+          }
+
+        }
+      );
+
+    });
+
+}
+
+
+/* =========================================================
+   OPEN ANNOUNCEMENT
+========================================================= */
+
+function openAnnouncement(id){
+
+  const item =
+    announcements.find(
+      announcement =>
+        String(announcement.id) === String(id)
+    );
+
+
+  if(!item){
+    return;
+  }
+
+
+  modalTitle.textContent =
+    item.title || "ประกาศ";
+
+
+  modalContent.textContent =
+    item.content || "ไม่มีรายละเอียด";
+
+
+  modalDate.textContent =
+    formatDate(item.created_at);
+
+
+  modalBadges.innerHTML = "";
+
+
+  if(item.pinned === true){
+
+    modalBadges.innerHTML += `
+      <span class="badge badge-pinned">
         📌 ปักหมุด
       </span>
-    `);
+    `;
+
   }
 
-  if (isNew(item.created_at)){
 
-    badges.push(`
-      <span class="badge new">
-        🆕 ใหม่
+  if(isNewAnnouncement(item.created_at)){
+
+    modalBadges.innerHTML += `
+      <span class="badge badge-new">
+        ✦ ใหม่
       </span>
-    `);
+    `;
+
   }
 
-  modalContent.innerHTML = `
 
-    ${
-      item.image_url
-        ? `
-          <img
-            class="modal-image"
-            src="${escapeHtml(item.image_url)}"
-            alt="${escapeHtml(item.title || "ประกาศ")}"
-            onerror="this.style.display='none'"
-          >
-        `
-        : ""
-    }
+  if(item.image_url){
 
-    <div class="modal-badges">
-      ${badges.join("")}
-    </div>
+    modalImage.src =
+      item.image_url;
 
-    <h2 class="modal-title">
-      ${escapeHtml(item.title || "ไม่มีหัวข้อ")}
-    </h2>
+    modalImage.alt =
+      item.title || "รูปประกาศ";
 
-    <div class="modal-date">
-      ประกาศเมื่อ ${formatDate(item.created_at)}
-      ${
-        item.updated_at &&
-        item.updated_at !== item.created_at
-          ? " · อัปเดตล่าสุด " + formatDate(item.updated_at)
-          : ""
-      }
-    </div>
+    modalImage.style.display =
+      "block";
 
-    <div class="modal-text">
-      ${escapeHtml(item.content || "ไม่มีรายละเอียด")}
-    </div>
+  }else{
 
-  `;
+    modalImage.removeAttribute("src");
+    modalImage.style.display =
+      "none";
+
+  }
+
 
   detailModal.classList.add("show");
 
   document.body.style.overflow =
     "hidden";
+
 }
 
 
@@ -1156,66 +1789,76 @@ function openDetail(item){
    CLOSE MODAL
 ========================================================= */
 
-function closeDetail(){
+function closeAnnouncement(){
 
   detailModal.classList.remove("show");
 
   document.body.style.overflow =
     "";
+
 }
-
-closeModal.addEventListener(
-  "click",
-  closeDetail
-);
-
-detailModal.addEventListener(
-  "click",
-  event => {
-
-    if (event.target === detailModal){
-      closeDetail();
-    }
-
-  }
-);
-
-document.addEventListener(
-  "keydown",
-  event => {
-
-    if (event.key === "Escape"){
-      closeDetail();
-    }
-
-  }
-);
 
 
 /* =========================================================
-   FILTER
+   FILTER BUTTONS
 ========================================================= */
 
-allBtn.addEventListener("click", () => {
+filterButtons.forEach(button => {
 
-  currentFilter = "all";
+  button.addEventListener(
+    "click",
+    () => {
 
-  allBtn.classList.add("active");
-  pinnedBtn.classList.remove("active");
+      currentFilter =
+        button.dataset.filter || "all";
 
-  renderAnnouncements();
+
+      filterButtons.forEach(
+        item => {
+          item.classList.toggle(
+            "active",
+            item === button
+          );
+        }
+      );
+
+
+      renderAnnouncements();
+
+    }
+  );
+
 });
 
 
-pinnedBtn.addEventListener("click", () => {
+/* =========================================================
+   BACK TO DASHBOARD
+========================================================= */
 
-  currentFilter = "pinned";
+/*
+  ไม่ใช้ history.back()
+  เพราะ browser history อาจมีหน้าอื่นคั่นอยู่
 
-  pinnedBtn.classList.add("active");
-  allBtn.classList.remove("active");
+  หน้านี้ถูกออกแบบให้กลับ Dashboard โดยตรง
+*/
 
-  renderAnnouncements();
-});
+backBtn.addEventListener(
+  "click",
+  () => {
+
+    if(backBtn.disabled){
+      return;
+    }
+
+    backBtn.disabled = true;
+    backBtn.textContent = "กำลังกลับ...";
+
+    window.location.replace(
+      "dashboard.html"
+    );
+
+  }
+);
 
 
 /* =========================================================
@@ -1229,34 +1872,77 @@ refreshBtn.addEventListener(
 
 
 /* =========================================================
-   LOADING
+   MODAL EVENTS
 ========================================================= */
 
-function setLoading(state){
-
-  loading.style.display =
-    state ? "block" : "none";
-}
-
-
-function showError(message){
-
-  errorBox.innerHTML =
-    message;
-
-  errorBox.style.display =
-    "block";
-}
+closeModalBtn.addEventListener(
+  "click",
+  closeAnnouncement
+);
 
 
-function hideError(){
+detailModal.addEventListener(
+  "click",
+  event => {
 
-  errorBox.style.display =
-    "none";
+    if(event.target === detailModal){
 
-  errorBox.innerHTML =
-    "";
-}
+      closeAnnouncement();
+
+    }
+
+  }
+);
+
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if(
+      event.key === "Escape" &&
+      detailModal.classList.contains("show")
+    ){
+
+      closeAnnouncement();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   AUTH STATE
+========================================================= */
+
+supabaseClient.auth.onAuthStateChange(
+  async (event, session) => {
+
+    /*
+      ถ้า session หายระหว่างใช้งาน
+      ส่งกลับหน้า Login
+
+      ไม่ทำอะไรกับ INITIAL_SESSION
+      ถ้ามี session อยู่แล้ว
+    */
+
+    if(
+      event === "SIGNED_OUT" &&
+      currentUser
+    ){
+
+      currentUser = null;
+      currentProfile = null;
+
+      window.location.replace(
+        "login.html"
+      );
+
+    }
+
+  }
+);
 
 
 /* =========================================================
@@ -1265,13 +1951,19 @@ function hideError(){
 
 async function init(){
 
-  const user =
+  const valid =
     await loadUser();
 
-  if (!user) return;
+
+  if(!valid){
+    return;
+  }
+
 
   await loadAnnouncements();
+
 }
+
 
 init();
 
